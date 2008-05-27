@@ -110,7 +110,7 @@ public class AboutDialog extends Dialog {
 
 		// App name and version
 		String appName = Localization.getString(Localization.APPLICATION_NAME)
-				+ " " + Main.APPLICATION_VERSION;
+				+ " " + Localization.getLocalizedVersion();
 
 		Text appNameText = new Text(comp, SWT.CENTER | SWT.READ_ONLY
 				| SWT.MULTI | SWT.WRAP);

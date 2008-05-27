@@ -115,7 +115,9 @@ public class PreferencesDialog extends Dialog {
 				.getString(Localization.PREFERENCE_REPLACE);
 		replaceButton = new Button(optionGroup, SWT.CHECK);
 		replaceButton.setText(replaceText);
-
+		replaceButton.addSelectionListener(selectionListener);
+		
+		
 		Group directoryGroup = new Group(parent, SWT.NONE);
 		directoryGroup.setLayout(new GridLayout(3, false));
 		directoryGroup.setLayoutData(new GridData(GridData.FILL_BOTH));

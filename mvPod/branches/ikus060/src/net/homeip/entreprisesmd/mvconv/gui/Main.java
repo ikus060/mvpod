@@ -28,11 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 public final class Main {
 
 	/**
-	 * Version of the application. This value are replace by the ant script.
-	 */
-	public static final String APPLICATION_VERSION = "@Version@";
-	
-	/**
 	 * Key preference to clear job when done.
 	 */
 	public static final String PREF_AUTO_CLEAR_JOBS = "pref.autoClearJobs";
@@ -56,7 +51,7 @@ public final class Main {
 	/**
 	 * Preference file name.
 	 */
-	private static final String PREFERENCE_FILENAME = "iriverter.pref";
+	private static final String PREFERENCE_FILENAME = ".mvpod";
 	/**
 	 * Key value for user home directory.
 	 */
@@ -73,7 +68,7 @@ public final class Main {
 	 * Windows OS value.
 	 */
 	private static final String OS_NAME_WINDOWS = "Windows";
-	
+
 	/**
 	 * Unique instance of this class.
 	 */
@@ -120,13 +115,13 @@ public final class Main {
 		public void jobQueueHasChanged(JobQueue queue) {
 
 			if (queue.getJobCount() > 0) {
-				
+
 				QueueWindow win = getQueueWindow();
 				if (win != null) {
 					getWindowManager().add(win);
 					win.open();
 				}
-				
+
 			}
 
 		}
@@ -158,22 +153,24 @@ public final class Main {
 
 	/**
 	 * Return True if the windows can be closed.
+	 * 
 	 * @param shell
 	 * @return
 	 */
-	public boolean confirmQuit(Shell shell){
+	public boolean confirmQuit(Shell shell) {
 		JobQueue jobQueue = getJobQueue();
 		Job[] jobs = jobQueue.getJobs();
 		int count = 0;
-		for(int index=0;index<jobs.length;index++){
+		for (int index = 0; index < jobs.length; index++) {
 			int status = jobQueue.getJobStatus(jobs[index]);
-			if(status==JobQueue.STATUS_QUEUED || status==JobQueue.STATUS_IN_PROGRESS){
+			if (status == JobQueue.STATUS_QUEUED
+					|| status == JobQueue.STATUS_IN_PROGRESS) {
 				count++;
 			}
 		}
-		
+
 		WindowManager winManager = Main.instance().getWindowManager();
-		if (winManager.getWindowCount() == 1 && count>0) {
+		if (winManager.getWindowCount() == 1 && count > 0) {
 			// Show warning message
 			String message = Localization
 					.getString(Localization.JOB_QUEUE_CONFIRM_QUIT);
@@ -184,10 +181,10 @@ public final class Main {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Return the global JobQueue.
 	 * 
@@ -277,16 +274,17 @@ public final class Main {
 	 * Load mplayer wrapper.
 	 */
 	private void loadMPlayer() {
-		
+
 		IPreferenceStore store = getPreferenceStore();
 		File path = new File(store.getString(PREF_MPLAYER_DIRECTORY));
-		
+
 		try {
-			
-			mplayer = new MPlayerWrapper(new File[]{path});
-			
+
+			mplayer = new MPlayerWrapper(new File[] { path });
+
 		} catch (MPlayerNotFoundException e) {
-			ErrorMessage.showLocalizedError(null, Localization.MPLAYER_NOT_FOUND);
+			ErrorMessage.showLocalizedError(null,
+					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
 	}
@@ -295,9 +293,13 @@ public final class Main {
 	 * Load application preference.
 	 */
 	private void loadPreference() {
-		preferenceStore = new PreferenceStore(PREFERENCE_FILENAME);
 
-		File preferenceFile = new File(PREFERENCE_FILENAME);
+		String homeDir = System.getProperty(USER_HOME);
+
+		File preferenceFile = new File(homeDir, PREFERENCE_FILENAME);
+
+		preferenceStore = new PreferenceStore(preferenceFile.getAbsolutePath());
+
 		if (preferenceFile.exists()) {
 			try {
 				preferenceStore.load();
@@ -305,16 +307,17 @@ public final class Main {
 				e.printStackTrace();
 			}
 		}
-		
-		//Set default value
+
+		// Set default value
 		String os = System.getProperty(OS_NAME);
 		preferenceStore.setDefault(PREF_AUTO_CLEAR_JOBS, false);
 		preferenceStore.setDefault(PREF_REPLACE_FILE, false);
-		preferenceStore.setDefault(PREF_LAST_DIRECTORY, System.getProperty(USER_HOME));
-		if(os.equals(OS_NAME_LINUX)){
+		preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
+				.getProperty(USER_HOME));
+		if (os.equals(OS_NAME_LINUX)) {
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "/usr/bin");
-			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "/usr/bin");			
-		} else if (os.equals(OS_NAME_WINDOWS)){
+			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "/usr/bin");
+		} else if (os.equals(OS_NAME_WINDOWS)) {
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, ".");
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, ".");
 		} else {
@@ -363,7 +366,7 @@ public final class Main {
 
 		// Save preference
 		savePreference();
-		
+
 		getJobQueue().stop();
 
 	}

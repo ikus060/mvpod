@@ -31,7 +31,7 @@ public class Profiles {
 	 * Relative path to the user directory of user profile.
 	 */
 	// TODO : Cross Platform : This value must be change under windows
-	private static final String USER_HOME_PROFILE_DIRECTORY = ".iRiverter/profiles";
+	private static final String USER_HOME_PROFILE_DIRECTORY = ".mvPod/profiles";
 
 	/**
 	 * Create a new profile base on the encoding options.
