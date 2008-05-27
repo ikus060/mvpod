@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * This class maintain a list of all available profile.
  * <p>
- * The list contain every hard coded profile implemented in iRiverter and look
+ * The list contain every hard coded profile implemented in mvPod and look
  * for custom profile in the application directory and the user home directory.
  * </p>
  * 

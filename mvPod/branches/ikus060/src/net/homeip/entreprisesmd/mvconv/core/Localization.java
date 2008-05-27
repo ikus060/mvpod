@@ -19,6 +19,8 @@ public final class Localization {
 	/*
 	 * Constants
 	 */
+	private static final String VERSION_TEXT = "VERSION_TEXT";
+	
 	public static final String APPLICATION_NAME = "APPLICATION_NAME";
 	public static final String APPLICATION_DESCRIPTION = "APPLICATION_DESCRIPTION";
 	public static final String APPLICATION_COPYRIGHT = "APPLICATION_COPYRIGHT";
@@ -245,10 +247,12 @@ public final class Localization {
 	private static final String LOCALE_BUNDLE_NAME = "locale";
 	private static final String FORMAT_BUNDLE_NAME = "format";
 	private static final String LANGUAGE_BUNDLE_NAME = "language";
+	private static final String VERSION_BUNDLE_NAME = "version";
 
 	private static ResourceBundle localBundle;
 	private static ResourceBundle formatBundle;
 	private static ResourceBundle languageBundle;
+	private static ResourceBundle versionBundle;
 
 	/**
 	 * Private constructor.
@@ -341,6 +345,17 @@ public final class Localization {
 	}
 
 	/**
+	 * Return the localized text version.
+	 * @return the text version.
+	 */
+	public static String getLocalizedVersion(){
+		if (versionBundle == null) {
+			init();
+		}
+		return versionBundle.getString(VERSION_TEXT);		
+	}
+	
+	/**
 	 * Gets a string for the given key.
 	 * 
 	 * @param key
@@ -392,6 +407,7 @@ public final class Localization {
 		localBundle = PropertyResourceBundle.getBundle(LOCALE_BUNDLE_NAME);
 		formatBundle = PropertyResourceBundle.getBundle(FORMAT_BUNDLE_NAME);
 		languageBundle = PropertyResourceBundle.getBundle(LANGUAGE_BUNDLE_NAME);
+		versionBundle = PropertyResourceBundle.getBundle(VERSION_BUNDLE_NAME);
 	}
 
 }
