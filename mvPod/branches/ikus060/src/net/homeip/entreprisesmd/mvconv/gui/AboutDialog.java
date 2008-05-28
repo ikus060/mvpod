@@ -34,7 +34,7 @@ public class AboutDialog extends Dialog {
 	/**
 	 * Margin.
 	 */
-	private static final int MARGIN = 30;
+	private static final int MARGIN = 60;
 
 	/**
 	 * Font use to diaply application name.
@@ -110,7 +110,7 @@ public class AboutDialog extends Dialog {
 
 		// App name and version
 		String appName = Localization.getString(Localization.APPLICATION_NAME)
-				+ " " + Localization.getLocalizedVersion();
+				+ " " + Localization.getLocalizedVersion(Localization.VERSION_TEXT);
 
 		Text appNameText = new Text(comp, SWT.CENTER | SWT.READ_ONLY
 				| SWT.MULTI | SWT.WRAP);
@@ -119,6 +119,13 @@ public class AboutDialog extends Dialog {
 		appNameText.setLayoutData(gridData);
 		appNameText.setBackground(this.getShell().getBackground());
 
+		String build = Localization.getLocalizedVersion(Localization.VERSION);
+		Text appBuildVersion =  new Text(comp, SWT.CENTER | SWT.READ_ONLY
+				| SWT.MULTI | SWT.WRAP);
+		appBuildVersion.setText(build);
+		appBuildVersion.setLayoutData(gridData);
+		appBuildVersion.setBackground(this.getShell().getBackground());
+		
 		// App description
 		String appDescription = Localization
 				.getString(Localization.APPLICATION_DESCRIPTION);
