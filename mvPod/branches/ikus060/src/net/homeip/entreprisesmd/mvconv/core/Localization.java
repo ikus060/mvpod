@@ -19,7 +19,9 @@ public final class Localization {
 	/*
 	 * Constants
 	 */
-	private static final String VERSION_TEXT = "VERSION_TEXT";
+	public static final String VERSION = "VERSION";
+	public static final String VERSION_TEXT = "VERSION_TEXT";
+	public static final String VERSION_BUILD = "VERSION_BUILD";
 	
 	public static final String APPLICATION_NAME = "APPLICATION_NAME";
 	public static final String APPLICATION_DESCRIPTION = "APPLICATION_DESCRIPTION";
@@ -348,11 +350,11 @@ public final class Localization {
 	 * Return the localized text version.
 	 * @return the text version.
 	 */
-	public static String getLocalizedVersion(){
+	public static String getLocalizedVersion(String key){
 		if (versionBundle == null) {
 			init();
 		}
-		return versionBundle.getString(VERSION_TEXT);		
+		return versionBundle.getString(key);		
 	}
 	
 	/**
