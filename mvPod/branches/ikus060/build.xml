@@ -95,7 +95,7 @@
 		<copy file="${distsrc.dir}/mvpod.png" tofile="${dist.linux.dir}/bin/mvpod.png" />
 		<copy file="${distsrc.dir}/mvpod.properties" tofile="${dist.linux.dir}/bin/mvpod.properties" />
 		<copy file="${distsrc.dir}/mvpod" tofile="${dist.linux.dir}/bin/mvpod" />
-		<chmod file="${distsrc.dir}/mvpod" perm="775" />
+		<chmod file="${dist.linux.dir}/bin/mvpod" perm="775" />
 
 		<tar tarfile="${dist.dir}/mvPod-${version}.tar" basedir="${dist.linux.dir}" />
 		<gzip zipfile="${dist.dir}/mvPod-${version}.tar.gz" src="${dist.dir}/mvPod-${version}.tar" />
