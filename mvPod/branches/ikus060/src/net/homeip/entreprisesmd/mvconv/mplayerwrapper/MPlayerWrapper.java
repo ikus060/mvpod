@@ -138,9 +138,9 @@ public class MPlayerWrapper {
 			}
 		};
 		StreamReader inputStream = new StreamReader(proc.getInputStream(),
-				errorParser);
+				errorParser, true);
 		StreamReader errorStream = new StreamReader(proc.getErrorStream(),
-				errorParser);
+				errorParser, false);
 		errorStream.readInThread();
 		inputStream.readInThread();
 

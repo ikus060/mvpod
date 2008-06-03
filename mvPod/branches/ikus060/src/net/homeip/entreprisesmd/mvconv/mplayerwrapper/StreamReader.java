@@ -55,7 +55,7 @@ public class StreamReader {
 	/**
 	 * String buffer to stock lines.
 	 */
-	private StringBuffer buffer = new StringBuffer();
+	private StringBuffer buffer;
 	/**
 	 * Thread that read (if threaded).
 	 */
@@ -74,9 +74,11 @@ public class StreamReader {
 	 * 
 	 * @param input
 	 *            the input stream to read.
+	 * @param buffered
+	 *            True to buffer all data. Must be True if you call toString().
 	 */
-	public StreamReader(InputStream input) {
-		this(input, null);
+	public StreamReader(InputStream input, boolean buffer) {
+		this(input, null, buffer);
 	}
 
 	/**
@@ -86,10 +88,15 @@ public class StreamReader {
 	 *            the input stream to read.
 	 * @param parser
 	 *            the stream parser.
+	 * @param buffered
+	 *            True to buffer all data. Must be True if you call toString().
 	 */
-	public StreamReader(InputStream input, StreamParser parser) {
+	public StreamReader(InputStream input, StreamParser parser, boolean buffered) {
 		this.reader = new BufferedReader(new InputStreamReader(input));
 		this.parser = parser;
+		if(buffered){
+			 buffer = new StringBuffer();
+		}
 	}
 
 	/**
@@ -104,7 +111,9 @@ public class StreamReader {
 
 			String inputLine;
 			while (!stop && (inputLine = reader.readLine()) != null) {
-				buffer.append(inputLine + "\r\n");
+				if (buffer != null) {
+					buffer.append(inputLine + "\r\n");
+				}
 				if (parser != null) {
 					stop = stop || !parser.parseLine(inputLine);
 				}
@@ -115,8 +124,11 @@ public class StreamReader {
 			// Nothing to do ..
 			e.printStackTrace();
 		}
-
-		return buffer.toString();
+		if (buffer != null) {
+			return buffer.toString();
+		} else {
+			return "NOT_ACTIVATED";
+		}
 	}
 
 	/**
@@ -135,7 +147,7 @@ public class StreamReader {
 					String inputLine = "";
 					String lastLine = "";
 					while (!stop && (inputLine = reader.readLine()) != null) {
-						if (!lastLine.equals(inputLine)) {
+						if (buffer != null && !lastLine.equals(inputLine)) {
 							buffer.append(inputLine + "\r\n");
 						}
 						lastLine = inputLine;
@@ -170,7 +182,7 @@ public class StreamReader {
 		// Wait until the thread end
 		if (thread != null) {
 			int count = 0;
-			while (thread!=null && thread.isAlive() && count < SLEEP_COUNT) {
+			while (thread != null && thread.isAlive() && count < SLEEP_COUNT) {
 				try {
 					Thread.sleep(SLEEP_DELAY);
 				} catch (InterruptedException e) {
@@ -198,8 +210,12 @@ public class StreamReader {
 			}
 			thread = null;
 		}
+		if (buffer != null) {
+			return buffer.toString();
+		} else {
+			return "NOT_ACTIVATED";
+		}
 
-		return buffer.toString();
 	}
 
 }

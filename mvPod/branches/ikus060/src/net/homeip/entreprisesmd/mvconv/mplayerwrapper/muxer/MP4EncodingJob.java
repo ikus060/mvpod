@@ -132,8 +132,8 @@ public class MP4EncodingJob implements EncodingJob {
 			Process proc = mp4box(args);
 
 			ErrorParser errorParser = new ErrorParser();
-			inputStream = new StreamReader(proc.getInputStream(), errorParser);
-			errorStream = new StreamReader(proc.getErrorStream(), errorParser);
+			inputStream = new StreamReader(proc.getInputStream(), errorParser, true);
+			errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
 			inputStream.read();
 			errorStream.read();
 			errorParser.throwException();
@@ -201,8 +201,8 @@ public class MP4EncodingJob implements EncodingJob {
 			Process proc = mp4box(args);
 
 			ErrorParser errorParser = new ErrorParser();
-			inputStream = new StreamReader(proc.getInputStream(), errorParser);
-			errorStream = new StreamReader(proc.getErrorStream(), errorParser);
+			inputStream = new StreamReader(proc.getInputStream(), errorParser, true);
+			errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
 			inputStream.read();
 			errorStream.read();
 			errorParser.throwException();
@@ -341,8 +341,8 @@ public class MP4EncodingJob implements EncodingJob {
 			Process proc = mp4box(args);
 
 			ErrorParser errorParser = new ErrorParser();
-			inputStream = new StreamReader(proc.getInputStream(), errorParser);
-			errorStream = new StreamReader(proc.getErrorStream(), errorParser);
+			inputStream = new StreamReader(proc.getInputStream(), errorParser, true);
+			errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
 			inputStream.read();
 			errorStream.read();
 			errorParser.throwException();
