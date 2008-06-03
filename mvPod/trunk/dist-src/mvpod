@@ -1,0 +1,99 @@
+#!/bin/bash
+#template end
+# launcher start
+
+# argument file name
+abspath()
+{
+	local D=`dirname "$1"`
+	local B=`basename "$1"`
+	local rez="`command cd "$D" 2>/dev/null && pwd || echo \""$D"\"`/"$B""
+	echo $rez
+}
+
+absdirname()
+{
+	local D=`dirname "$1"`
+	local rez="`command cd \""$D"\" 2>/dev/null && pwd || echo \""$D"\"`"
+	echo $rez
+}
+
+# argument file name where search for variable
+# argument variable name to find
+getvariable()
+{
+	local rez=`grep "^"$2"" "$1" | cut -d= -f 2-100`
+	# if java writes props it writes \: insteaod of :
+	# replacing \: with :
+	rez=${rez//"\:"/:}      #for bash >= 3.0
+	rez=${rez//'\\:'/:}     #for bash < 3.0
+	# replacing \= with =
+	rez=${rez//"\="/=}      #for bash >= 3.0
+	rez=${rez//'\\='/=}     #for bash < 3.0
+	echo $rez
+}
+
+###########################################################################
+########## SCRIPT START ###################################################
+
+cd "`dirname "$0"`"
+cmd="`basename "$0"`"
+cmd=${cmd//.sh/}
+cmd=${cmd//.command/}
+cmd="$cmd".properties
+
+# finding files locations
+BASENAME=`basename "$0"`
+SCRIPT_FILE="$PWD"/$BASENAME
+BIN_DIR=`absdirname "$SCRIPT_FILE"`
+APP_HOME=`absdirname "$BIN_DIR"`
+PROP_FILE=`abspath "$PWD"/"$cmd"`
+
+# seting variables
+JAVA_HOME=`getvariable "$PROP_FILE" JAVA_HOME`
+APP_ARGS=`getvariable "$PROP_FILE" APP_ARGS`
+CLASSPATH=`getvariable "$PROP_FILE" CLASSPATH`
+JAVA_ARGS=`getvariable "$PROP_FILE" JAVA_ARGS`
+MAC_ARGS=`getvariable "$PROP_FILE" JAVA_ARGS`
+JAVA_HOME_ORIGINAL=$JAVA_HOME
+
+eval "APP_ARGS=($APP_ARGS)"
+eval "JAVA_ARGS=($JAVA_ARGS)"
+eval "MAC_ARGS=($MAC_JAVA_ARGS)"
+
+BOOT_CLASSPATH=`getvariable "$PROP_FILE" BOOT_CLASSPATH`
+MAIN_CLASS=`getvariable "$PROP_FILE" MAIN_CLASS`
+
+if [ -z "$JAVA_HOME" ]; then
+echo "searching default java"
+JAVA_LAUNCHER=`which java`
+JAVA_BIN_DIR=`absdirname "$JAVA_LAUNCHER"`
+JAVA_HOME=`absdirname "$JAVA_BIN_DIR"`
+fi
+
+
+JAVA_LAUNCHER="$JAVA_HOME"/bin/java
+
+
+if [ -x $JAVA_LAUNCHER ]; then 
+
+
+#if [ -n "$BOOT_CLASSPATH" ]; then
+BOOT_CLASSPATH=`echo -Xbootclasspath/p:$BOOT_CLASSPATH`
+#fi
+
+#adding parameters passed to this launcher
+#shift 1
+
+
+cd "$APP_HOME"
+
+echo "Starting application ..."
+
+"$JAVA_LAUNCHER" "${JAVA_ARGS[@]}" "${MAC_ARGS[@]}" "-cp" "$CLASSPATH" "$MAIN_CLASS" $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+else
+echo "ERROR!"
+echo "Java executable not found in" $JAVA_HOME/bin/java
+echo "Please add java to your PATH environment variable, or specify it in file" $PROP_FILE
+fi

@@ -1,0 +1,8 @@
+mvPod:
+
+version 0.01 (beta):
+	* Initial release.
+	* Working in Ubuntu Linux and Windows XP.
+	* Support video conversion to iPod in h264 or XVid format.
+	* Support input video as video file, DVD device, DVD image and DVD directory.
+	* First implementation of custom profile.
