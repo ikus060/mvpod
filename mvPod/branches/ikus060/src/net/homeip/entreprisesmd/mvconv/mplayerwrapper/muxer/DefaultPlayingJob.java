@@ -104,8 +104,8 @@ public class DefaultPlayingJob implements PlayingJob {
 				return false;
 			}
 		};
-		inputStream = new StreamReader(proc.getInputStream());
-		errorStream = new StreamReader(proc.getErrorStream(), errorParser);
+		inputStream = new StreamReader(proc.getInputStream(), false);
+		errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
 		inputStream.readInThread();
 		errorStream.readInThread();
 

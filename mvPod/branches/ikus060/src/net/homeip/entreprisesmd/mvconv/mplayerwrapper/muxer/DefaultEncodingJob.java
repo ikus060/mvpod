@@ -252,8 +252,8 @@ public class DefaultEncodingJob implements EncodingJob {
 				return false;
 			}
 		};
-		inputStream = new StreamReader(proc.getInputStream(), parser);
-		errorStream = new StreamReader(proc.getErrorStream(), errorParser);
+		inputStream = new StreamReader(proc.getInputStream(), parser, false);
+		errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
 		inputStream.readInThread();
 		errorStream.readInThread();
 
