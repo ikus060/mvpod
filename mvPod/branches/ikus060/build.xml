@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project default="dist" name="mvPod" basedir=".">
+<project default="compile" name="mvPod" basedir=".">
 
 
 	<property name="root.dir" value="." />
@@ -77,7 +77,24 @@
 
 	</target>
 
-	<target name="dist" depends="dist-linux,dist-win32,dist-macosx" />
+	<target name="dist" depends="dist-linux,dist-win32,dist-macosx,dist-src" />
+
+	<target name="dist-src" depends="init">
+
+		<tar destfile="${dist.dir}/mvPod-${version}-src.tar">
+			<tarfileset dir="${distsrc.dir}" prefix="dist-src" preserveLeadingSlashes="true" />
+			<tarfileset dir="${libs.dir}" prefix="/lib" preserveLeadingSlashes="true" />
+			<tarfileset dir="${src.dir}" prefix="/src" preserveLeadingSlashes="true" />
+			<tarfileset file="${root.dir}/build.xml" prefix="/" preserveLeadingSlashes="true" />
+		</tar>
+
+		<zip destfile="${dist.dir}/mvPod-${version}-src.zip">
+			<tarfileset src="${dist.dir}/mvPod-${version}-src.tar" />
+		</zip>
+		<gzip zipfile="${dist.dir}/mvPod-${version}-src.tar.gz" src="${dist.dir}/mvPod-${version}-src.tar" />
+		<delete file="${dist.dir}/mvPod-${version}-src.tar" />
+
+	</target>
 
 	<target name="dist-linux" depends="jar">
 
@@ -96,6 +113,17 @@
 		<copy file="${distsrc.dir}/mvpod.properties" tofile="${dist.linux.dir}/bin/mvpod.properties" />
 		<copy file="${distsrc.dir}/mvpod" tofile="${dist.linux.dir}/bin/mvpod" />
 		<chmod file="${dist.linux.dir}/bin/mvpod" perm="775" />
+
+
+		<tar destfile="${dist.dir}/mvPod-${version}.tar">
+			<tarfileset dir="${dist.linux.dir}" mode="711" username="root" group="user">
+				<include name="**" />
+				<exclude name="bin/mvpod" />
+			</tarfileset>
+			<tarfileset dir="${dist.linux.dir}" mode="755" username="root" group="user">
+				<include name="bin/mvpod" />
+			</tarfileset>
+		</tar>
 
 		<tar tarfile="${dist.dir}/mvPod-${version}.tar" basedir="${dist.linux.dir}" />
 		<gzip zipfile="${dist.dir}/mvPod-${version}.tar.gz" src="${dist.dir}/mvPod-${version}.tar" />
@@ -149,7 +177,7 @@
 		<delete file="${dist.dir}/GPL.txt" />
 
 
-		<move file="${dist.dir}/setup.exe" tofile="${dist.dir}/mvPod-${version}.exe" />
+		<move file="${dist.dir}/setup.exe" tofile="${dist.dir}/mvPod-${version}-install.exe" />
 
 	</target>
 
