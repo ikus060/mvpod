@@ -8,6 +8,7 @@
 	<property name="dist.dir" value="${root.dir}/dist" />
 	<property name="distsrc.dir" value="${root.dir}/dist-src" />
 	<property name="dist.linux.dir" value="${dist.dir}/linux" />
+	<property name="dist.linux64.dir" value="${dist.dir}/linux64" />
 	<property name="dist.win32.dir" value="${dist.dir}/win32" />
 	<property name="dist.macosx.dir" value="${dist.dir}/macosx" />
 	<property name="bin.dir" value="${root.dir}/bin" />
@@ -77,7 +78,7 @@
 
 	</target>
 
-	<target name="dist" depends="dist-linux,dist-win32,dist-macosx,dist-src" />
+	<target name="dist" depends="dist-linux64,dist-linux,dist-win32,dist-macosx,dist-src" />
 
 	<target name="dist-src" depends="init">
 
@@ -128,6 +129,41 @@
 		<tar tarfile="${dist.dir}/mvPod-${version}.tar" basedir="${dist.linux.dir}" />
 		<gzip zipfile="${dist.dir}/mvPod-${version}.tar.gz" src="${dist.dir}/mvPod-${version}.tar" />
 		<delete file="${dist.dir}/mvPod-${version}.tar" />
+
+	</target>
+	
+	<target name="dist-linux64" depends="jar">
+
+		<copy file="${dist.dir}/mvPod.jar" tofile="${dist.linux64.dir}/lib/mvPod.jar" />
+
+		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.core.commands.jar" />
+		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.equinox.common.jar" />
+		<copy file="${libs.dir}/org.eclipse.jface_3.3.1.M20070910-0800b.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.jface.jar" />
+		<copy file="${libs.dir}/swt-3.3.2-gtk-linux-x86_64/swt.jar" tofile="${dist.linux64.dir}/lib/swt.jar" />
+
+		<copy file="${distsrc.dir}/GPL" tofile="${dist.linux64.dir}/GPL" />
+		<copy file="${distsrc.dir}/NEWS" tofile="${dist.linux64.dir}/NEWS" />
+		<copy file="${distsrc.dir}/README" tofile="${dist.linux64.dir}/README" />
+
+		<copy file="${distsrc.dir}/mvpod.png" tofile="${dist.linux64.dir}/bin/mvpod.png" />
+		<copy file="${distsrc.dir}/mvpod.properties" tofile="${dist.linux64.dir}/bin/mvpod.properties" />
+		<copy file="${distsrc.dir}/mvpod" tofile="${dist.linux64.dir}/bin/mvpod" />
+		<chmod file="${dist.linux64.dir}/bin/mvpod" perm="775" />
+
+
+		<tar destfile="${dist.dir}/mvPod-${version}-x86_64.tar">
+			<tarfileset dir="${dist.linux64.dir}" mode="711" username="root" group="user">
+				<include name="**" />
+				<exclude name="bin/mvpod" />
+			</tarfileset>
+			<tarfileset dir="${dist.linux64.dir}" mode="755" username="root" group="user">
+				<include name="bin/mvpod" />
+			</tarfileset>
+		</tar>
+
+		<tar tarfile="${dist.dir}/mvPod-${version}-x86_64.tar" basedir="${dist.linux64.dir}" />
+		<gzip zipfile="${dist.dir}/mvPod-${version}-x86_64.tar.gz" src="${dist.dir}/mvPod-${version}-x86_64.tar" />
+		<delete file="${dist.dir}/mvPod-${version}-x86_64.tar" />
 
 	</target>
 
