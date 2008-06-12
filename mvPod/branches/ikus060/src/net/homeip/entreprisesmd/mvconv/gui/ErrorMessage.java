@@ -5,6 +5,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.ComponentMissingException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.DVDNotAvailableException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.GrabXvPortException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerNotFoundException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.PaletteException;
 
 import org.eclipse.swt.SWT;
@@ -104,6 +105,10 @@ public final class ErrorMessage {
 			ErrorMessage.showLocalizedError(shell,
 					Localization.MPLAYER_COMPONENT_MISSING,
 					((ComponentMissingException) exception).getComponentName());
+		} else if (exception instanceof MPlayerNotFoundException) {
+			ErrorMessage.showLocalizedError(shell,
+					Localization.MPLAYER_NOT_FOUND,
+					((MPlayerNotFoundException) exception).getComponentName());		
 		} else {
 			ErrorMessage.showLocalizedError(shell, defaultID);
 		}
