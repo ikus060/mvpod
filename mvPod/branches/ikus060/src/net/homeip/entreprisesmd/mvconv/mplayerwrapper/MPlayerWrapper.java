@@ -56,13 +56,13 @@ public class MPlayerWrapper {
 		File mplayerFile = ApplicationFinder.getApplicationPath(MPLAYER_BIN,
 				paths);
 		if (mplayerFile == null) {
-			throw new MPlayerNotFoundException();
+			throw new MPlayerNotFoundException(MPLAYER_BIN);
 		}
 
 		File mencoderFile = ApplicationFinder.getApplicationPath(MENCODER_BIN,
 				paths);
 		if (mencoderFile == null) {
-			throw new MPlayerNotFoundException();
+			throw new MPlayerNotFoundException(MENCODER_BIN);
 		}
 
 		try {

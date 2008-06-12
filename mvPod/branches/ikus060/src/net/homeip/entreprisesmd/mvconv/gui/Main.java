@@ -283,7 +283,7 @@ public final class Main {
 			mplayer = new MPlayerWrapper(new File[] { path });
 
 		} catch (MPlayerNotFoundException e) {
-			ErrorMessage.showLocalizedError(null,
+			ErrorMessage.showMPlayerException(null, e,
 					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
