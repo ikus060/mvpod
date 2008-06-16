@@ -7,15 +7,11 @@ import net.homeip.entreprisesmd.mvconv.core.profile.Profiles;
 import net.homeip.entreprisesmd.mvconv.gui.IProfileContextListener;
 import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
 import net.homeip.entreprisesmd.mvconv.gui.ProfileContext;
-import net.homeip.entreprisesmd.mvconv.gui.options.ComboCustomViewer;
-import net.homeip.entreprisesmd.mvconv.gui.options.InputSpinnerDialog;
-import net.homeip.entreprisesmd.mvconv.gui.options.SpinnerEditor;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoFormat;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.VideoEncodingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.X264EncodingOptions;
 
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -37,7 +33,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
 /**
@@ -55,14 +50,6 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	 * Default bitrate value
 	 */
 	private static final int BITRATE_DEFAULT = 500;
-	/**
-	 * Custom item.
-	 */
-	private static final String CUSTOM_ITEM = "Custom";
-	/**
-	 * Increment video bitrate value.
-	 */
-	private static final int INCREMENT_VIDEO_BITRATE = 2;
 
 	/**
 	 * Return the mapper for this interface.
@@ -90,10 +77,6 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	 * Button to enable/disable B-Frame usage.
 	 */
 	private Button bframeButton;
-	/**
-	 * Bitrate spinner.
-	 */
-	private SpinnerEditor bitrateSpinner;
 	/**
 	 * Bitstream label provider.
 	 */
@@ -147,32 +130,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	 * Cabac enable/disable button.
 	 */
 	private Button cabacButton;
-	/**
-	 * Frame rate viewer
-	 */
-	private ComboCustomViewer frameRateEditor;
-	/**
-	 * Frame rate label provider.
-	 */
-	private LabelProvider frameRateLabelProvider = new LabelProvider() {
-		public String getText(Object element) {
-			String key = null;
-			if (element.equals(VideoEncodingOptions.NTSC_FILM_FRAME_RATE)) {
-				key = Localization.OPTIONS_NTSC_FILM;
-			} else if (element.equals(VideoEncodingOptions.NTSC_FRAME_RATE)) {
-				key = Localization.OPTIONS_NTSC;
-			} else if (element.equals(VideoEncodingOptions.PAL_FRAME_RATE)) {
-				key = Localization.OPTIONS_PAL;
-			} else if (element.equals(-1.0)) {
-				return Localization
-						.getString(Localization.OPTIONS_FRAME_RATE_NO_CHANGE);
-			}
-			if (key != null) {
-				return element.toString() + " " + Localization.getString(key);
-			}
-			return element.toString();
-		}
-	};
+
 	/**
 	 * Modify listener.
 	 */
@@ -232,7 +190,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	private Spinner referenceFrameSpinner;
 
 	/**
-	 * Selection listener to video dimension viewer.
+	 * Selection listener.
 	 */
 	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
@@ -240,20 +198,16 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 				bitStreamLevelSelectionAsChanged();
 			} else if (event.getSource() == motionEstimationViewer) {
 				motionEstimationSelectionAsChanged();
-			} else if (event.getSource() == frameRateEditor) {
-				frameRateSelectionAsChanged();
 			}
 		}
 	};
 
 	/**
-	 * Selection listener to bitrate editor.
+	 * Selection listener.
 	 */
 	private SelectionListener selectionListener = new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent e) {
-			if (e.widget == bitrateSpinner) {
-				bitrateSelectionAsChanged();
-			} else if (e.widget == cabacButton) {
+			if (e.widget == cabacButton) {
 				cabacSelectionAsChanged();
 			} else if (e.widget == trellisButton) {
 				trellisSelectionAsChanged();
@@ -322,34 +276,6 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	}
 
 	/**
-	 * Notify this view that user change the slected bitrate value.
-	 */
-	private void bitrateSelectionAsChanged() {
-
-		Profile profile = getViewSite().getProfileContext()
-				.getSelectedProfile();
-		if (profile instanceof HardCodedProfile) {
-			return;
-		}
-
-		// Check if value as changed
-		int videoBitrate = bitrateSpinner.getSelection();
-		EncodingOptions options = profile.getEncodingOptions();
-		VideoEncodingOptions videoOptions = options.getVideoOptions();
-
-		if (videoBitrate != videoOptions.getBitrate()) {
-
-			// Change profile value
-			videoOptions.setBitrate(videoBitrate);
-			options.setVideoOptions(videoOptions);
-			Profile newProfile = Profiles.createOnFlyProfile(options);
-			getViewSite().getProfileContext().setSelectedProfile(newProfile);
-
-		}
-
-	}
-
-	/**
 	 * Notify this class that user change the selected CABAC mode.
 	 */
 	private void cabacSelectionAsChanged() {
@@ -410,62 +336,6 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	}
 
 	/**
-	 * Notify this class that user select an new frame rate.
-	 */
-	private void frameRateSelectionAsChanged() {
-		Profile profile = getViewSite().getProfileContext()
-				.getSelectedProfile();
-		if (profile instanceof HardCodedProfile) {
-			return;
-		}
-
-		// Check if value as changed
-		EncodingOptions options = profile.getEncodingOptions();
-		VideoEncodingOptions videoOptions = options.getVideoOptions();
-
-		// Get Selection
-		Double frameRate = null;
-		Object selection = ((IStructuredSelection) frameRateEditor
-				.getSelection()).getFirstElement();
-		if (CUSTOM_ITEM.equals(selection)) {
-			// Ask new value to user
-			Shell parentShell = getShell();
-			String dialogTitle = Localization
-					.getString(Localization.APPLICATION_NAME);
-			String dialogMessage = Localization
-					.getString(Localization.OPTIONS_FRAME_RATE_CUSTOM_MESSAGE);
-			double initialValue = videoOptions.getOutputFrameRate();
-			String unit = Localization.getString(Localization.OPTIONS_FPS);
-
-			InputSpinnerDialog dlg = new InputSpinnerDialog(parentShell,
-					dialogTitle, dialogMessage, initialValue, null);
-			dlg.setDigits(3);
-			dlg.setIncrement(1);
-			dlg.setMinimum(VideoEncodingOptions.FRAME_RATE_MIN_VALUE);
-			dlg.setMaximum(VideoEncodingOptions.FRAME_RATE_MAX_VALUE);
-			dlg.setUnitString(unit);
-
-			int id = dlg.open();
-			if (id == IDialogConstants.OK_ID) {
-				frameRate = dlg.getValue();
-			}
-
-		} else {
-			frameRate = getFrameRateSelection();
-		}
-
-		if (frameRate != null && frameRate != videoOptions.getOutputFrameRate()) {
-
-			// Change profile value
-			videoOptions.setOutputFrameRate(frameRate);
-			options.setVideoOptions(videoOptions);
-			Profile newProfile = Profiles.createOnFlyProfile(options);
-			getViewSite().getProfileContext().setSelectedProfile(newProfile);
-
-		}
-	}
-
-	/**
 	 * Return the selected bit steram level.
 	 * 
 	 * @return the selection.
@@ -477,20 +347,6 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 			return null;
 		}
 		return (String) selection;
-	}
-
-	/**
-	 * Return the frame rate selection.
-	 * 
-	 * @return the frame rate selection.
-	 */
-	private Double getFrameRateSelection() {
-		Object selection = ((IStructuredSelection) frameRateEditor
-				.getSelection()).getFirstElement();
-		if (!(selection instanceof Double)) {
-			return null;
-		}
-		return (Double) selection;
 	}
 
 	/**
@@ -517,16 +373,11 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 
 		super.init(site);
 
-		this.setLayout(new GridLayout(3, false));
+		this.setLayout(new GridLayout(4, false));
 
 		// Prepare localized string
-		String bitrateText = Localization
-				.getString(Localization.OPTIONS_BITRATE);
-		String bitrateUnit = Localization
-				.getString(Localization.OPTIONS_BITRATE_UNIT);
 		String cabacText = Localization
 				.getString(Localization.OPTIONS_X264_CABAC);
-
 		String partitionsText = Localization
 				.getString(Localization.OPTIONS_X264_PARTITIONS);
 		String bitStreamLevelText = Localization
@@ -541,65 +392,23 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 				.getString(Localization.OPTIONS_TWO_PASS);
 		String bframeText = Localization
 				.getString(Localization.OPTIONS_X264_BFRAME);
-		String frameRateText = Localization
-				.getString(Localization.OPTIONS_FRAME_RATE);
 
 		// Check the first column size.
 		GC gc = new GC(this);
-		Point bitrateTextSize = gc.textExtent(bitrateText);
 		Point bitStreamLevelTextSize = gc.textExtent(bitStreamLevelText);
 		Point motionEstimationTextSize = gc.textExtent(motionEstimationText);
 		Point referenceFrameTextSize = gc.textExtent(referenceFrameText);
 		gc.dispose();
-		int firstColumnWidth = Math.max(bitrateTextSize.x,
-				bitStreamLevelTextSize.x);
+		int firstColumnWidth = Math.max(bitStreamLevelTextSize.x, 0);
 		firstColumnWidth = Math.max(motionEstimationTextSize.x,
 				firstColumnWidth);
 		firstColumnWidth = Math.max(referenceFrameTextSize.x, firstColumnWidth);
 		firstColumnWidth = SWT.DEFAULT;
 
-		// Bitrate
-		Label label = new Label(this, SWT.NONE);
-		label.setText(bitrateText);
-		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
-
-		bitrateSpinner = new SpinnerEditor(this, SWT.BORDER);
-		bitrateSpinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-				false));
-		bitrateSpinner.setUnitString(bitrateUnit);
-		bitrateSpinner.setIncrement(INCREMENT_VIDEO_BITRATE);
-		bitrateSpinner.setMinimum(X264EncodingOptions.BITRATE_MIN_VALUE);
-		bitrateSpinner.setMaximum(X264EncodingOptions.BITRATE_MAX_VALUE);
-		bitrateSpinner.addSelectionListener(selectionListener);
-
-		// Two-pass
-		twoPassButton = new Button(this, SWT.CHECK);
-		twoPassButton.setText(twoPassText);
-		twoPassButton.addSelectionListener(selectionListener);
-
-		// Frame rate
-		label = new Label(this, SWT.NONE);
-		label.setText(frameRateText);
-		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
-
-		frameRateEditor = new ComboCustomViewer(this);
-		frameRateEditor.addSelectionChangedListener(selectionChangeListener);
-		frameRateEditor.setLabelProvider(frameRateLabelProvider);
-		frameRateEditor.add(CUSTOM_ITEM);
-		frameRateEditor.add(-1.0);
-		frameRateEditor.add(VideoEncodingOptions.NTSC_FRAME_RATE);
-		frameRateEditor.add(VideoEncodingOptions.NTSC_FILM_FRAME_RATE);
-		frameRateEditor.add(VideoEncodingOptions.PAL_FRAME_RATE);
-
-		// Cabac
-		cabacButton = new Button(this, SWT.CHECK);
-		cabacButton.setText(cabacText);
-		cabacButton.addSelectionListener(selectionListener);
-
 		// Bit stream level
-		label = new Label(this, SWT.NONE);
+		Label label = new Label(this, SWT.NONE);
 		label.setText(bitStreamLevelText);
-		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
+		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
 		bitStreamLevelViewer = new ComboViewer(this, SWT.READ_ONLY
 				| SWT.DROP_DOWN);
@@ -623,17 +432,22 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_50);
 		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_51);
 
-		// Trellis
-		String trellisText = Localization
-				.getString(Localization.OPTIONS_X264_TRELLIS);
-		trellisButton = new Button(this, SWT.CHECK);
-		trellisButton.setText(trellisText);
-		trellisButton.addSelectionListener(selectionListener);
+		// Reference frame
+		label = new Label(this, SWT.NONE);
+		label.setText(referenceFrameText);
+		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
+
+		referenceFrameSpinner = new Spinner(this, SWT.BORDER);
+		referenceFrameSpinner
+				.setMinimum(X264EncodingOptions.REFERENCE_FRAME_MIN_VALUE);
+		referenceFrameSpinner
+				.setMaximum(X264EncodingOptions.REFERENCE_FRAME_MAX_VALUE);
+		referenceFrameSpinner.addModifyListener(modifyListener);
 
 		// Motion estimation
 		label = new Label(this, SWT.NONE);
 		label.setText(motionEstimationText);
-		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
+		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
 		motionEstimationViewer = new ComboViewer(this, SWT.READ_ONLY
 				| SWT.DROP_DOWN);
@@ -649,37 +463,49 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		motionEstimationViewer
 				.add(X264EncodingOptions.MOTION_ESTIMATION_EXHAUSTIVE);
 
-		// Partitions
-		partitionsButton = new Button(this, SWT.CHECK);
-		partitionsButton.setText(partitionsText);
-		partitionsButton.addSelectionListener(selectionListener);
-
-		// Reference frame
-		label = new Label(this, SWT.NONE);
-		label.setText(referenceFrameText);
-		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
-
-		referenceFrameSpinner = new Spinner(this, SWT.BORDER);
-		referenceFrameSpinner
-				.setMinimum(X264EncodingOptions.REFERENCE_FRAME_MIN_VALUE);
-		referenceFrameSpinner
-				.setMaximum(X264EncodingOptions.REFERENCE_FRAME_MAX_VALUE);
-		referenceFrameSpinner.addModifyListener(modifyListener);
-
-		// B-Frame
-		bframeButton = new Button(this, SWT.CHECK);
-		bframeButton.setText(bframeText);
-		bframeButton.addSelectionListener(selectionListener);
-
 		// Subpel refinement quality
 		label = new Label(this, SWT.NONE);
 		label.setText(subQText);
-		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
+		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
 		subqSpinner = new Spinner(this, SWT.BORDER);
 		subqSpinner.setMinimum(X264EncodingOptions.SUQ_MIN_VALUE);
 		subqSpinner.setMaximum(X264EncodingOptions.SUQ_MAX_VALUE);
 		subqSpinner.addModifyListener(modifyListener);
+
+		Composite checkBoxGroup = new Composite(this, SWT.NONE);
+		GridLayout layout = new GridLayout(2, true);
+		layout.marginHeight=0;
+		layout.marginWidth=0;
+		checkBoxGroup.setLayout(layout);
+		checkBoxGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL,true, true,4,1));
+		
+		// Two-pass
+		twoPassButton = new Button(checkBoxGroup, SWT.CHECK);
+		twoPassButton.setText(twoPassText);
+		twoPassButton.addSelectionListener(selectionListener);
+
+		// Cabac
+		cabacButton = new Button(checkBoxGroup, SWT.CHECK);
+		cabacButton.setText(cabacText);
+		cabacButton.addSelectionListener(selectionListener);
+
+		// Trellis
+		String trellisText = Localization
+				.getString(Localization.OPTIONS_X264_TRELLIS);
+		trellisButton = new Button(checkBoxGroup, SWT.CHECK);
+		trellisButton.setText(trellisText);
+		trellisButton.addSelectionListener(selectionListener);
+
+		// Partitions
+		partitionsButton = new Button(checkBoxGroup, SWT.CHECK);
+		partitionsButton.setText(partitionsText);
+		partitionsButton.addSelectionListener(selectionListener);
+
+		// B-Frame
+		bframeButton = new Button(checkBoxGroup, SWT.CHECK);
+		bframeButton.setText(bframeText);
+		bframeButton.addSelectionListener(selectionListener);
 
 		// Force update
 		profileAsChanged();
@@ -776,11 +602,6 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		}
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
-		// Change bitrate editor
-		if (x264Options.getBitrate() != bitrateSpinner.getSelection()) {
-			bitrateSpinner.setSelection(x264Options.getBitrate());
-		}
-
 		// Change cabac
 		if (cabacButton.getSelection() != x264Options.isCabacEnabled()) {
 			cabacButton.setSelection(x264Options.isCabacEnabled());
@@ -837,13 +658,6 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		if (subqSelected == null
 				|| !subqSelected.equals(x264Options.getSubpelRefinement())) {
 			subqSpinner.setSelection(x264Options.getSubpelRefinement());
-		}
-
-		// Change frame rate
-		Double frameRate = getFrameRateSelection();
-		if (frameRate == null || frameRate != videoOptions.getOutputFrameRate()) {
-			frameRateEditor.setSelection(new StructuredSelection(videoOptions
-					.getOutputFrameRate()));
 		}
 
 		this.layout();

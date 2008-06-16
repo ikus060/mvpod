@@ -17,28 +17,29 @@ package net.homeip.entreprisesmd.mvconv.mplayerwrapper;
  */
 public class VideoScalingOptions {
 	/**
-	 * This method try to scale the source video to fit the final dimension and
-	 * the crop the exeding part of the video. The result is a video that match
-	 * exactly the given dimension.
+	 * This method scale the video to best fit the given dimension and crop the
+	 * excess part.
 	 */
-	public static final int METHODE_CROP = 1 << 1;
+	public static final int METHOD_CROP = 1 << 1;
 	/**
-	 * This method try to scale the source video to match the given dimension.
-	 * It's possible that the resulting video are smaller or equal to the given
-	 * dimension.
+	 * This method scale the video and don't bother about the aspect ratio.
 	 */
-	public static final int METHODE_SCALE = 1 << 2;
+	public static final int METHOD_SCALE = 1 << 2;
 	/**
-	 * This method try to scale the source video and fill the empty part with
-	 * black band to produce an output video that match exactly the given
-	 * dimension.
+	 * This method scale the video to best fit the given dimension and fill the
+	 * remaining space with black band.
 	 */
-	public static final int METHODE_FILL = 1 << 3;
+	public static final int METHOD_FILL = 1 << 3;
+
+	/**
+	 * Thie method scale the video to best fit the given dimension.
+	 */
+	public static final int METHOD_FIT = 1 << 4;
 
 	/**
 	 * Rounding the dimension to the closest multiple of 16.
 	 */
-	public static final int MULTIPLE_16 = 1 << 4;
+	public static final int MULTIPLE_16 = 1 << 5;
 
 	/**
 	 * Video dimension.
@@ -63,7 +64,7 @@ public class VideoScalingOptions {
 	 *            the height of the video.
 	 */
 	public VideoScalingOptions(int width, int height) {
-		this(width, height, METHODE_SCALE);
+		this(width, height, METHOD_FIT);
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class VideoScalingOptions {
 	 *            the video dimension.
 	 */
 	public VideoScalingOptions(VideoDimension dimension) {
-		this(dimension, METHODE_SCALE);
+		this(dimension, METHOD_FIT);
 	}
 
 	/**
@@ -102,22 +103,25 @@ public class VideoScalingOptions {
 	 */
 	public VideoScalingOptions(VideoDimension dimension, int style) {
 
-		int mask = METHODE_CROP | METHODE_FILL | METHODE_SCALE | MULTIPLE_16;
+		int mask = METHOD_CROP | METHOD_FILL | METHOD_SCALE | METHOD_FIT
+				| MULTIPLE_16;
 		style = style & mask;
-		this.method = METHODE_SCALE;
-		if ((style & METHODE_CROP) != 0) {
-			this.method = METHODE_CROP;
-		} else if ((style & METHODE_FILL) != 0) {
-			this.method = METHODE_FILL;
-		} else if ((style & METHODE_SCALE) != 0) {
-			this.method = METHODE_SCALE;
+		this.method = METHOD_FIT;
+		if ((style & METHOD_CROP) != 0) {
+			this.method = METHOD_CROP;
+		} else if ((style & METHOD_FILL) != 0) {
+			this.method = METHOD_FILL;
+		} else if ((style & METHOD_FIT) != 0) {
+			this.method = METHOD_FIT;
+		} else if ((style & METHOD_SCALE) != 0) {
+			this.method = METHOD_SCALE;
 		}
 
 		if ((style & MULTIPLE_16) != 0) {
 			this.mutiple = 16;
 		}
 
-		if (dimension==null){
+		if (dimension == null) {
 			throw new NullPointerException();
 		}
 
@@ -221,7 +225,7 @@ public class VideoScalingOptions {
 		int height = dimension.getHeight();
 
 		String value = "";
-		if (method == METHODE_CROP) {
+		if (method == METHOD_CROP) {
 
 			int scaledWidth = width;
 			int scaledHeight = inputHeight * width / inputWidth;
@@ -234,7 +238,7 @@ public class VideoScalingOptions {
 			value = "scale=" + scaledWidth + ":" + scaledHeight + ",crop="
 					+ round(width, mutiple) + ":" + round(height, mutiple);
 
-		} else if (method == METHODE_FILL) {
+		} else if (method == METHOD_FILL) {
 
 			int scaledWidth = width;
 			int scaledHeight = inputHeight * width / inputWidth;
@@ -247,7 +251,18 @@ public class VideoScalingOptions {
 			value = "scale=" + scaledWidth + ":" + scaledHeight + ",expand="
 					+ round(width, mutiple) + ":" + round(height, mutiple);
 
-		} else {
+		} else if (method == METHOD_SCALE) {
+
+			if (mutiple == 16) {
+				value = "scale=" + round(width, mutiple) + ":"
+						+ round(height, mutiple) + ",crop="
+						+ round(width, mutiple) + ":" + round(height, mutiple);
+			} else {
+				value = "scale=" + width + ":" + height + ",crop=" + width
+						+ ":" + height;
+			}
+
+		} else /* if(method == METHOD_FIT) */{
 
 			int scaledWidth = width;
 			int scaledHeight = inputHeight * width / inputWidth;
@@ -258,11 +273,10 @@ public class VideoScalingOptions {
 				scaledHeight = height;
 			}
 
-			if(mutiple==16){
-				value = "scale=" + round(scaledWidth, mutiple) + ":-10";				
+			if (mutiple == 16) {
+				value = "scale=" + round(scaledWidth, mutiple) + ":-10";
 			} else {
-				value = "scale=" + round(scaledWidth, mutiple) + ":"
-				+ round(scaledHeight, mutiple);
+				value = "scale=" + scaledWidth + ":-2";
 			}
 
 		}

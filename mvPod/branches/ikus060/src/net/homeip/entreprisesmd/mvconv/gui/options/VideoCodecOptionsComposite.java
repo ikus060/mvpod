@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Label;
  * @author patapouf
  * 
  */
-public class VideoOptionsComposite extends Composite implements IViewPart {
+public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * List of interface mapper.
 	 */
@@ -109,7 +109,7 @@ public class VideoOptionsComposite extends Composite implements IViewPart {
 	 * @param style
 	 *            the style
 	 */
-	public VideoOptionsComposite(Composite parent, int style) {
+	public VideoCodecOptionsComposite(Composite parent, int style) {
 		super(parent, style);
 
 		registerMapper(X264OptionsComposite.getMapper());
@@ -197,7 +197,7 @@ public class VideoOptionsComposite extends Composite implements IViewPart {
 		GridLayout layout = new GridLayout(2, false);
 		this.setLayout(layout);
 
-		String audioCodecText = Localization.getString(Localization.OPTIONS_AUDIO_CODEC);
+		String audioCodecText = Localization.getString(Localization.OPTIONS_VIDEO_CODEC);
 		
 		Label label = new Label(this, SWT.NONE);
 		label.setText(audioCodecText);
