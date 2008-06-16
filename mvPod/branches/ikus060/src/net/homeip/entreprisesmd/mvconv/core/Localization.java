@@ -47,6 +47,7 @@ public final class Localization {
 
 	public static final String SUMMARY_TITLE = "SUMMARY_TITLE";
 	public static final String VIDEO_OPTIONS_TITLE = "VIDEO_OPTIONS_TITLE";
+	public static final String VIDEOCODEC_OPTIONS_TITLE = "VIDEOCODEC_OPTIONS_TITLE";
 	public static final String AUDIO_OPTIONS_TITLE = "AUDIO_OPTIONS_TITLE";
 	public static final String CUSTOM_OPTIONS_TITLE = "CUSTOM_OPTIONS_TITLE";
 	public static final String WELCOME_TITLE = "WELCOME_TITLE";
@@ -99,6 +100,7 @@ public final class Localization {
 
 	public static final String SCALING_METHOD_CROP = "SCALING_METHOD_CROP";
 	public static final String SCALING_METHOD_FILL = "SCALING_METHOD_FILL";
+	public static final String SCALING_METHOD_FIT = "SCALING_METHOD_FIT";
 	public static final String SCALING_METHOD_SCALE = "SCALING_METHOD_SCALE";
 
 	public static final String MENU_FILE = "MENU_FILE";
@@ -184,6 +186,7 @@ public final class Localization {
 	public static final String OPTIONS_FPS = "OPTIONS_FPS";
 	public static final String OPTIONS_FRAME_RATE_CUSTOM_MESSAGE = "OPTIONS_FRAME_RATE_CUSTOM_MESSAGE";
 	public static final String OPTIONS_FRAME_RATE_NO_CHANGE = "OPTIONS_FRAME_RATE_NO_CHANGE";
+	public static final String OPTIONS_VIDEO_SCALING_METHODE = "OPTIONS_VIDEO_SCALING_METHODE";
 
 	public static final String OPTIONS_CHANNEL_MODE_AUTO = "OPTIONS_CHANNEL_MODE_AUTO";
 	public static final String OPTIONS_CHANNEL_MODE_STEREO = "OPTIONS_CHANNEL_MODE_STEREO";

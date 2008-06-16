@@ -102,7 +102,7 @@ public class IPodXVidProfile extends AbstractHardCodedProfile {
 				audioOptions);
 
 		options.setScaleOptions(getVideoScaling());
-		options.addVideoFilter(new PullupFilter());
+		//options.addVideoFilter(new PullupFilter());
 		options.addVideoFilter(new HarddupFilter());
 
 		IPreferenceStore store = Main.instance().getPreferenceStore();
