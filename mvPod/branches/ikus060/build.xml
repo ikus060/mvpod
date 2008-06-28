@@ -21,10 +21,9 @@
 
 
 	<target name="init" depends="findRevision">
-		<echo>SVN version is ${version}</echo>
-		<echo>SVN version is ${version.text}</echo>
-
-		<echo>SVN version is ${version.build}</echo>
+		<echo message="SVN version is ${version}" level="info" />
+		<echo message="SVN version is ${version.text}" level="info" />
+		<echo message="SVN version is ${version.build}" level="info" />
 
 		<tstamp />
 		<mkdir dir="${dist.dir}" />
@@ -55,7 +54,8 @@
 
 		<propertyregex property="version" input="${VERSION}" regexp="@build@" replace="${version.build}" casesensitive="false" />
 
-		<propertyregex property="version.text" input="${VERSION_TEXT}" regexp="@build@" replace="${version.build}" casesensitive="false" />
+		<!--<propertyregex property="version.text" input="${VERSION_TEXT}" regexp="@build@" replace="${version.build}\\\\1" casesensitive="false" />-->
+		<property name="version.text" value="${VERSION_TEXT}" />
 
 	</target>
 
@@ -248,7 +248,7 @@
 
 	</target>
 
-	<target name="clean">
+	<target name="clean" description="Use to clean the project">
 		<delete dir="${dist.dir}" />
 		<delete dir="${bin.dir}" />
 		<delete file="${root.dir}/mvPod.jar" />
