@@ -5,19 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.homeip.entreprisesmd.mvconv.core.Localization;
-import net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile;
-import net.homeip.entreprisesmd.mvconv.core.profile.Profile;
-import net.homeip.entreprisesmd.mvconv.core.profile.Profiles;
 import net.homeip.entreprisesmd.mvconv.core.video.Video;
 import net.homeip.entreprisesmd.mvconv.core.video.VideoObserver;
 import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
-import net.homeip.entreprisesmd.mvconv.gui.ProfileContext;
-import net.homeip.entreprisesmd.mvconv.gui.options.video.VideoOptionsMapper;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.AudioStream;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.SubtitleStream;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.AudioEncodingOptions;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.VideoEncodingOptions;
 
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -31,8 +23,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
@@ -268,13 +258,14 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 				.getString(Localization.INPUTOUTPUT_OUTPUT_FILEDIALOG_TITLE);
 
 		FileDialog dlg = new FileDialog(this.getShell(), SWT.SAVE);
-		dlg.setFilterPath(outputFile.getParent());
-		dlg.setFileName(outputFile.getName());
+		String path = outputFile.getParent().toString();
+		String filename = outputFile.getName();
+		dlg.setFilterPath(path);
+		dlg.setFileName(filename);
 		dlg.setText(dlgTitle);
+		String selection = dlg.open();
 
-		dlg.open();
-
-		if (dlg.getFileName() != null) {
+		if (selection != null) {
 			File file = new File(dlg.getFilterPath() + File.separator
 					+ dlg.getFileName());
 			this.getVideo().setOutputFile(file);
