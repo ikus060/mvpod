@@ -5,11 +5,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.homeip.entreprisesmd.mvconv.core.Localization;
+import net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile;
+import net.homeip.entreprisesmd.mvconv.core.profile.Profile;
+import net.homeip.entreprisesmd.mvconv.core.profile.Profiles;
 import net.homeip.entreprisesmd.mvconv.core.video.Video;
 import net.homeip.entreprisesmd.mvconv.core.video.VideoObserver;
 import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
+import net.homeip.entreprisesmd.mvconv.gui.ProfileContext;
+import net.homeip.entreprisesmd.mvconv.gui.options.video.VideoOptionsMapper;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.AudioStream;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.SubtitleStream;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.AudioEncodingOptions;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.VideoEncodingOptions;
 
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -18,9 +26,13 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
@@ -124,11 +136,12 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 					return track;
 
 				} else if (element instanceof SubtitleStream) {
-					
-					String languageId = ((SubtitleStream) element).getLanguage();
+
+					String languageId = ((SubtitleStream) element)
+							.getLanguage();
 					if (languageId != null && !languageId.equals("")) {
 						String languageName = Localization
-						.getLocalizedLanguage(languageId);
+								.getLocalizedLanguage(languageId);
 						return languageName;
 					}
 
@@ -175,8 +188,13 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 						.getString(Localization.INPUTOUTPUT_FILENAME));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
-		filename = new Text(parent, SWT.SINGLE | SWT.READ_ONLY | SWT.BORDER);
+		filename = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		filename.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		filename.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				outputFilenameChanged();
+			}
+		});
 
 		Button browseButton = new Button(parent, SWT.PUSH);
 		browseButton.setText(Localization
@@ -245,14 +263,15 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	private void handleBrowse() {
 
 		File outputFile = this.getVideo().getOutputFile();
-		
-		String dlgTitle = Localization.getString(Localization.INPUTOUTPUT_OUTPUT_FILEDIALOG_TITLE);
-		
+
+		String dlgTitle = Localization
+				.getString(Localization.INPUTOUTPUT_OUTPUT_FILEDIALOG_TITLE);
+
 		FileDialog dlg = new FileDialog(this.getShell(), SWT.SAVE);
 		dlg.setFilterPath(outputFile.getParent());
 		dlg.setFileName(outputFile.getName());
 		dlg.setText(dlgTitle);
-		
+
 		dlg.open();
 
 		if (dlg.getFileName() != null) {
@@ -312,6 +331,22 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 				boldFont = null;
 			}
 		});
+	}
+
+	/**
+	 * Notify this class that user change the output file name in TextField.
+	 */
+	private void outputFilenameChanged() {
+
+
+		// Check if value as changed
+		String outputFilename = filename.getText();
+		File file = new File(outputFilename);
+		if (!file.equals(getVideo().getOutputFile())) {
+			//Change the output file value
+			getVideo().setOutputFile(file);
+		}
+
 	}
 
 	/**
@@ -389,11 +424,16 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	 * do nothing.
 	 */
 	protected void videoHasChanged() {
-		if (getVideo() != null) {
-			filename.setText(getVideo().getOutputFile().getAbsolutePath());
+		
+		if(getVideo()!=null){
+			String newFilename = getVideo().getOutputFile().getAbsolutePath();
+			if(!filename.getText().equals(newFilename)) {
+				filename.setText(newFilename);
+			}
 		}
+	
 	}
-
+	
 	/**
 	 * Notify sub class that audio trac selection selection has changed. Default
 	 * implementation do nothing.
