@@ -12,7 +12,7 @@ import java.util.List;
  * @author patapouf
  * 
  */
-public class InputVideoFile implements InputVideo {
+public class InputVideoFile extends InputVideo {
 
 	/**
 	 * Input video file.
@@ -160,6 +160,11 @@ public class InputVideoFile implements InputVideo {
 			argsList.add(subtitleTrack);
 		}
 
+		String[] defaultArgs = super.toCommandList();
+		for(int i=0; i<defaultArgs.length;i++){
+			argsList.add(defaultArgs[i]);
+		}
+		
 		String[] args = new String[argsList.size()];
 		args = argsList.toArray(args);
 		argsList = null;

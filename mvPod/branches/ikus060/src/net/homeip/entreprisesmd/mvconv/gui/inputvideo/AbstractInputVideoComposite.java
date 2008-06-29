@@ -161,6 +161,35 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	}
 
 	/**
+	 * This method are use to create a 'More Options..' button that will show a
+	 * dialog with more options for the input video.
+	 * 
+	 * @param parent
+	 *            the parent of the button
+	 * @return the button
+	 */
+	protected Control createMoreOptionsButton(Composite parent) {
+
+		String moreOptionsText = Localization
+				.getString(Localization.INPUTOUTPUT_MORE_OPTIONS);
+		Button moreOptionsButton = new Button(parent, SWT.PUSH);
+		moreOptionsButton.setText(moreOptionsText);
+
+		moreOptionsButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				InputVideoGenericOptionsDialog dlg = new InputVideoGenericOptionsDialog(
+						getShell());
+				dlg.setVideo(getVideo());
+				dlg.init(getViewSite());
+				dlg.open();
+			}
+		});
+
+		return moreOptionsButton;
+
+	}
+
+	/**
 	 * This method my be overload by sub class to a different output selection.
 	 * The implementation of this class create a simple file selection.
 	 * 
@@ -329,12 +358,11 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	 */
 	private void outputFilenameChanged() {
 
-
 		// Check if value as changed
 		String outputFilename = filename.getText();
 		File file = new File(outputFilename);
 		if (!file.equals(getVideo().getOutputFile())) {
-			//Change the output file value
+			// Change the output file value
 			getVideo().setOutputFile(file);
 		}
 
@@ -415,16 +443,16 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	 * do nothing.
 	 */
 	protected void videoHasChanged() {
-		
-		if(getVideo()!=null){
+
+		if (getVideo() != null) {
 			String newFilename = getVideo().getOutputFile().getAbsolutePath();
-			if(!filename.getText().equals(newFilename)) {
+			if (!filename.getText().equals(newFilename)) {
 				filename.setText(newFilename);
 			}
 		}
-	
+
 	}
-	
+
 	/**
 	 * Notify sub class that audio trac selection selection has changed. Default
 	 * implementation do nothing.

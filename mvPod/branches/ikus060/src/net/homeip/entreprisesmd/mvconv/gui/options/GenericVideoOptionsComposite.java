@@ -4,6 +4,7 @@ import net.homeip.entreprisesmd.mvconv.core.Localization;
 import net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile;
 import net.homeip.entreprisesmd.mvconv.core.profile.Profile;
 import net.homeip.entreprisesmd.mvconv.core.profile.Profiles;
+import net.homeip.entreprisesmd.mvconv.gui.ComboCustomViewer;
 import net.homeip.entreprisesmd.mvconv.gui.IProfileContextListener;
 import net.homeip.entreprisesmd.mvconv.gui.IViewPart;
 import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
