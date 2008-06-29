@@ -32,11 +32,11 @@ public abstract class InputVideo {
 	/**
 	 * Aspect ratio 16:9.
 	 */
-	public static final double ASPECT_RATIO_16_9 = 1.75;
+	public static final double ASPECT_RATIO_16_9 = 1.7777;
 	/**
 	 * Aspect ratio 4:3.
 	 */
-	public static final double ASPECT_RATIO_4_3 = 1.25;
+	public static final double ASPECT_RATIO_4_3 = 1.3333;
 	/**
 	 * Aspect ratio, Keep original value.
 	 */
