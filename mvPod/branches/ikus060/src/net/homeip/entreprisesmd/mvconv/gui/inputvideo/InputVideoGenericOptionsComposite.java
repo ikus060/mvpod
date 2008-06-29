@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 
-	private static final String ASPECT_RATIO_PATTERN = "([0-9]+?):([0-9]+?)";
+	private static final String ASPECT_RATIO_PATTERN = "([0-9]+?\\.?[0-9]*):([0-9]+?\\.?[0-9]*)";
 
 	/**
 	 * Custom item.
@@ -230,10 +230,9 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 			Matcher matcher = Pattern.compile(ASPECT_RATIO_PATTERN).matcher(
 					value);
 			if (matcher.find()) {
-				double value1 = Double.parseDouble(matcher.group(1));
-				double value2 = Double.parseDouble(matcher.group(2));
-				aspectRatio = value1 / value2;
-
+				double value1 = (int)(Double.parseDouble(matcher.group(1)) * 10000);
+				double value2 = (int)(Double.parseDouble(matcher.group(2)));				
+				aspectRatio = (double)((int)(value1 / value2))/10000;
 			} else {
 				aspectRatio = Double.parseDouble(value);
 			}
