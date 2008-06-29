@@ -99,9 +99,9 @@ public final class Localization {
 	public static final String INPUTOUTPUT_ASPECT_RATIO_CUSTOM_FORMAT = "INPUTOUTPUT_ASPECT_RATIO_CUSTOM_FORMAT";
 	public static final String INPUTOUTPUT_ASPECT_RATIO_KEEP = "INPUTOUTPUT_ASPECT_RATIO_KEEP";
 	public static final String INPUTOUTPUT_ASPECT_RATIO_4_3 = "INPUTOUTPUT_ASPECT_RATIO_4_3";
-	public static final String INPUTOUTPUT_ASPECT_RATIO_16_9 = "INPUTOUTPUT_ASPECT_RATIO_16_9"; 
+	public static final String INPUTOUTPUT_ASPECT_RATIO_16_9 = "INPUTOUTPUT_ASPECT_RATIO_16_9";
 	public static final String INPUTOUTPUT_ASPECT_RATIO_CUSTOM = "INPUTOUTPUT_ASPECT_RATIO_CUSTOM";
-	
+
 	public static final String FORMATTER_UNKNOWN_FORMAT = "FORMATTER_UNKNOWN_FORMAT";
 	public static final String FORMATTER_VIDEO_INFO = "FORMATTER_VIDEO_INFO";
 	public static final String FORMATTER_AUDIO_OPTIONS = "FORMATTER_AUDIO_OPTIONS";
@@ -194,6 +194,7 @@ public final class Localization {
 	public static final String OPTIONS_NTSC = "OPTIONS_NTSC";
 	public static final String OPTIONS_PAL = "OPTIONS_PAL";
 	public static final String OPTIONS_FPS = "OPTIONS_FPS";
+	public static final String OPTIONS_FRAME_RATE_CUSTOM = "OPTIONS_FRAME_RATE_CUSTOM";
 	public static final String OPTIONS_FRAME_RATE_CUSTOM_MESSAGE = "OPTIONS_FRAME_RATE_CUSTOM_MESSAGE";
 	public static final String OPTIONS_FRAME_RATE_NO_CHANGE = "OPTIONS_FRAME_RATE_NO_CHANGE";
 	public static final String OPTIONS_VIDEO_SCALING_METHODE = "OPTIONS_VIDEO_SCALING_METHODE";

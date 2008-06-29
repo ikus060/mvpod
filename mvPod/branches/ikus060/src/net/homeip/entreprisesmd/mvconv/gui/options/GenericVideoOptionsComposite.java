@@ -44,7 +44,8 @@ import org.eclipse.swt.widgets.Text;
  * @author patapouf
  * 
  */
-public class GenericVideoOptionsComposite extends Composite implements IViewPart {
+public class GenericVideoOptionsComposite extends Composite implements
+		IViewPart {
 
 	/**
 	 * Custom item.
@@ -93,6 +94,9 @@ public class GenericVideoOptionsComposite extends Composite implements IViewPart
 			} else if (element.equals(-1.0)) {
 				return Localization
 						.getString(Localization.OPTIONS_FRAME_RATE_NO_CHANGE);
+			} else if (element.equals(CUSTOM_ITEM)) {
+				return Localization
+						.getString(Localization.OPTIONS_FRAME_RATE_CUSTOM);
 			}
 			if (key != null) {
 				return element.toString() + " " + Localization.getString(key);
@@ -489,7 +493,7 @@ public class GenericVideoOptionsComposite extends Composite implements IViewPart
 
 		label = new Label(this, SWT.NONE);
 		label = new Label(this, SWT.NONE);
-		
+
 		// Video scaling methode
 		label = new Label(this, SWT.NONE);
 		label.setText(videoScalingMethode);
