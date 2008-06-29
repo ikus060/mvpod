@@ -22,7 +22,7 @@ public final class Localization {
 	public static final String VERSION = "VERSION";
 	public static final String VERSION_TEXT = "VERSION_TEXT";
 	public static final String VERSION_BUILD = "VERSION_BUILD";
-	
+
 	public static final String APPLICATION_NAME = "APPLICATION_NAME";
 	public static final String APPLICATION_DESCRIPTION = "APPLICATION_DESCRIPTION";
 	public static final String APPLICATION_COPYRIGHT = "APPLICATION_COPYRIGHT";
@@ -73,7 +73,7 @@ public final class Localization {
 	public static final String JOB_QUEUE_WINDOW_FAILED = "JOB_QUEUE_WINDOW_FAILED";
 	public static final String JOB_QUEUE_WINDOW_CANCELED = "JOB_QUEUE_WINDOW_CANCELED";
 	public static final String JOB_QUEUE_CONFIRM_QUIT = "JOB_QUEUE_CONFIRM_QUIT";
-	
+
 	public static final String INPUTOUTPUT_INPUT = "INPUTOUTPUT_INPUT";
 	public static final String INPUTOUTPUT_OUPUT = "INPUTOUTPUT_OUPUT";
 	public static final String INPUTOUTPUT_BROWSE = "INPUTOUTPUT_BROWSE";
@@ -346,20 +346,29 @@ public final class Localization {
 		if (languageBundle == null) {
 			init();
 		}
-		return languageBundle.getString(languageId);
+		try {
+			return languageBundle.getString(languageId);
+		} catch (MissingResourceException e) {
+			return languageId;
+		}
 	}
 
 	/**
 	 * Return the localized text version.
+	 * 
 	 * @return the text version.
 	 */
-	public static String getLocalizedVersion(String key){
+	public static String getLocalizedVersion(String key) {
 		if (versionBundle == null) {
 			init();
 		}
-		return versionBundle.getString(key);		
+		try {
+			return versionBundle.getString(key);
+		} catch (MissingResourceException e) {
+			return key;
+		}
 	}
-	
+
 	/**
 	 * Gets a string for the given key.
 	 * 
@@ -371,7 +380,11 @@ public final class Localization {
 		if (localBundle == null) {
 			init();
 		}
-		return localBundle.getString(key);
+		try {
+			return localBundle.getString(key);
+		} catch (MissingResourceException e) {
+			return key;
+		}
 	}
 
 	/**
@@ -397,9 +410,11 @@ public final class Localization {
 			init();
 
 		}
-		String localeString = localBundle.getString(key);
-		if (localeString == null) {
-			return null;
+		String localeString = null;
+		try {
+			localeString = localBundle.getString(key);
+		} catch (MissingResourceException e) {
+			localeString = "";
 		}
 
 		return String.format(localeString, args);
