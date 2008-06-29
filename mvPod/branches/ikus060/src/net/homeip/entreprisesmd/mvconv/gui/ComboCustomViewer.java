@@ -1,4 +1,4 @@
-package net.homeip.entreprisesmd.mvconv.gui.options;
+package net.homeip.entreprisesmd.mvconv.gui;
 
 import java.util.List;
 
