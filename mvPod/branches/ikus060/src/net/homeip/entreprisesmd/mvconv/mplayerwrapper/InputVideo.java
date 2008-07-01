@@ -1,4 +1,5 @@
 /*
+
  * InputVideo.java
  * Copyright (C) 2005-2007 James Lee
  *

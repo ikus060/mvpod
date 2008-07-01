@@ -4,9 +4,17 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import net.homeip.entreprisesmd.mvconv.gui.ErrorMessage;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.AudioFormat;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.ComponentMissingException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.DVDNotAvailableException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.GrabXvPortException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerNotFoundException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.PaletteException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoDemuxer;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoFormat;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.XvPortNotAvailableException;
 
 /**
  * This class are use to access localized information.
@@ -35,6 +43,7 @@ public final class Localization {
 	public static final String MPLAYER_UNSUPPORTED_FORMAT = "MPLAYER_UNSUPPORTED_FORMAT";
 	public static final String MPLAYER_PALETTE_ERROR = "MPLAYER_PALETTE_ERROR";
 	public static final String MPLAYER_COMPONENT_MISSING = "MPLAYER_COMPONENT_MISSING";
+	public static final String MPLAYER_XVIDEO_NOT_AVAILABLE = "MPLAYER_XVIDEO_NOT_AVAILABLE";
 
 	public static final String DURATION_HOURS = "DURATION_HOURS";
 	public static final String DURATION_MINUTES = "DURATION_MINUTES";
@@ -167,7 +176,9 @@ public final class Localization {
 	public static final String PREFERENCE_RESTART_WARNING = "PREFERENCE_RESTART_WARNING";
 	public static final String PREFERENCE_DIRECTORY_GROUP = "PREFERENCE_DIRECTORY_GROUP";
 	public static final String PREFERENCE_OPTION_GROUP = "PREFERENCE_OPTION_GROUP";
+	public static final String PREFERENCE_MPLAYER_GROUP = "PREFERENCE_MPLAYER_GROUP";
 	public static final String PREFERENCE_REPLACE = "PREFERENCE_REPLACE";
+	public static final String PREFERENCE_VIDEO_OUTPUT_DEVICE = "PREFERENCE_VIDEO_OUTPUT_DEVICE";
 
 	public static final String PROFILE_TEMP = "PROFILE_TEMP";
 	public static final String PROFILE_CUSTOM = "PROFILE_CUSTOM";
@@ -362,6 +373,38 @@ public final class Localization {
 		} catch (MissingResourceException e) {
 			return languageId;
 		}
+	}
+
+	/**
+	 * Return a localized mplayer exception message.
+	 * 
+	 * @param exception
+	 *            the Mplayer exception.
+	 * @return the localized message
+	 */
+	public static String getLocalizedMplayerException(
+			MPlayerException exception, String defaultID) {
+		String key = defaultID;
+		if (exception instanceof GrabXvPortException) {
+
+			key = Localization.MPLAYER_GRAP_XV_PORT;
+		} else if (exception instanceof DVDNotAvailableException) {
+			return getString(Localization.MPLAYER_DVDDEVICE_NOT_AVAILABLE,
+					((DVDNotAvailableException) exception).getDevice());
+		} else if (exception instanceof PaletteException) {
+
+			key = Localization.MPLAYER_PALETTE_ERROR;
+		} else if (exception instanceof ComponentMissingException) {
+			return getString(Localization.MPLAYER_COMPONENT_MISSING,
+					((ComponentMissingException) exception).getComponentName());
+		} else if (exception instanceof MPlayerNotFoundException) {
+			return getString(Localization.MPLAYER_NOT_FOUND,
+					((MPlayerNotFoundException) exception).getComponentName());
+		} else if (exception instanceof XvPortNotAvailableException) {
+
+			key = Localization.MPLAYER_XVIDEO_NOT_AVAILABLE;
+		}
+		return getString(key);
 	}
 
 	/**
