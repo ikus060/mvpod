@@ -147,17 +147,10 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 		videoOptionsComposite = new GenericVideoOptionsComposite(tabFolder, SWT.NONE);
 		videoOptionsComposite.init(getViewSite());
 
-		// audioOptionsComposite2 = new AudioOptionsComposite(tabFolder,
-		// SWT.NONE);
-		// audioOptionsComposite2.init(getViewSite());
-
 		videoCodecOptionsComposite = new VideoCodecOptionsComposite(tabFolder,
 				SWT.NONE);
 		videoCodecOptionsComposite.init(getViewSite());
 
-		// videoOptionsComposite2 = new VideoOptionsComposite(tabFolder,
-		// SWT.NONE);
-		// videoOptionsComposite2.init(getViewSite());
 
 		// Under linux, we change the color of tabFolder to get a better effect
 		String os = System.getProperty(PROPERTY_OS);

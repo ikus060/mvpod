@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
@@ -94,13 +95,16 @@ public class ScaleEditor extends Composite {
 		scale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		int[] types = new int[] { SWT.Selection, SWT.DefaultSelection,
-				SWT.MouseDoubleClick, SWT.MouseDown, SWT.MouseUp };
+				SWT.MouseDoubleClick, SWT.MouseDown, SWT.MouseUp, SWT.KeyUp,
+				SWT.KeyDown };
 		for (int index = 0; index < types.length; index++) {
 			scale.addListener(types[index], listener);
 		}
 
 		value = new Label(this, SWT.NONE);
 		value.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+
+		this.setTabList(new Control[] { scale });
 
 		updateIncrementSetup();
 		updateLayoutValue();
