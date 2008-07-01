@@ -36,11 +36,15 @@ public class ErrorParser implements StreamParser {
 	 * Maximum number of palette error before throwing an exception.
 	 */
 	private static final int PALETTE_COUNT_MAX = 25;
-
 	/**
 	 * Regular expression to match if MP4Box decide to rename the file.
 	 */
 	private static final String MP4BOX_ERROR_RENAMING_FILE = "^Error renaming file (.*)$";
+
+	/**
+	 * Regular expression when Xvideo port are not available.
+	 */
+	private static final String XVIDEO_PORT_NOTE_AVAILABLE = "It seems there is no Xvideo support for your video card available.";
 
 	/**
 	 * Regular expression to read header.
@@ -89,7 +93,7 @@ public class ErrorParser implements StreamParser {
 	public boolean parseLine(String line) {
 
 		System.out.println(line);
-		
+
 		if (exception != null) {
 			return true;
 		}
@@ -135,8 +139,13 @@ public class ErrorParser implements StreamParser {
 					.group(1)));
 		}
 
-		
-		
+		matcher = Pattern
+				.compile(XVIDEO_PORT_NOTE_AVAILABLE, Pattern.MULTILINE)
+				.matcher(line);
+		if (matcher.find()) {
+			return exceptionFound(new XvPortNotAvailableException());
+		}
+
 		return true;
 	}
 

@@ -7,6 +7,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.GrabXvPortException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerNotFoundException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.PaletteException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.XvPortNotAvailableException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -37,10 +38,10 @@ public final class ErrorMessage {
 	 * @param message
 	 *            the error message.
 	 */
-	public static void showError(Shell shell, String message){
+	public static void showError(Shell shell, String message) {
 		show(shell, message, SWT.ICON_ERROR);
 	}
-	
+
 	/**
 	 * Open a new message box to the user that display the error message.
 	 * 
@@ -91,27 +92,10 @@ public final class ErrorMessage {
 	public static void showMPlayerException(Shell shell,
 			MPlayerException exception, String defaultID) {
 
-		if (exception instanceof GrabXvPortException) {
-			ErrorMessage
-					.showLocalizedError(shell, Localization.MPLAYER_GRAP_XV_PORT);
-		} else if (exception instanceof DVDNotAvailableException) {
-			ErrorMessage.showLocalizedError(shell,
-					Localization.MPLAYER_DVDDEVICE_NOT_AVAILABLE,
-					((DVDNotAvailableException) exception).getDevice());
-		} else if (exception instanceof PaletteException) {
-			ErrorMessage.showLocalizedError(shell,
-					Localization.MPLAYER_PALETTE_ERROR);
-		} else if (exception instanceof ComponentMissingException) {
-			ErrorMessage.showLocalizedError(shell,
-					Localization.MPLAYER_COMPONENT_MISSING,
-					((ComponentMissingException) exception).getComponentName());
-		} else if (exception instanceof MPlayerNotFoundException) {
-			ErrorMessage.showLocalizedError(shell,
-					Localization.MPLAYER_NOT_FOUND,
-					((MPlayerNotFoundException) exception).getComponentName());		
-		} else {
-			ErrorMessage.showLocalizedError(shell, defaultID);
-		}
+		String message = Localization.getLocalizedMplayerException(exception,
+				defaultID);
+		showError(shell, message);
+
 	}
 
 	/**
