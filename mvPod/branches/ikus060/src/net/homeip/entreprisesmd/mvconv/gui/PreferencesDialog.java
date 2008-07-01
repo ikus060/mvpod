@@ -3,14 +3,12 @@ package net.homeip.entreprisesmd.mvconv.gui;
 import java.io.IOException;
 
 import net.homeip.entreprisesmd.mvconv.core.Localization;
-import net.homeip.entreprisesmd.mvconv.core.video.Video;
 import net.homeip.entreprisesmd.mvconv.gui.icons.IconLoader;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerWrapper;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoOutputDevice;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.config.Configuration;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4BoxMuxer;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.X264EncodingOptions;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

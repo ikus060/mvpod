@@ -2,10 +2,6 @@ package net.homeip.entreprisesmd.mvconv.mplayerwrapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.config.Configuration;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.DefaultEncodingJob;
