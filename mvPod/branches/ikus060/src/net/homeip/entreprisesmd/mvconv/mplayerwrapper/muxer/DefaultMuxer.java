@@ -33,10 +33,35 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.VideoEncodingO
 public class DefaultMuxer implements Muxer {
 
 	/**
-	 * Define the value for not ouput file.
+	 * The property key to retrieve the os value.
 	 */
-	// TODO : Cross Platform : Find the right value for windows os
-	private static final String NO_OUPUTFILE = "/dev/null";
+	private static final String OS_NAME = "os.name";
+	/**
+	 * Linux OS name.
+	 */
+	private static final String OS_NAME_LINUX = "Linux";
+	/**
+	 * No output file
+	 */
+	private static String NO_OUPUTFILE_LINUX = "/dev/null";
+	/**
+	 * No output file
+	 */
+	private static String NO_OUPUTFILE_WIN = "nul";
+	/**
+	 * Define the value for no output file.
+	 */
+	private static String NO_OUPUTFILE = "/dev/null";
+	static{
+		String os = System.getProperty(OS_NAME);
+		if (os.equals(OS_NAME_LINUX)) {
+			NO_OUPUTFILE = NO_OUPUTFILE_LINUX;
+		}else{
+			NO_OUPUTFILE = NO_OUPUTFILE_WIN;
+		}
+		//TODO Add value for MAC OS X
+	}
+	
 
 	/**
 	 * Use to add arguments list according to the given encoding options.
