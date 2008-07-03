@@ -164,7 +164,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 
 		// Set layout
 		this.setLayout(new GridLayout(1, false));
-		
+
 		// Prepare localized string
 		String bitrateText = Localization
 				.getString(Localization.OPTIONS_BITRATE);
@@ -197,8 +197,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		videoBitrateEditor.setFormatValue(bitrateValueFormat);
 		videoBitrateEditor.setIncrement(INCREMENT_VIDEO_BITRATE);
 		videoBitrateEditor.setPageIncrement(PAGE_INCREMENT_VIDEO_BITRATE);
-		videoBitrateEditor.addListener(SWT.MouseUp, bitrateListener);
-		videoBitrateEditor.addListener(SWT.KeyUp, bitrateListener);
+		videoBitrateEditor.addListener(SWT.Selection, bitrateListener);
 
 		label = new Label(videoGroup, SWT.NONE);
 		label.setText(dimensionText);
@@ -226,16 +225,14 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 				true, false));
 		audioBitrateEditor.setFormatValue(bitrateValueFormat);
 		audioBitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
-		audioBitrateEditor.addListener(SWT.MouseUp, bitrateListener);
-		audioBitrateEditor.addListener(SWT.KeyUp, bitrateListener);
-		
-		
+		audioBitrateEditor.addListener(SWT.Selection, bitrateListener);
+
 		profileAsChanged();
 
 		// Attach listener
 		getViewSite().getProfileContext().addProfileContextListener(
 				profileContextListener);
-		
+
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
