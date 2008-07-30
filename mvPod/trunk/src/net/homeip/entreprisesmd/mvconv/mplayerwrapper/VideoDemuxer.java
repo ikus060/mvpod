@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public class VideoDemuxer {
 
+	public static final VideoDemuxer MUXER_3GP = new VideoDemuxer("MUXER_3GP",
+			new String[] { ".3gp", ".3g2" });
 	public static final VideoDemuxer MUXER_AAC = new VideoDemuxer("MUXER_AAC",
 			new String[] { ".aac", ".aacp" });
 	public static final VideoDemuxer MUXER_ASF = new VideoDemuxer("MUXER_ASF",
@@ -46,7 +48,9 @@ public class VideoDemuxer {
 	public static final VideoDemuxer MUXER_MKV = new VideoDemuxer("MUXER_MKV",
 			new String[] { ".mkv" });
 	public static final VideoDemuxer MUXER_MOV = new VideoDemuxer("MUXER_MOV",
-			new String[] { ".mov", ".mp4", ".qt", ".3g2" });
+			new String[] { ".mov", ".qt" });
+	public static final VideoDemuxer MUXER_MPG4 = new VideoDemuxer(
+			"MUXER_MPG4", new String[] { ".mp4" });
 	public static final VideoDemuxer MUXER_MPC = new VideoDemuxer("MUXER_MPC",
 			new String[] { ".mpc" });
 	public static final VideoDemuxer MUXER_MPEG4ES = new VideoDemuxer(

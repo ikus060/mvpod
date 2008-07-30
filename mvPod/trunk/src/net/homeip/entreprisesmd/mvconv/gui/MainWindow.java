@@ -307,7 +307,7 @@ public class MainWindow extends ApplicationWindow {
 		mm.add(windowMenu);
 
 		windowMenu.add(new ShowJobQueueWindowAction());
-		windowMenu.add(new PreferencesAction(shellProvider));
+		windowMenu.add(new PreferencesAction(shellProvider, site));
 
 		/*
 		 * Help menu
@@ -353,7 +353,7 @@ public class MainWindow extends ApplicationWindow {
 	 */
 	protected void handleShellCloseEvent() {
 
-		//TODO : Find a more fancy way to do this confirmation.
+		// TODO : Find a more fancy way to do this confirmation.
 		boolean quit = Main.instance().confirmQuit(getShell());
 
 		if (quit) {

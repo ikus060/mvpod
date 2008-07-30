@@ -19,9 +19,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -30,8 +27,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 
 public class HardCodedProfileOptionsComposite extends Composite implements
 		IViewPart {
@@ -90,8 +89,8 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 	/**
 	 * Selection listener to bitrate editor.
 	 */
-	private MouseListener mouseListener = new MouseAdapter() {
-		public void mouseUp(MouseEvent e) {
+	private Listener bitrateListener = new Listener() {
+		public void handleEvent(Event event) {
 			bitrateSelectionAsChanged();
 		}
 	};
@@ -198,7 +197,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		videoBitrateEditor.setFormatValue(bitrateValueFormat);
 		videoBitrateEditor.setIncrement(INCREMENT_VIDEO_BITRATE);
 		videoBitrateEditor.setPageIncrement(PAGE_INCREMENT_VIDEO_BITRATE);
-		videoBitrateEditor.addMouseListener(mouseListener);
+		videoBitrateEditor.addListener(SWT.Selection, bitrateListener);
 
 		label = new Label(videoGroup, SWT.NONE);
 		label.setText(dimensionText);
@@ -226,7 +225,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 				true, false));
 		audioBitrateEditor.setFormatValue(bitrateValueFormat);
 		audioBitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
-		audioBitrateEditor.addMouseListener(mouseListener);
+		audioBitrateEditor.addListener(SWT.Selection, bitrateListener);
 
 		profileAsChanged();
 

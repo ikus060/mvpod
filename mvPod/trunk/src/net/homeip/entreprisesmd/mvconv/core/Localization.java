@@ -4,9 +4,17 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import net.homeip.entreprisesmd.mvconv.gui.ErrorMessage;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.AudioFormat;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.ComponentMissingException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.DVDNotAvailableException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.GrabXvPortException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerNotFoundException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.PaletteException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoDemuxer;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoFormat;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.XvPortNotAvailableException;
 
 /**
  * This class are use to access localized information.
@@ -22,7 +30,7 @@ public final class Localization {
 	public static final String VERSION = "VERSION";
 	public static final String VERSION_TEXT = "VERSION_TEXT";
 	public static final String VERSION_BUILD = "VERSION_BUILD";
-	
+
 	public static final String APPLICATION_NAME = "APPLICATION_NAME";
 	public static final String APPLICATION_DESCRIPTION = "APPLICATION_DESCRIPTION";
 	public static final String APPLICATION_COPYRIGHT = "APPLICATION_COPYRIGHT";
@@ -35,6 +43,7 @@ public final class Localization {
 	public static final String MPLAYER_UNSUPPORTED_FORMAT = "MPLAYER_UNSUPPORTED_FORMAT";
 	public static final String MPLAYER_PALETTE_ERROR = "MPLAYER_PALETTE_ERROR";
 	public static final String MPLAYER_COMPONENT_MISSING = "MPLAYER_COMPONENT_MISSING";
+	public static final String MPLAYER_XVIDEO_NOT_AVAILABLE = "MPLAYER_XVIDEO_NOT_AVAILABLE";
 
 	public static final String DURATION_HOURS = "DURATION_HOURS";
 	public static final String DURATION_MINUTES = "DURATION_MINUTES";
@@ -47,6 +56,7 @@ public final class Localization {
 
 	public static final String SUMMARY_TITLE = "SUMMARY_TITLE";
 	public static final String VIDEO_OPTIONS_TITLE = "VIDEO_OPTIONS_TITLE";
+	public static final String VIDEOCODEC_OPTIONS_TITLE = "VIDEOCODEC_OPTIONS_TITLE";
 	public static final String AUDIO_OPTIONS_TITLE = "AUDIO_OPTIONS_TITLE";
 	public static final String CUSTOM_OPTIONS_TITLE = "CUSTOM_OPTIONS_TITLE";
 	public static final String WELCOME_TITLE = "WELCOME_TITLE";
@@ -72,7 +82,7 @@ public final class Localization {
 	public static final String JOB_QUEUE_WINDOW_FAILED = "JOB_QUEUE_WINDOW_FAILED";
 	public static final String JOB_QUEUE_WINDOW_CANCELED = "JOB_QUEUE_WINDOW_CANCELED";
 	public static final String JOB_QUEUE_CONFIRM_QUIT = "JOB_QUEUE_CONFIRM_QUIT";
-	
+
 	public static final String INPUTOUTPUT_INPUT = "INPUTOUTPUT_INPUT";
 	public static final String INPUTOUTPUT_OUPUT = "INPUTOUTPUT_OUPUT";
 	public static final String INPUTOUTPUT_BROWSE = "INPUTOUTPUT_BROWSE";
@@ -91,6 +101,16 @@ public final class Localization {
 	public static final String INPUTOUTPUT_FILE_NO_MORE_EXIST = "INPUTOUTPUT_FILE_NO_MORE_EXIST";
 	public static final String INPUTOUTPUT_OUTPUT_FILEDIALOG_TITLE = "INPUTOUTPUT_OUTPUT_FILEDIALOG_TITLE";
 
+	public static final String INPUTOUTPUT_MORE_OPTIONS = "INPUTOUTPUT_MORE_OPTIONS";
+	public static final String INPUTOUTPUT_MORE_OPTIONS_DIALOG_TITLE = "INPUTOUTPUT_MORE_OPTIONS_DIALOG_TITLE";
+	public static final String INPUTOUTPUT_ASPECT_RATIO = "INPUTOUTPUT_ASPECT_RATIO";
+	public static final String INPUTOUTPUT_ASPECT_RATIO_CUSTOM_MESSAGE = "INPUTOUTPUT_ASPECT_RATIO_CUSTOM_MESSAGE";
+	public static final String INPUTOUTPUT_ASPECT_RATIO_CUSTOM_FORMAT = "INPUTOUTPUT_ASPECT_RATIO_CUSTOM_FORMAT";
+	public static final String INPUTOUTPUT_ASPECT_RATIO_KEEP = "INPUTOUTPUT_ASPECT_RATIO_KEEP";
+	public static final String INPUTOUTPUT_ASPECT_RATIO_4_3 = "INPUTOUTPUT_ASPECT_RATIO_4_3";
+	public static final String INPUTOUTPUT_ASPECT_RATIO_16_9 = "INPUTOUTPUT_ASPECT_RATIO_16_9";
+	public static final String INPUTOUTPUT_ASPECT_RATIO_CUSTOM = "INPUTOUTPUT_ASPECT_RATIO_CUSTOM";
+
 	public static final String FORMATTER_UNKNOWN_FORMAT = "FORMATTER_UNKNOWN_FORMAT";
 	public static final String FORMATTER_VIDEO_INFO = "FORMATTER_VIDEO_INFO";
 	public static final String FORMATTER_AUDIO_OPTIONS = "FORMATTER_AUDIO_OPTIONS";
@@ -99,6 +119,7 @@ public final class Localization {
 
 	public static final String SCALING_METHOD_CROP = "SCALING_METHOD_CROP";
 	public static final String SCALING_METHOD_FILL = "SCALING_METHOD_FILL";
+	public static final String SCALING_METHOD_FIT = "SCALING_METHOD_FIT";
 	public static final String SCALING_METHOD_SCALE = "SCALING_METHOD_SCALE";
 
 	public static final String MENU_FILE = "MENU_FILE";
@@ -155,7 +176,9 @@ public final class Localization {
 	public static final String PREFERENCE_RESTART_WARNING = "PREFERENCE_RESTART_WARNING";
 	public static final String PREFERENCE_DIRECTORY_GROUP = "PREFERENCE_DIRECTORY_GROUP";
 	public static final String PREFERENCE_OPTION_GROUP = "PREFERENCE_OPTION_GROUP";
+	public static final String PREFERENCE_MPLAYER_GROUP = "PREFERENCE_MPLAYER_GROUP";
 	public static final String PREFERENCE_REPLACE = "PREFERENCE_REPLACE";
+	public static final String PREFERENCE_VIDEO_OUTPUT_DEVICE = "PREFERENCE_VIDEO_OUTPUT_DEVICE";
 
 	public static final String PROFILE_TEMP = "PROFILE_TEMP";
 	public static final String PROFILE_CUSTOM = "PROFILE_CUSTOM";
@@ -182,8 +205,10 @@ public final class Localization {
 	public static final String OPTIONS_NTSC = "OPTIONS_NTSC";
 	public static final String OPTIONS_PAL = "OPTIONS_PAL";
 	public static final String OPTIONS_FPS = "OPTIONS_FPS";
+	public static final String OPTIONS_FRAME_RATE_CUSTOM = "OPTIONS_FRAME_RATE_CUSTOM";
 	public static final String OPTIONS_FRAME_RATE_CUSTOM_MESSAGE = "OPTIONS_FRAME_RATE_CUSTOM_MESSAGE";
 	public static final String OPTIONS_FRAME_RATE_NO_CHANGE = "OPTIONS_FRAME_RATE_NO_CHANGE";
+	public static final String OPTIONS_VIDEO_SCALING_METHODE = "OPTIONS_VIDEO_SCALING_METHODE";
 
 	public static final String OPTIONS_CHANNEL_MODE_AUTO = "OPTIONS_CHANNEL_MODE_AUTO";
 	public static final String OPTIONS_CHANNEL_MODE_STEREO = "OPTIONS_CHANNEL_MODE_STEREO";
@@ -343,20 +368,61 @@ public final class Localization {
 		if (languageBundle == null) {
 			init();
 		}
-		return languageBundle.getString(languageId);
+		try {
+			return languageBundle.getString(languageId);
+		} catch (MissingResourceException e) {
+			return languageId;
+		}
+	}
+
+	/**
+	 * Return a localized mplayer exception message.
+	 * 
+	 * @param exception
+	 *            the Mplayer exception.
+	 * @return the localized message
+	 */
+	public static String getLocalizedMplayerException(
+			MPlayerException exception, String defaultID) {
+		String key = defaultID;
+		if (exception instanceof GrabXvPortException) {
+
+			key = Localization.MPLAYER_GRAP_XV_PORT;
+		} else if (exception instanceof DVDNotAvailableException) {
+			return getString(Localization.MPLAYER_DVDDEVICE_NOT_AVAILABLE,
+					((DVDNotAvailableException) exception).getDevice());
+		} else if (exception instanceof PaletteException) {
+
+			key = Localization.MPLAYER_PALETTE_ERROR;
+		} else if (exception instanceof ComponentMissingException) {
+			return getString(Localization.MPLAYER_COMPONENT_MISSING,
+					((ComponentMissingException) exception).getComponentName());
+		} else if (exception instanceof MPlayerNotFoundException) {
+			return getString(Localization.MPLAYER_NOT_FOUND,
+					((MPlayerNotFoundException) exception).getComponentName());
+		} else if (exception instanceof XvPortNotAvailableException) {
+
+			key = Localization.MPLAYER_XVIDEO_NOT_AVAILABLE;
+		}
+		return getString(key);
 	}
 
 	/**
 	 * Return the localized text version.
+	 * 
 	 * @return the text version.
 	 */
-	public static String getLocalizedVersion(String key){
+	public static String getLocalizedVersion(String key) {
 		if (versionBundle == null) {
 			init();
 		}
-		return versionBundle.getString(key);		
+		try {
+			return versionBundle.getString(key);
+		} catch (MissingResourceException e) {
+			return key;
+		}
 	}
-	
+
 	/**
 	 * Gets a string for the given key.
 	 * 
@@ -368,7 +434,11 @@ public final class Localization {
 		if (localBundle == null) {
 			init();
 		}
-		return localBundle.getString(key);
+		try {
+			return localBundle.getString(key);
+		} catch (MissingResourceException e) {
+			return key;
+		}
 	}
 
 	/**
@@ -394,9 +464,11 @@ public final class Localization {
 			init();
 
 		}
-		String localeString = localBundle.getString(key);
-		if (localeString == null) {
-			return null;
+		String localeString = null;
+		try {
+			localeString = localBundle.getString(key);
+		} catch (MissingResourceException e) {
+			localeString = "";
 		}
 
 		return String.format(localeString, args);

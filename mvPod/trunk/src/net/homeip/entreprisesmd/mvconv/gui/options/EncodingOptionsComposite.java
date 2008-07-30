@@ -64,7 +64,12 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Interface to edit video option of user profile.
 	 */
-	private VideoOptionsComposite videoOptionsComposite;
+	private GenericVideoOptionsComposite videoOptionsComposite;
+
+	/**
+	 * Interface to edit video option of user profile.
+	 */
+	private VideoCodecOptionsComposite videoCodecOptionsComposite;
 
 	/**
 	 * Listener to profile context.
@@ -139,16 +144,13 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 		audioOptionsComposite = new AudioOptionsComposite(tabFolder, SWT.NONE);
 		audioOptionsComposite.init(getViewSite());
 
-		// audioOptionsComposite2 = new AudioOptionsComposite(tabFolder,
-		// SWT.NONE);
-		// audioOptionsComposite2.init(getViewSite());
-
-		videoOptionsComposite = new VideoOptionsComposite(tabFolder, SWT.NONE);
+		videoOptionsComposite = new GenericVideoOptionsComposite(tabFolder, SWT.NONE);
 		videoOptionsComposite.init(getViewSite());
 
-		// videoOptionsComposite2 = new VideoOptionsComposite(tabFolder,
-		// SWT.NONE);
-		// videoOptionsComposite2.init(getViewSite());
+		videoCodecOptionsComposite = new VideoCodecOptionsComposite(tabFolder,
+				SWT.NONE);
+		videoCodecOptionsComposite.init(getViewSite());
+
 
 		// Under linux, we change the color of tabFolder to get a better effect
 		String os = System.getProperty(PROPERTY_OS);
@@ -202,25 +204,25 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 
 			removeOlderTabItem();
 
-			CTabItem item = new CTabItem(tabFolder, SWT.NONE);
+			CTabItem item;
+
+			// Add video option tab
+			item = new CTabItem(tabFolder, SWT.NONE);
 			item.setText(Localization
 					.getString(Localization.VIDEO_OPTIONS_TITLE));
 			item.setControl(videoOptionsComposite);
 
-			// item = new CTabItem(tabFolder, SWT.NONE);
-			// item.setText(Localization
-			// .getString(Localization.VIDEO_OPTIONS_TITLE));
-			// item.setControl(videoOptionsComposite2);
+			// Add video codec option tab
+			item = new CTabItem(tabFolder, SWT.NONE);
+			item.setText(Localization
+					.getString(Localization.VIDEOCODEC_OPTIONS_TITLE));
+			item.setControl(videoCodecOptionsComposite);
 
+			// Add audio options tab
 			item = new CTabItem(tabFolder, SWT.NONE);
 			item.setText(Localization
 					.getString(Localization.AUDIO_OPTIONS_TITLE));
 			item.setControl(audioOptionsComposite);
-
-			// item = new CTabItem(tabFolder, SWT.NONE);
-			// item.setText(Localization
-			// .getString(Localization.AUDIO_OPTIONS_TITLE));
-			// item.setControl(audioOptionsComposite2);
 
 			// TODO : Add options for muxer
 

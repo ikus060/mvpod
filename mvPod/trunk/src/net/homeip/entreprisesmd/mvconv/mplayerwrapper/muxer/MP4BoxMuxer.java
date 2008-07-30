@@ -129,7 +129,7 @@ public class MP4BoxMuxer implements Muxer {
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.Muxer#getVideoDemuxer()
 	 */
 	public VideoDemuxer getVideoDemuxer() {
-		return VideoDemuxer.MUXER_MOV;
+		return VideoDemuxer.MUXER_MPG4;
 	}
 
 }

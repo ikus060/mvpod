@@ -131,9 +131,19 @@ public class InputVideoDVDComposite extends AbstractInputVideoComposite {
 		label.setText(filenameText);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
-		inputFileName = new Text(comp, SWT.READ_ONLY | SWT.BORDER);
+		Composite subComp = new Composite(comp, SWT.NONE);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		subComp.setLayout(layout);
+		subComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 5,
+				1));
+
+		inputFileName = new Text(subComp, SWT.READ_ONLY | SWT.BORDER);
 		inputFileName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				false, 5, 1));
+				false));
+
+		createMoreOptionsButton(subComp);
 
 		/*
 		 * Title selection

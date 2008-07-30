@@ -18,6 +18,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -124,11 +126,12 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 					return track;
 
 				} else if (element instanceof SubtitleStream) {
-					
-					String languageId = ((SubtitleStream) element).getLanguage();
+
+					String languageId = ((SubtitleStream) element)
+							.getLanguage();
 					if (languageId != null && !languageId.equals("")) {
 						String languageName = Localization
-						.getLocalizedLanguage(languageId);
+								.getLocalizedLanguage(languageId);
 						return languageName;
 					}
 
@@ -158,6 +161,35 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	}
 
 	/**
+	 * This method are use to create a 'More Options..' button that will show a
+	 * dialog with more options for the input video.
+	 * 
+	 * @param parent
+	 *            the parent of the button
+	 * @return the button
+	 */
+	protected Control createMoreOptionsButton(Composite parent) {
+
+		String moreOptionsText = Localization
+				.getString(Localization.INPUTOUTPUT_MORE_OPTIONS);
+		Button moreOptionsButton = new Button(parent, SWT.PUSH);
+		moreOptionsButton.setText(moreOptionsText);
+
+		moreOptionsButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				InputVideoGenericOptionsDialog dlg = new InputVideoGenericOptionsDialog(
+						getShell());
+				dlg.setVideo(getVideo());
+				dlg.init(getViewSite());
+				dlg.open();
+			}
+		});
+
+		return moreOptionsButton;
+
+	}
+
+	/**
 	 * This method my be overload by sub class to a different output selection.
 	 * The implementation of this class create a simple file selection.
 	 * 
@@ -175,8 +207,13 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 						.getString(Localization.INPUTOUTPUT_FILENAME));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
-		filename = new Text(parent, SWT.SINGLE | SWT.READ_ONLY | SWT.BORDER);
+		filename = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		filename.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		filename.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				outputFilenameChanged();
+			}
+		});
 
 		Button browseButton = new Button(parent, SWT.PUSH);
 		browseButton.setText(Localization
@@ -245,17 +282,19 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	private void handleBrowse() {
 
 		File outputFile = this.getVideo().getOutputFile();
-		
-		String dlgTitle = Localization.getString(Localization.INPUTOUTPUT_OUTPUT_FILEDIALOG_TITLE);
-		
-		FileDialog dlg = new FileDialog(this.getShell(), SWT.SAVE);
-		dlg.setFilterPath(outputFile.getParent());
-		dlg.setFileName(outputFile.getName());
-		dlg.setText(dlgTitle);
-		
-		dlg.open();
 
-		if (dlg.getFileName() != null) {
+		String dlgTitle = Localization
+				.getString(Localization.INPUTOUTPUT_OUTPUT_FILEDIALOG_TITLE);
+
+		FileDialog dlg = new FileDialog(this.getShell(), SWT.SAVE);
+		String path = outputFile.getParent().toString();
+		String filename = outputFile.getName();
+		dlg.setFilterPath(path);
+		dlg.setFileName(filename);
+		dlg.setText(dlgTitle);
+		String selection = dlg.open();
+
+		if (selection != null) {
 			File file = new File(dlg.getFilterPath() + File.separator
 					+ dlg.getFileName());
 			this.getVideo().setOutputFile(file);
@@ -312,6 +351,21 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 				boldFont = null;
 			}
 		});
+	}
+
+	/**
+	 * Notify this class that user change the output file name in TextField.
+	 */
+	private void outputFilenameChanged() {
+
+		// Check if value as changed
+		String outputFilename = filename.getText();
+		File file = new File(outputFilename);
+		if (!file.equals(getVideo().getOutputFile())) {
+			// Change the output file value
+			getVideo().setOutputFile(file);
+		}
+
 	}
 
 	/**
@@ -389,9 +443,14 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	 * do nothing.
 	 */
 	protected void videoHasChanged() {
+
 		if (getVideo() != null) {
-			filename.setText(getVideo().getOutputFile().getAbsolutePath());
+			String newFilename = getVideo().getOutputFile().getAbsolutePath();
+			if (!filename.getText().equals(newFilename)) {
+				filename.setText(newFilename);
+			}
 		}
+
 	}
 
 	/**
