@@ -1,14 +1,26 @@
 package net.homeip.entreprisesmd.mvconv.gui;
 
+import java.io.IOException;
+
 import net.homeip.entreprisesmd.mvconv.core.Localization;
 import net.homeip.entreprisesmd.mvconv.gui.icons.IconLoader;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerWrapper;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoOutputDevice;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.config.Configuration;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4BoxMuxer;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -64,6 +76,16 @@ public class PreferencesDialog extends Dialog {
 	 */
 	private Button replaceButton;
 	/**
+	 * Selection change listener
+	 */
+	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
+		public void selectionChanged(SelectionChangedEvent event) {
+			if (event.getSource() == videoOutputDeviceComboViewer) {
+				videoOutputDeviceSelectionAsChanged();
+			}
+		}
+	};
+	/**
 	 * Selection listener.
 	 */
 	private SelectionListener selectionListener = new SelectionAdapter() {
@@ -79,6 +101,28 @@ public class PreferencesDialog extends Dialog {
 		}
 
 	};
+	/**
+	 * The view site.
+	 */
+	private IViewSite site;
+	/**
+	 * User configuration.
+	 */
+	private Configuration userConfiguration;
+
+	/**
+	 * Combo viewer
+	 */
+	private ComboViewer videoOutputDeviceComboViewer;
+
+	private LabelProvider videoOutputDeviceLabelProvider = new LabelProvider() {
+		public String getText(Object element) {
+			if (element instanceof VideoOutputDevice) {
+				return ((VideoOutputDevice) element).getName();
+			}
+			return element.toString();
+		}
+	};
 
 	/**
 	 * Create a new preference window.
@@ -88,6 +132,38 @@ public class PreferencesDialog extends Dialog {
 	 */
 	public PreferencesDialog(Shell parentShell) {
 		super(parentShell);
+	}
+
+	/**
+	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 */
+	protected void configureShell(Shell shell) {
+
+		super.configureShell(shell);
+
+		String title = Localization.getString(Localization.PREFERENCE_TITLE);
+		shell.setText(title);
+		shell.setMinimumSize(450, 150);
+
+		Image image16 = IconLoader.loadIcon(IconLoader.ICON_APP_16)
+				.createImage();
+		Image image22 = IconLoader.loadIcon(IconLoader.ICON_APP_22)
+				.createImage();
+		Image image32 = IconLoader.loadIcon(IconLoader.ICON_APP_32)
+				.createImage();
+		Image image64 = IconLoader.loadIcon(IconLoader.ICON_APP_64)
+				.createImage();
+		shell.setImages(new Image[] { image16, image22, image32, image64 });
+
+	}
+
+	/**
+	 * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+	 */
+	protected void createButtonsForButtonBar(Composite parent) {
+		// create OK and Cancel buttons by default
+		createButton(parent, IDialogConstants.OK_ID,
+				IDialogConstants.CLOSE_LABEL, true);
 	}
 
 	/**
@@ -103,8 +179,12 @@ public class PreferencesDialog extends Dialog {
 				.getString(Localization.PREFERENCE_DIRECTORY_GROUP);
 		String optionGroupText = Localization
 				.getString(Localization.PREFERENCE_OPTION_GROUP);
+		String mplayerGroupText = Localization
+				.getString(Localization.PREFERENCE_MPLAYER_GROUP);
 
-		// Options
+		/*
+		 * General options
+		 */
 		Group optionGroup = new Group(parent, SWT.NONE);
 		optionGroup.setLayout(new GridLayout(1, false));
 		optionGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -116,8 +196,52 @@ public class PreferencesDialog extends Dialog {
 		replaceButton = new Button(optionGroup, SWT.CHECK);
 		replaceButton.setText(replaceText);
 		replaceButton.addSelectionListener(selectionListener);
-		
-		
+
+		/*
+		 * Mplayer options
+		 */
+		Group mplayerGroup = new Group(parent, SWT.NONE);
+		mplayerGroup.setLayout(new GridLayout(2, false));
+		mplayerGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
+		mplayerGroup.setText(mplayerGroupText);
+
+		// Video output selection
+		Label label;
+		String videoOuput = Localization
+				.getString(Localization.PREFERENCE_VIDEO_OUTPUT_DEVICE);
+		label = new Label(mplayerGroup, SWT.NONE);
+		label.setText(videoOuput);
+
+		videoOutputDeviceComboViewer = new ComboViewer(mplayerGroup,
+				SWT.READ_ONLY | SWT.DROP_DOWN);
+		videoOutputDeviceComboViewer
+				.setLabelProvider(videoOutputDeviceLabelProvider);
+		videoOutputDeviceComboViewer
+				.addSelectionChangedListener(selectionChangeListener);
+
+		VideoOutputDevice[] videoOutputDevices = {};
+		try {
+			videoOutputDevices = Configuration
+					.getAvailableVideoOutputDevices(site.getMplayer());
+		} catch (MPlayerException e) {
+			// TODO : handle this error !
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < videoOutputDevices.length; i++) {
+			videoOutputDeviceComboViewer.add(videoOutputDevices[i]);
+		}
+
+		VideoOutputDevice videoOutputDeviceSelected = userConfiguration
+				.getVideoOutputDevice();
+		if (videoOutputDeviceSelected != null) {
+			videoOutputDeviceComboViewer.setSelection(new StructuredSelection(
+					videoOutputDeviceSelected));
+		}
+
+		/*
+		 * Directory options
+		 */
 		Group directoryGroup = new Group(parent, SWT.NONE);
 		directoryGroup.setLayout(new GridLayout(3, false));
 		directoryGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -126,7 +250,7 @@ public class PreferencesDialog extends Dialog {
 		// Mplayer emplacement
 		String mplayerText = Localization
 				.getString(Localization.PREFERENCE_MPLAYER_EMPLACEMENT);
-		Label label;
+
 		label = new Label(directoryGroup, SWT.NONE);
 		label.setText(mplayerText);
 
@@ -172,26 +296,12 @@ public class PreferencesDialog extends Dialog {
 	}
 
 	/**
-	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 * Return the view site.
+	 * 
+	 * @return the view site.
 	 */
-	protected void configureShell(Shell shell) {
-
-		super.configureShell(shell);
-
-		String title = Localization.getString(Localization.PREFERENCE_TITLE);
-		shell.setText(title);
-		shell.setMinimumSize(450, 150);
-
-		Image image16 = IconLoader.loadIcon(IconLoader.ICON_APP_16)
-				.createImage();
-		Image image22 = IconLoader.loadIcon(IconLoader.ICON_APP_22)
-				.createImage();
-		Image image32 = IconLoader.loadIcon(IconLoader.ICON_APP_32)
-				.createImage();
-		Image image64 = IconLoader.loadIcon(IconLoader.ICON_APP_64)
-				.createImage();
-		shell.setImages(new Image[] { image16, image22, image32, image64 });
-
+	public IViewSite getViewSite() {
+		return site;
 	}
 
 	/**
@@ -252,6 +362,19 @@ public class PreferencesDialog extends Dialog {
 	}
 
 	/**
+	 * Initialize this view with the given view site. Sub-class that overload
+	 * this method must call super.init().
+	 * 
+	 * @param site
+	 *            the view site.
+	 */
+	public void init(IViewSite site) {
+		this.site = site;
+
+		userConfiguration = site.getMplayer().getUserConfiguration();
+	}
+
+	/**
 	 * Notify this class that property has change.
 	 */
 	private void propertyChange() {
@@ -281,4 +404,25 @@ public class PreferencesDialog extends Dialog {
 
 	}
 
+	/**
+	 * Notify this class that user change the selected video output device.
+	 */
+	private void videoOutputDeviceSelectionAsChanged() {
+
+		IStructuredSelection selection = (IStructuredSelection) videoOutputDeviceComboViewer
+				.getSelection();
+		Object objectSelected = selection.getFirstElement();
+
+		if (objectSelected instanceof VideoOutputDevice) {
+			userConfiguration
+					.setVideoOutputDevice((VideoOutputDevice) objectSelected);
+			try {
+				userConfiguration.save();
+			} catch (IOException e) {
+				// TODO handle this error !
+				e.printStackTrace();
+			}
+		}
+
+	}
 }

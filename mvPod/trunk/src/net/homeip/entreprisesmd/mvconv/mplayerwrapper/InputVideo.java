@@ -1,4 +1,5 @@
 /*
+
  * InputVideo.java
  * Copyright (C) 2005-2007 James Lee
  *
@@ -27,15 +28,26 @@ package net.homeip.entreprisesmd.mvconv.mplayerwrapper;
  * @author patapouf
  * 
  */
-public interface InputVideo {
+public abstract class InputVideo {
 
 	/**
-	 * Return the argument list to define the input video to mplayer.
-	 * 
-	 * @return the argument list.
+	 * Aspect ratio 16:9.
 	 */
-	String[] toCommandList();
-
+	public static final double ASPECT_RATIO_16_9 = 1.7777;
+	/**
+	 * Aspect ratio 4:3.
+	 */
+	public static final double ASPECT_RATIO_4_3 = 1.3333;
+	/**
+	 * Aspect ratio, Keep original value.
+	 */
+	public static final double ASPECT_RATIO_KEEP = 0;
+	
+	/**
+	 * Aspect ratio.
+	 */
+	private double overwriteAspectRatio = 0;
+	
 	/**
 	 * Return True if the <code>obj</code> are equals to this object.
 	 * 
@@ -43,6 +55,61 @@ public interface InputVideo {
 	 *            the object to compare with.
 	 * @return True if the <code>obj</code> are equals to this object.
 	 */
-	boolean equals(InputVideo obj);
+	public abstract boolean equals(InputVideo obj);
+
+	/**
+	 * Return the aspect ratio of the video file.
+	 * 
+	 * @return The aspect ratio that overwrite the default value or 0 if we keep
+	 *         the default value.
+	 */
+	public double getAspectRatio() {
+		return overwriteAspectRatio;
+	}
+
+	/**
+	 * Use to overwrite the aspect ratio of the video file.
+	 * <p>
+	 * Some video codec like MPEG1/2 contain an attribute defining the video
+	 * aspect ratio and this value are use by mplayer to pre-scale the video to
+	 * fit this value. Some video file encoded by individual people doesn't
+	 * define the right value for aspect ratio so mvPod must offer an easy way
+	 * to redefine this value.
+	 * </p>
+	 * Standard values:
+	 * <ul>
+	 * <li>1.25 = 4:3</li>
+	 * <li>1.75 = 16:9</li>
+	 * </ul>
+	 * 
+	 * @param value
+	 *            The aspect ratio value or 0 to keep default aspect ratio of
+	 *            the video.
+	 */
+	public void setAspectRatio(double value) {
+		if(value<=0)
+			overwriteAspectRatio = 0;
+		overwriteAspectRatio = value;
+	}
+
+	/**
+	 * Return the argument list to define the input video to mplayer.
+	 * 
+	 * @return the argument list.
+	 */
+	public String[] toCommandList(){
+		
+		if (overwriteAspectRatio > 0 ) {
+
+			String[] args = new String[2];
+			args[0] = "-aspect";
+			args[1] = Double.toString(overwriteAspectRatio) + ":1";
+			return args;
+
+		}
+
+		return new String[0];
+		
+	}
 
 }

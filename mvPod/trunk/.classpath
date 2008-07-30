@@ -4,7 +4,7 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.3.0.I20070605-0010.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.3.0.v20070426.jar" sourcepath="lib/org.eclipse.equinox.common_src.zip"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.3.1.M20070910-0800b.jar" sourcepath="lib/org.eclipse.jface_src.zip"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-1.5.0-sun-1.5.0.13"/>
 	<classpathentry kind="lib" path="lib/swt-3.3.2-gtk-linux-x86/swt-debug.jar" sourcepath="lib/swt-3.3.2-gtk-linux-x86/src.zip"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

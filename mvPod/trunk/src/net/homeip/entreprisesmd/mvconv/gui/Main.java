@@ -57,6 +57,10 @@ public final class Main {
 	 */
 	private static final String USER_HOME = "user.home";
 	/**
+	 * User profiles key.
+	 */
+	private static final String USER_PROFILE = "USERPROFILE";
+	/**
 	 * Key value for OS name property.
 	 */
 	private static final String OS_NAME = "os.name";
@@ -283,7 +287,7 @@ public final class Main {
 			mplayer = new MPlayerWrapper(new File[] { path });
 
 		} catch (MPlayerNotFoundException e) {
-			ErrorMessage.showLocalizedError(null,
+			ErrorMessage.showMPlayerException(null, e,
 					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
@@ -312,15 +316,22 @@ public final class Main {
 		String os = System.getProperty(OS_NAME);
 		preferenceStore.setDefault(PREF_AUTO_CLEAR_JOBS, false);
 		preferenceStore.setDefault(PREF_REPLACE_FILE, false);
-		preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
-				.getProperty(USER_HOME));
+
 		if (os.equals(OS_NAME_LINUX)) {
+			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
+					.getProperty(USER_HOME));
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "/usr/bin");
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "/usr/bin");
+			
+			
 		} else if (os.equals(OS_NAME_WINDOWS)) {
+			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System.getenv(USER_PROFILE));			
+			
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, ".");
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, ".");
 		} else {
+			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
+					.getProperty(USER_HOME));
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, ".");
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, ".");
 		}

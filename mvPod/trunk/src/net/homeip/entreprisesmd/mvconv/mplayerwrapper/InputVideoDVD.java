@@ -14,7 +14,7 @@ import java.util.List;
  * @author patapouf
  * 
  */
-public class InputVideoDVD implements InputVideo {
+public class InputVideoDVD extends InputVideo {
 
 	/**
 	 * Key value to retreive OS.
@@ -367,6 +367,12 @@ public class InputVideoDVD implements InputVideo {
 			argsList.add(subtitleTrack);
 		}
 
+		String[] defaultArgs = super.toCommandList();
+		for(int i=0; i<defaultArgs.length;i++){
+			argsList.add(defaultArgs[i]);
+		}
+		
+		
 		String[] args = new String[argsList.size()];
 		args = argsList.toArray(args);
 		argsList = null;

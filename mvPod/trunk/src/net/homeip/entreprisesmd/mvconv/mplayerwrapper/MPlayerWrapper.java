@@ -3,6 +3,7 @@ package net.homeip.entreprisesmd.mvconv.mplayerwrapper;
 import java.io.File;
 import java.io.IOException;
 
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.config.Configuration;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.DefaultEncodingJob;
 
 /**
@@ -13,26 +14,30 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.DefaultEncodingJob;
  * 
  */
 public class MPlayerWrapper {
-
 	/**
-	 * mplayer filename.
+	 * Key value for user home directory.
 	 */
-	public static final String MPLAYER_BIN = System.getProperty("os.name")
-			.indexOf("Windows") >= 0 ? "mplayer.exe" : "mplayer";
+	public static final String USER_HOME = "user.home";
+
 	/**
 	 * mencoder filename.
 	 */
 	public static final String MENCODER_BIN = System.getProperty("os.name")
 			.indexOf("Windows") >= 0 ? "mencoder.exe" : "mencoder";
-
 	/**
-	 * Fullpath to mplayer.
+	 * mplayer filename.
 	 */
-	private String mplayerPath;
+	public static final String MPLAYER_BIN = System.getProperty("os.name")
+			.indexOf("Windows") >= 0 ? "mplayer.exe" : "mplayer";
+
 	/**
 	 * Fullpath to mendoder.
 	 */
 	private String mencoderPath;
+	/**
+	 * Fullpath to mplayer.
+	 */
+	private String mplayerPath;
 
 	/**
 	 * Create a new Wrapper classe. Search mplayer in default directory.
@@ -56,13 +61,13 @@ public class MPlayerWrapper {
 		File mplayerFile = ApplicationFinder.getApplicationPath(MPLAYER_BIN,
 				paths);
 		if (mplayerFile == null) {
-			throw new MPlayerNotFoundException();
+			throw new MPlayerNotFoundException(MPLAYER_BIN);
 		}
 
 		File mencoderFile = ApplicationFinder.getApplicationPath(MENCODER_BIN,
 				paths);
 		if (mencoderFile == null) {
-			throw new MPlayerNotFoundException();
+			throw new MPlayerNotFoundException(MENCODER_BIN);
 		}
 
 		try {
@@ -92,6 +97,39 @@ public class MPlayerWrapper {
 			EncodingOptions options) throws MPlayerException {
 		return options.getMuxer().getEncodingJob(this, inputVideo, outputFile,
 				options);
+	}
+
+	/**
+	 * Return the user configuration. According to mplayer documentation, this
+	 * file are located in ~/.mplayer/config
+	 * 
+	 * @return the user configuration.
+	 */
+	public Configuration getUserConfiguration() {
+
+		String home = System.getProperty(USER_HOME);
+		File configFile = new File(home, ".mplayer/config");
+
+		return new Configuration(configFile, this);
+
+	}
+
+	/**
+	 * Return mencoder filepath.
+	 * 
+	 * @return mencoder filepath.
+	 */
+	protected String getMencoder() {
+		return mencoderPath + File.separator + MENCODER_BIN;
+	}
+
+	/**
+	 * Return mplayer filepath.
+	 * 
+	 * @return mplayer filepath.
+	 */
+	protected String getMplayer() {
+		return mplayerPath + File.separator + MPLAYER_BIN;
 	}
 
 	/**
@@ -151,7 +189,7 @@ public class MPlayerWrapper {
 			throw new MPlayerException("Error running process", e);
 		}
 
-		// Check revelant error
+		// Check relevant error
 		errorParser.throwException();
 		errorParser = null;
 
@@ -160,24 +198,6 @@ public class MPlayerWrapper {
 		errorStream = null;
 		return new VideoInfo(output);
 
-	}
-
-	/**
-	 * Return mplayer filepath.
-	 * 
-	 * @return mplayer filepath.
-	 */
-	protected String getMplayer() {
-		return mplayerPath + File.separator + MPLAYER_BIN;
-	}
-
-	/**
-	 * Return mencoder filepath.
-	 * 
-	 * @return mencoder filepath.
-	 */
-	protected String getMencoder() {
-		return mencoderPath + File.separator + MENCODER_BIN;
 	}
 
 	/**

@@ -104,7 +104,8 @@ public class DefaultPlayingJob implements PlayingJob {
 				return false;
 			}
 		};
-		inputStream = new StreamReader(proc.getInputStream(), false);
+		inputStream = new StreamReader(proc.getInputStream(), errorParser,
+				false);
 		errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
 		inputStream.readInThread();
 		errorStream.readInThread();
@@ -118,12 +119,13 @@ public class DefaultPlayingJob implements PlayingJob {
 			throw new MPlayerException("mencoder process are interrupted", ie);
 		}
 
-		if(!canceled){
+		errorParser.throwException();
+
+		if (!canceled) {
 			String error = errorStream.toString();
 			inputStream = null;
-			errorStream = null;		
-			
-			
+			errorStream = null;
+
 			// Check if there any revealant error
 			errorParser.throwException();
 
@@ -132,7 +134,6 @@ public class DefaultPlayingJob implements PlayingJob {
 				throw new MPlayerException(error);
 			}
 		}
-
 
 	}
 

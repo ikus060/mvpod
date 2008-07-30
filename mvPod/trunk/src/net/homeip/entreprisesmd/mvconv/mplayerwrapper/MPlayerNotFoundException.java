@@ -27,18 +27,29 @@ package net.homeip.entreprisesmd.mvconv.mplayerwrapper;
  * @author patapouf
  * 
  */
-public class MPlayerNotFoundException extends Exception {
+public class MPlayerNotFoundException extends MPlayerException {
 
 	/**
-	 * 
+	 * Unique identifier
 	 */
 	private static final long serialVersionUID = 4938881482875864297L;
 
+	private String componentName;
+	
 	/**
 	 * Create a new mplayer not found exception.
 	 */
-	public MPlayerNotFoundException() {
-		super("mplayer not found");
+	public MPlayerNotFoundException(String componentName) {
+		super(componentName + " not found");
+		this.componentName = componentName;
+	}
+	
+	/**
+	 * Return the missing component name.
+	 * @return the missing component name.
+	 */
+	public String getComponentName(){
+		return componentName;
 	}
 
 }

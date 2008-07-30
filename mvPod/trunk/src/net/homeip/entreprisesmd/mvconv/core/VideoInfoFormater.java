@@ -285,12 +285,14 @@ public final class VideoInfoFormater {
 
 		// Method
 		String method = "";
-		if (options.getScalingMethod() == VideoScalingOptions.METHODE_CROP) {
+		if (options.getScalingMethod() == VideoScalingOptions.METHOD_CROP) {
 			method = Localization.getString(Localization.SCALING_METHOD_CROP);
-		} else if (options.getScalingMethod() == VideoScalingOptions.METHODE_FILL) {
+		} else if (options.getScalingMethod() == VideoScalingOptions.METHOD_FILL) {
 			method = Localization.getString(Localization.SCALING_METHOD_FILL);
-		} else if (options.getScalingMethod() == VideoScalingOptions.METHODE_SCALE) {
+		} else if (options.getScalingMethod() == VideoScalingOptions.METHOD_SCALE) {
 			method = Localization.getString(Localization.SCALING_METHOD_SCALE);
+		} else if (options.getScalingMethod() == VideoScalingOptions.METHOD_FIT) {
+			method = Localization.getString(Localization.SCALING_METHOD_FIT);
 		}
 
 		// Dimentions: %s, %s
