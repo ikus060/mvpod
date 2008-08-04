@@ -89,9 +89,6 @@
 			<tarfileset file="${root.dir}/build.xml" prefix="/" preserveLeadingSlashes="true" />
 		</tar>
 
-		<zip destfile="${dist.dir}/mvPod-${version}-src.zip">
-			<tarfileset src="${dist.dir}/mvPod-${version}-src.tar" />
-		</zip>
 		<gzip zipfile="${dist.dir}/mvPod-${version}-src.tar.gz" src="${dist.dir}/mvPod-${version}-src.tar" />
 		<delete file="${dist.dir}/mvPod-${version}-src.tar" />
 
