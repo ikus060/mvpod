@@ -33,7 +33,7 @@ public class AddVideoFileAction extends Action {
 	private static final String[] EXTENTIONS = {
 			"*.mov;*.duk;*.h264;*.264;*.qt;*.cam;*.rar;*.avi;*.mp4;*.qt;"
 					+ "*.wmv;*.ogv;*.mpg;*.p64;*.nsv;*.mkv;*.ogg;*.mpq;*.vob;*.vp5;"
-					+ "*.dv;*.asf;*.ts;*.vp6;*.asx", "*.*" };
+					+ "*.dv;*.asf;*.ts;*.vp6;*.asxl;*.flv", "*.*" };
 
 	/**
 	 * List of localization identifier of each extentions.
