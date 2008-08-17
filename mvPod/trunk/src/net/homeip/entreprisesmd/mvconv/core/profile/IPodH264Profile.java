@@ -60,6 +60,13 @@ public class IPodH264Profile extends AbstractHardCodedProfile {
 	 */
 	private static final VideoScalingOptions VIDEO_DIMENSION_320X240 = new VideoScalingOptions(
 			320, 240, VideoScalingOptions.MULTIPLE_16 | VideoScalingOptions.METHOD_FIT);
+	
+	/**
+	 * 480 x 320 dimension.
+	 */
+	private static final VideoScalingOptions VIDEO_DIMENSION_480X320 = new VideoScalingOptions(
+			480, 320);
+	
 	/**
 	 * 640 x 480 dimension.
 	 */
@@ -69,7 +76,7 @@ public class IPodH264Profile extends AbstractHardCodedProfile {
 	 * List of supported dimensions.
 	 */
 	private static final VideoScalingOptions[] VIDEO_DIMENSIONS = new VideoScalingOptions[] {
-			VIDEO_DIMENSION_320X240, VIDEO_DIMENSION_640X480 };
+			VIDEO_DIMENSION_320X240, VIDEO_DIMENSION_480X320, VIDEO_DIMENSION_640X480 };
 	/**
 	 * Maximum video frame rate.
 	 */
