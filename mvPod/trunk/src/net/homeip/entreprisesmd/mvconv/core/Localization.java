@@ -265,6 +265,7 @@ public final class Localization {
 	public static final String OPTIONS_X264_REFERENCE_FRAME = "OPTIONS_X264_REFERENCE_FRAME";
 	public static final String OPTIONS_X264_SUBPEL_REFINEMENT_QUALITY = "OPTIONS_X264_SUBPEL_REFINEMENT_QUALITY";
 	public static final String OPTIONS_X264_BFRAME = "OPTIONS_X264_BFRAME";
+	public static final String OPTIONS_X264_THREAD = "OPTIONS_X264_THREAD";
 
 	public static final String OPTIONS_XVID_TRELLIS = "OPTIONS_XVID_TRELLIS";
 	public static final String OPTIONS_XVID_BFRAME = "OPTIONS_XVID_BFRAME";

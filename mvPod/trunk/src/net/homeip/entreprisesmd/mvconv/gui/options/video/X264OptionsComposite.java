@@ -64,7 +64,10 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 			}
 
 			public VideoEncodingOptions getEncodingOptions() {
-				return new X264EncodingOptions(BITRATE_DEFAULT);
+				X264EncodingOptions encodingOptions = new X264EncodingOptions(
+						BITRATE_DEFAULT);
+				encodingOptions.enableThreads(true);
+				return encodingOptions;
 			}
 
 			public VideoFormat getVideoFormat() {
@@ -217,6 +220,8 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 				twoPassSelectionAsChanged();
 			} else if (e.widget == bframeButton) {
 				bframeSelectionAsChanged();
+			} else if (e.widget == threadButton) {
+				threadSelectionAsChanged();
 			}
 		}
 	};
@@ -224,6 +229,10 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	 * Subpel refinement quality viewer.
 	 */
 	private Spinner subqSpinner;
+	/**
+	 * Thread enabled/disable viewer
+	 */
+	private Button threadButton;
 	/**
 	 * Trellis enable/disable button.
 	 */
@@ -392,6 +401,8 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 				.getString(Localization.OPTIONS_TWO_PASS);
 		String bframeText = Localization
 				.getString(Localization.OPTIONS_X264_BFRAME);
+		String threadText = Localization
+				.getString(Localization.OPTIONS_X264_THREAD);
 
 		// Check the first column size.
 		GC gc = new GC(this);
@@ -506,6 +517,11 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		bframeButton = new Button(checkBoxGroup, SWT.CHECK);
 		bframeButton.setText(bframeText);
 		bframeButton.addSelectionListener(selectionListener);
+
+		// Thread
+		threadButton = new Button(checkBoxGroup, SWT.CHECK);
+		threadButton.setText(threadText);
+		threadButton.addSelectionListener(selectionListener);
 
 		// Force update
 		profileAsChanged();
@@ -774,6 +790,36 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 			// Change profile value
 			videoOptions.setPass(twoPassSelection ? 2 : 1);
 			options.setVideoOptions(videoOptions);
+			Profile newProfile = Profiles.createOnFlyProfile(options);
+			getViewSite().getProfileContext().setSelectedProfile(newProfile);
+		}
+	}
+
+	/**
+	 * Notify this class that user change the selected trellis mode.
+	 */
+	private void threadSelectionAsChanged() {
+		Profile profile = getViewSite().getProfileContext()
+				.getSelectedProfile();
+		if (profile instanceof HardCodedProfile) {
+			return;
+		}
+
+		// Get encoding options
+		EncodingOptions options = profile.getEncodingOptions();
+		VideoEncodingOptions videoOptions = options.getVideoOptions();
+		if (!(videoOptions instanceof X264EncodingOptions)) {
+			return;
+		}
+		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
+
+		// Check if value as changed
+		boolean threadSelection = threadButton.getSelection();
+		if (threadSelection != x264Options.isThreadsEnabled()) {
+
+			// Change profile value
+			x264Options.enableThreads(threadSelection);
+			options.setVideoOptions(x264Options);
 			Profile newProfile = Profiles.createOnFlyProfile(options);
 			getViewSite().getProfileContext().setSelectedProfile(newProfile);
 		}
