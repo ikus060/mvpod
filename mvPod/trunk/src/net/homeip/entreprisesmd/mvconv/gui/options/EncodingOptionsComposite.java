@@ -30,7 +30,7 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * The property key to retrieve the os value.
 	 */
-	private static final String PROPERTY_OS = "os.name";
+	private static final String PROPERTY_OS = "os.name"; //$NON-NLS-1$
 
 	private static final int HARD_CODED = 0;
 	private static final int CUSTOM = 1;
@@ -74,7 +74,7 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			EncodingOptionsComposite.this.profileContextAsChanged();
 		}
@@ -108,7 +108,7 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return site;
+		return this.site;
 	}
 
 	/**
@@ -123,53 +123,53 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 		this.site = site;
 
 		this.setLayout(new FillLayout());
-		tabFolder = new CTabFolder(this, SWT.BORDER);
-		tabFolder.setSimple(false);
+		this.tabFolder = new CTabFolder(this, SWT.BORDER);
+		this.tabFolder.setSimple(false);
 
 		SummaryOptionsComposite summary = new SummaryOptionsComposite(
-				tabFolder, SWT.NONE);
+				this.tabFolder, SWT.NONE);
 		summary.init(getViewSite());
 
 		// Create the summary tab item (always present)
-		CTabItem item = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem item = new CTabItem(this.tabFolder, SWT.NONE);
 		item.setText(Localization.getString(Localization.SUMMARY_TITLE));
 		item.setControl(summary);
-		tabFolder.setSelection(item);
+		this.tabFolder.setSelection(item);
 
 		// Create component to edit options
-		hardCodecProfileOptions = new HardCodedProfileOptionsComposite(
-				tabFolder, SWT.NONE);
-		hardCodecProfileOptions.init(getViewSite());
+		this.hardCodecProfileOptions = new HardCodedProfileOptionsComposite(
+				this.tabFolder, SWT.NONE);
+		this.hardCodecProfileOptions.init(getViewSite());
 
-		audioOptionsComposite = new AudioOptionsComposite(tabFolder, SWT.NONE);
-		audioOptionsComposite.init(getViewSite());
+		this.audioOptionsComposite = new AudioOptionsComposite(this.tabFolder, SWT.NONE);
+		this.audioOptionsComposite.init(getViewSite());
 
-		videoOptionsComposite = new GenericVideoOptionsComposite(tabFolder, SWT.NONE);
-		videoOptionsComposite.init(getViewSite());
+		this.videoOptionsComposite = new GenericVideoOptionsComposite(this.tabFolder, SWT.NONE);
+		this.videoOptionsComposite.init(getViewSite());
 
-		videoCodecOptionsComposite = new VideoCodecOptionsComposite(tabFolder,
+		this.videoCodecOptionsComposite = new VideoCodecOptionsComposite(this.tabFolder,
 				SWT.NONE);
-		videoCodecOptionsComposite.init(getViewSite());
+		this.videoCodecOptionsComposite.init(getViewSite());
 
 
 		// Under linux, we change the color of tabFolder to get a better effect
 		String os = System.getProperty(PROPERTY_OS);
-		if (os.equals("Linux")) {
-			tabFolder.setSelectionBackground(Display.getDefault()
+		if (os.equals("Linux")) { //$NON-NLS-1$
+			this.tabFolder.setSelectionBackground(Display.getDefault()
 					.getSystemColor(SWT.COLOR_LIST_SELECTION));
-			tabFolder.setSelectionForeground(Display.getDefault()
+			this.tabFolder.setSelectionForeground(Display.getDefault()
 					.getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
 		}
 
 		// Listener to profile context
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						EncodingOptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -182,51 +182,51 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	 * This implementation update the view to reflect the change.
 	 * <p>
 	 */
-	private void profileContextAsChanged() {
+	void profileContextAsChanged() {
 
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 
 		if (profile instanceof HardCodedProfile
-				&& lastProfileType != HARD_CODED) {
+				&& this.lastProfileType != HARD_CODED) {
 
 			removeOlderTabItem();
 
-			CTabItem item = new CTabItem(tabFolder, SWT.NONE);
+			CTabItem item = new CTabItem(this.tabFolder, SWT.NONE);
 			item.setText(Localization
 					.getString(Localization.CUSTOM_OPTIONS_TITLE));
-			item.setControl(hardCodecProfileOptions);
+			item.setControl(this.hardCodecProfileOptions);
 
-			lastProfileType = HARD_CODED;
+			this.lastProfileType = HARD_CODED;
 
 		} else if (!(profile instanceof HardCodedProfile)
-				&& lastProfileType != CUSTOM) {
+				&& this.lastProfileType != CUSTOM) {
 
 			removeOlderTabItem();
 
 			CTabItem item;
 
 			// Add video option tab
-			item = new CTabItem(tabFolder, SWT.NONE);
+			item = new CTabItem(this.tabFolder, SWT.NONE);
 			item.setText(Localization
 					.getString(Localization.VIDEO_OPTIONS_TITLE));
-			item.setControl(videoOptionsComposite);
+			item.setControl(this.videoOptionsComposite);
 
 			// Add video codec option tab
-			item = new CTabItem(tabFolder, SWT.NONE);
+			item = new CTabItem(this.tabFolder, SWT.NONE);
 			item.setText(Localization
 					.getString(Localization.VIDEOCODEC_OPTIONS_TITLE));
-			item.setControl(videoCodecOptionsComposite);
+			item.setControl(this.videoCodecOptionsComposite);
 
 			// Add audio options tab
-			item = new CTabItem(tabFolder, SWT.NONE);
+			item = new CTabItem(this.tabFolder, SWT.NONE);
 			item.setText(Localization
 					.getString(Localization.AUDIO_OPTIONS_TITLE));
-			item.setControl(audioOptionsComposite);
+			item.setControl(this.audioOptionsComposite);
 
 			// TODO : Add options for muxer
 
-			lastProfileType = CUSTOM;
+			this.lastProfileType = CUSTOM;
 		}
 
 	}
@@ -236,7 +236,7 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	 */
 	private void removeOlderTabItem() {
 
-		CTabItem[] items = tabFolder.getItems();
+		CTabItem[] items = this.tabFolder.getItems();
 
 		for (int index = items.length - 1; index >= 1; index--) {
 			items[index].dispose();

@@ -23,7 +23,7 @@ public class XvPortNotAvailableException extends MPlayerException {
 	 */
 	public XvPortNotAvailableException() {
 		super(
-				"There no Xvideo support for your video card available. Try using an alternate video output.");
+				"There no Xvideo support for your video card available. Try using an alternate video output."); //$NON-NLS-1$
 	}
 
 }

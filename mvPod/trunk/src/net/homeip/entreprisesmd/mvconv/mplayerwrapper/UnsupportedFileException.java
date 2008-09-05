@@ -18,7 +18,7 @@ public class UnsupportedFileException extends MPlayerException {
 	 * Create a new unsupported exception.
 	 */
 	public UnsupportedFileException() {
-		super("Unsupported file");
+		super("Unsupported file"); //$NON-NLS-1$
 	}
 
 }

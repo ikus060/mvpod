@@ -40,7 +40,7 @@ public class SpinnerEditor extends Composite {
 	/**
 	 * Expression to format the display value.
 	 */
-	private String unitExpression = "%d";
+	private String unitExpression = "%d"; //$NON-NLS-1$
 
 	/**
 	 * Selection listener to dispatch event.
@@ -242,7 +242,7 @@ public class SpinnerEditor extends Composite {
 	/**
 	 * Update the display value
 	 */
-	private void updateLayoutValue() {
+	void updateLayoutValue() {
 
 		GC gc = new GC(this);
 		Point size = gc.textExtent(unitExpression);
@@ -255,7 +255,7 @@ public class SpinnerEditor extends Composite {
 	/**
 	 * Update the display value
 	 */
-	private void updateValue() {
+	void updateValue() {
 
 		String formatedString = String.format(unitExpression, this
 				.getSelection());

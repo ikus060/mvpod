@@ -31,7 +31,9 @@ public final class VideoInfoFormater {
 	 * Private constructor.
 	 */
 	private VideoInfoFormater() {
-
+		/*
+		 * Private constructor use to present creation of the utility class.
+		 */
 	}
 
 	/**
@@ -56,12 +58,12 @@ public final class VideoInfoFormater {
 
 		int channel = stream.getChannelMode();
 		if (channel > 0) {
-			audioChannel = Integer.toString(channel) + " ch";
+			audioChannel = Integer.toString(channel) + " ch";  //$NON-NLS-1$
 		}
 
 		int sampleRate = stream.getSampleRate();
 		if (sampleRate > 0) {
-			audioSampleRate = sampleRate + " Hz";
+			audioSampleRate = sampleRate + " Hz";  //$NON-NLS-1$
 		}
 
 		double bitrate = stream.getBitrate();

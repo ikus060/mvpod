@@ -85,9 +85,9 @@ public class VolumeFilter implements AudioFilter {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 		String[] args = new String[2];
-		args[0] = "-af-add";
-		args[1] = "volume=" + getGrain() + ":"
-				+ (getSoftClipping() ? "1" : "0");
+		args[0] = "-af-add"; //$NON-NLS-1$
+		args[1] = "volume=" + getGrain() + ":" //$NON-NLS-1$ //$NON-NLS-2$
+				+ (getSoftClipping() ? "1" : "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		return args;
 	}
 

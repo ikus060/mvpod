@@ -79,11 +79,11 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Button to enable/disable B-Frame usage.
 	 */
-	private Button bframeButton;
+	Button bframeButton;
 	/**
 	 * Bitstream label provider.
 	 */
-	private LabelProvider bitStreamLevelLabelProvider = new LabelProvider() {
+	LabelProvider bitStreamLevelLabelProvider = new LabelProvider() {
 		public String getText(Object element) {
 			String key = null;
 			if (element.equals(X264EncodingOptions.LEVEL_10)) {
@@ -128,20 +128,20 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Bit stream level viewer.
 	 */
-	private ComboViewer bitStreamLevelViewer;
+	ComboViewer bitStreamLevelViewer;
 	/**
 	 * Cabac enable/disable button.
 	 */
-	private Button cabacButton;
+	Button cabacButton;
 
 	/**
 	 * Modify listener.
 	 */
-	private ModifyListener modifyListener = new ModifyListener() {
+	ModifyListener modifyListener = new ModifyListener() {
 		public void modifyText(ModifyEvent e) {
-			if (e.widget == referenceFrameSpinner) {
+			if (e.widget == X264OptionsComposite.this.referenceFrameSpinner) {
 				referenceFrameAsChanged();
-			} else if (e.widget == subqSpinner) {
+			} else if (e.widget == X264OptionsComposite.this.subqSpinner) {
 				subqSelectionAsChanged();
 			}
 		}
@@ -149,7 +149,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Motion estimation label provider.
 	 */
-	private LabelProvider motionEstimationLabelProvider = new LabelProvider() {
+	LabelProvider motionEstimationLabelProvider = new LabelProvider() {
 		public String getText(Object element) {
 			String key = null;
 			if (element.equals(X264EncodingOptions.MOTION_ESTIMATION_DIAMON)) {
@@ -173,16 +173,16 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Motion estimation viewer.
 	 */
-	private ComboViewer motionEstimationViewer;
+	ComboViewer motionEstimationViewer;
 
 	/**
 	 * Parition enable/disable button.
 	 */
-	private Button partitionsButton;
+	Button partitionsButton;
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -190,16 +190,16 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Reference frame spinner
 	 */
-	private Spinner referenceFrameSpinner;
+	Spinner referenceFrameSpinner;
 
 	/**
 	 * Selection listener.
 	 */
-	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
+	ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			if (event.getSource() == bitStreamLevelViewer) {
+			if (event.getSource() == X264OptionsComposite.this.bitStreamLevelViewer) {
 				bitStreamLevelSelectionAsChanged();
-			} else if (event.getSource() == motionEstimationViewer) {
+			} else if (event.getSource() == X264OptionsComposite.this.motionEstimationViewer) {
 				motionEstimationSelectionAsChanged();
 			}
 		}
@@ -208,19 +208,19 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Selection listener.
 	 */
-	private SelectionListener selectionListener = new SelectionAdapter() {
+	SelectionListener selectionListener = new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent e) {
-			if (e.widget == cabacButton) {
+			if (e.widget == X264OptionsComposite.this.cabacButton) {
 				cabacSelectionAsChanged();
-			} else if (e.widget == trellisButton) {
+			} else if (e.widget == X264OptionsComposite.this.trellisButton) {
 				trellisSelectionAsChanged();
-			} else if (e.widget == partitionsButton) {
+			} else if (e.widget == X264OptionsComposite.this.partitionsButton) {
 				partitionsSelectionAsChanged();
-			} else if (e.widget == twoPassButton) {
+			} else if (e.widget == X264OptionsComposite.this.twoPassButton) {
 				twoPassSelectionAsChanged();
-			} else if (e.widget == bframeButton) {
+			} else if (e.widget == X264OptionsComposite.this.bframeButton) {
 				bframeSelectionAsChanged();
-			} else if (e.widget == threadButton) {
+			} else if (e.widget == X264OptionsComposite.this.threadButton) {
 				threadSelectionAsChanged();
 			}
 		}
@@ -228,19 +228,19 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Subpel refinement quality viewer.
 	 */
-	private Spinner subqSpinner;
+	Spinner subqSpinner;
 	/**
 	 * Thread enabled/disable viewer
 	 */
-	private Button threadButton;
+	Button threadButton;
 	/**
 	 * Trellis enable/disable button.
 	 */
-	private Button trellisButton;
+	Button trellisButton;
 	/**
 	 * Two pass quality button.
 	 */
-	private Button twoPassButton;
+	Button twoPassButton;
 
 	/**
 	 * Create a new lame composite interface.
@@ -257,7 +257,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this view that user change the selection of b-frame.
 	 */
-	private void bframeSelectionAsChanged() {
+	void bframeSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -273,7 +273,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean bframeSelected = bframeButton.getSelection();
+		boolean bframeSelected = this.bframeButton.getSelection();
 		if (bframeSelected != (x264Options.getMaxBFrame() > 0)) {
 
 			// Change profile value
@@ -287,7 +287,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected CABAC mode.
 	 */
-	private void cabacSelectionAsChanged() {
+	void cabacSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -303,7 +303,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean cabacSelection = cabacButton.getSelection();
+		boolean cabacSelection = this.cabacButton.getSelection();
 		if (cabacSelection != x264Options.isCabacEnabled()) {
 
 			// Change profile value
@@ -317,7 +317,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void bitStreamLevelSelectionAsChanged() {
+	void bitStreamLevelSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -349,8 +349,8 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	 * 
 	 * @return the selection.
 	 */
-	private String getBitStreamLevelSelection() {
-		Object selection = ((IStructuredSelection) bitStreamLevelViewer
+	String getBitStreamLevelSelection() {
+		Object selection = ((IStructuredSelection) this.bitStreamLevelViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof String)) {
 			return null;
@@ -363,8 +363,8 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	 * 
 	 * @return the motion estimation.
 	 */
-	private Integer getMotionEstimationSelection() {
-		Object selection = ((IStructuredSelection) motionEstimationViewer
+	Integer getMotionEstimationSelection() {
+		Object selection = ((IStructuredSelection) this.motionEstimationViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return null;
@@ -421,57 +421,57 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		label.setText(bitStreamLevelText);
 		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		bitStreamLevelViewer = new ComboViewer(this, SWT.READ_ONLY
+		this.bitStreamLevelViewer = new ComboViewer(this, SWT.READ_ONLY
 				| SWT.DROP_DOWN);
-		bitStreamLevelViewer.setLabelProvider(bitStreamLevelLabelProvider);
-		bitStreamLevelViewer
-				.addSelectionChangedListener(selectionChangeListener);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_10);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_11);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_12);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_13);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_1B);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_20);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_21);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_22);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_30);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_31);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_32);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_40);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_41);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_42);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_50);
-		bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_51);
+		this.bitStreamLevelViewer.setLabelProvider(this.bitStreamLevelLabelProvider);
+		this.bitStreamLevelViewer
+				.addSelectionChangedListener(this.selectionChangeListener);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_10);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_11);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_12);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_13);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_1B);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_20);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_21);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_22);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_30);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_31);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_32);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_40);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_41);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_42);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_50);
+		this.bitStreamLevelViewer.add(X264EncodingOptions.LEVEL_51);
 
 		// Reference frame
 		label = new Label(this, SWT.NONE);
 		label.setText(referenceFrameText);
 		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		referenceFrameSpinner = new Spinner(this, SWT.BORDER);
-		referenceFrameSpinner
+		this.referenceFrameSpinner = new Spinner(this, SWT.BORDER);
+		this.referenceFrameSpinner
 				.setMinimum(X264EncodingOptions.REFERENCE_FRAME_MIN_VALUE);
-		referenceFrameSpinner
+		this.referenceFrameSpinner
 				.setMaximum(X264EncodingOptions.REFERENCE_FRAME_MAX_VALUE);
-		referenceFrameSpinner.addModifyListener(modifyListener);
+		this.referenceFrameSpinner.addModifyListener(this.modifyListener);
 
 		// Motion estimation
 		label = new Label(this, SWT.NONE);
 		label.setText(motionEstimationText);
 		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		motionEstimationViewer = new ComboViewer(this, SWT.READ_ONLY
+		this.motionEstimationViewer = new ComboViewer(this, SWT.READ_ONLY
 				| SWT.DROP_DOWN);
-		motionEstimationViewer.setLabelProvider(motionEstimationLabelProvider);
-		motionEstimationViewer
-				.addSelectionChangedListener(selectionChangeListener);
-		motionEstimationViewer
+		this.motionEstimationViewer.setLabelProvider(this.motionEstimationLabelProvider);
+		this.motionEstimationViewer
+				.addSelectionChangedListener(this.selectionChangeListener);
+		this.motionEstimationViewer
 				.add(X264EncodingOptions.MOTION_ESTIMATION_DIAMON);
-		motionEstimationViewer
+		this.motionEstimationViewer
 				.add(X264EncodingOptions.MOTION_ESTIMATION_HEXAGON);
-		motionEstimationViewer
+		this.motionEstimationViewer
 				.add(X264EncodingOptions.MOTION_ESTIMATION_UNEVEN);
-		motionEstimationViewer
+		this.motionEstimationViewer
 				.add(X264EncodingOptions.MOTION_ESTIMATION_EXHAUSTIVE);
 
 		// Subpel refinement quality
@@ -479,10 +479,10 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		label.setText(subQText);
 		// label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		subqSpinner = new Spinner(this, SWT.BORDER);
-		subqSpinner.setMinimum(X264EncodingOptions.SUQ_MIN_VALUE);
-		subqSpinner.setMaximum(X264EncodingOptions.SUQ_MAX_VALUE);
-		subqSpinner.addModifyListener(modifyListener);
+		this.subqSpinner = new Spinner(this, SWT.BORDER);
+		this.subqSpinner.setMinimum(X264EncodingOptions.SUQ_MIN_VALUE);
+		this.subqSpinner.setMaximum(X264EncodingOptions.SUQ_MAX_VALUE);
+		this.subqSpinner.addModifyListener(this.modifyListener);
 
 		Composite checkBoxGroup = new Composite(this, SWT.NONE);
 		GridLayout layout = new GridLayout(2, true);
@@ -492,49 +492,49 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		checkBoxGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL,true, true,4,1));
 		
 		// Two-pass
-		twoPassButton = new Button(checkBoxGroup, SWT.CHECK);
-		twoPassButton.setText(twoPassText);
-		twoPassButton.addSelectionListener(selectionListener);
+		this.twoPassButton = new Button(checkBoxGroup, SWT.CHECK);
+		this.twoPassButton.setText(twoPassText);
+		this.twoPassButton.addSelectionListener(this.selectionListener);
 
 		// Cabac
-		cabacButton = new Button(checkBoxGroup, SWT.CHECK);
-		cabacButton.setText(cabacText);
-		cabacButton.addSelectionListener(selectionListener);
+		this.cabacButton = new Button(checkBoxGroup, SWT.CHECK);
+		this.cabacButton.setText(cabacText);
+		this.cabacButton.addSelectionListener(this.selectionListener);
 
 		// Trellis
 		String trellisText = Localization
 				.getString(Localization.OPTIONS_X264_TRELLIS);
-		trellisButton = new Button(checkBoxGroup, SWT.CHECK);
-		trellisButton.setText(trellisText);
-		trellisButton.addSelectionListener(selectionListener);
+		this.trellisButton = new Button(checkBoxGroup, SWT.CHECK);
+		this.trellisButton.setText(trellisText);
+		this.trellisButton.addSelectionListener(this.selectionListener);
 
 		// Partitions
-		partitionsButton = new Button(checkBoxGroup, SWT.CHECK);
-		partitionsButton.setText(partitionsText);
-		partitionsButton.addSelectionListener(selectionListener);
+		this.partitionsButton = new Button(checkBoxGroup, SWT.CHECK);
+		this.partitionsButton.setText(partitionsText);
+		this.partitionsButton.addSelectionListener(this.selectionListener);
 
 		// B-Frame
-		bframeButton = new Button(checkBoxGroup, SWT.CHECK);
-		bframeButton.setText(bframeText);
-		bframeButton.addSelectionListener(selectionListener);
+		this.bframeButton = new Button(checkBoxGroup, SWT.CHECK);
+		this.bframeButton.setText(bframeText);
+		this.bframeButton.addSelectionListener(this.selectionListener);
 
 		// Thread
-		threadButton = new Button(checkBoxGroup, SWT.CHECK);
-		threadButton.setText(threadText);
-		threadButton.addSelectionListener(selectionListener);
+		this.threadButton = new Button(checkBoxGroup, SWT.CHECK);
+		this.threadButton.setText(threadText);
+		this.threadButton.addSelectionListener(this.selectionListener);
 
 		// Force update
 		profileAsChanged();
 
 		// Add listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						X264OptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -543,7 +543,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected motion estimation.
 	 */
-	private void motionEstimationSelectionAsChanged() {
+	void motionEstimationSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -573,7 +573,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void partitionsSelectionAsChanged() {
+	void partitionsSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -589,7 +589,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean partitionsSelection = partitionsButton.getSelection();
+		boolean partitionsSelection = this.partitionsButton.getSelection();
 		if (partitionsSelection != x264Options.isPartitionsEnabled()) {
 
 			// Change profile value
@@ -603,7 +603,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
 		// Get the Lame encoding options
 		Profile selectedProfile = getViewSite().getProfileContext()
@@ -619,36 +619,36 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Change cabac
-		if (cabacButton.getSelection() != x264Options.isCabacEnabled()) {
-			cabacButton.setSelection(x264Options.isCabacEnabled());
+		if (this.cabacButton.getSelection() != x264Options.isCabacEnabled()) {
+			this.cabacButton.setSelection(x264Options.isCabacEnabled());
 		}
 
 		// Change trellis
-		if (trellisButton.getSelection() != x264Options.isTrellisEnabled()) {
-			trellisButton.setSelection(x264Options.isTrellisEnabled());
+		if (this.trellisButton.getSelection() != x264Options.isTrellisEnabled()) {
+			this.trellisButton.setSelection(x264Options.isTrellisEnabled());
 		}
 
 		// Change partitions
-		if (partitionsButton.getSelection() != x264Options
+		if (this.partitionsButton.getSelection() != x264Options
 				.isPartitionsEnabled()) {
-			partitionsButton.setSelection(x264Options.isPartitionsEnabled());
+			this.partitionsButton.setSelection(x264Options.isPartitionsEnabled());
 		}
 
 		// Change two-pass
-		if (twoPassButton.getSelection() != (x264Options.getPass() == 2)) {
-			twoPassButton.setSelection(x264Options.getPass() == 2);
+		if (this.twoPassButton.getSelection() != (x264Options.getPass() == 2)) {
+			this.twoPassButton.setSelection(x264Options.getPass() == 2);
 		}
 
 		// Change B-Frame
-		if (bframeButton.getSelection() != (x264Options.getMaxBFrame() > 0)) {
-			bframeButton.setSelection(x264Options.getMaxBFrame() > 0);
+		if (this.bframeButton.getSelection() != (x264Options.getMaxBFrame() > 0)) {
+			this.bframeButton.setSelection(x264Options.getMaxBFrame() > 0);
 		}
 
 		// Change level
 		String levelSelected = getBitStreamLevelSelection();
 		if (levelSelected == null
 				|| !levelSelected.equals(x264Options.getBitStreamLevel())) {
-			bitStreamLevelViewer.setSelection(new StructuredSelection(
+			this.bitStreamLevelViewer.setSelection(new StructuredSelection(
 					x264Options.getBitStreamLevel()));
 		}
 
@@ -657,23 +657,23 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		if (motionEstimationSelected == null
 				|| !motionEstimationSelected.equals(x264Options
 						.getMotionEstimation())) {
-			motionEstimationViewer.setSelection(new StructuredSelection(
+			this.motionEstimationViewer.setSelection(new StructuredSelection(
 					x264Options.getMotionEstimation()));
 		}
 
 		// Change Reference frame
-		Integer referenceFrameSelected = referenceFrameSpinner.getSelection();
+		Integer referenceFrameSelected = this.referenceFrameSpinner.getSelection();
 		if (referenceFrameSelected == null
 				|| !referenceFrameSelected.equals(x264Options
 						.getReferenceFrame())) {
-			referenceFrameSpinner.setSelection(x264Options.getReferenceFrame());
+			this.referenceFrameSpinner.setSelection(x264Options.getReferenceFrame());
 		}
 
 		// Change SubQ
-		Integer subqSelected = subqSpinner.getSelection();
+		Integer subqSelected = this.subqSpinner.getSelection();
 		if (subqSelected == null
 				|| !subqSelected.equals(x264Options.getSubpelRefinement())) {
-			subqSpinner.setSelection(x264Options.getSubpelRefinement());
+			this.subqSpinner.setSelection(x264Options.getSubpelRefinement());
 		}
 
 		this.layout();
@@ -682,7 +682,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the reference frame.
 	 */
-	private void referenceFrameAsChanged() {
+	void referenceFrameAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -698,7 +698,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Check if value as changed
-		int referenceFrameSelection = referenceFrameSpinner.getSelection();
+		int referenceFrameSelection = this.referenceFrameSpinner.getSelection();
 		if (referenceFrameSelection != x264Options.getReferenceFrame()) {
 
 			// Change profile value
@@ -712,7 +712,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the subq.
 	 */
-	private void subqSelectionAsChanged() {
+	void subqSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -728,7 +728,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Check if value as changed
-		Integer subqSelection = subqSpinner.getSelection();
+		Integer subqSelection = this.subqSpinner.getSelection();
 		if (subqSelection != x264Options.getSubpelRefinement()) {
 
 			// Change profile value
@@ -742,7 +742,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void trellisSelectionAsChanged() {
+	void trellisSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -758,7 +758,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean trellisSelection = trellisButton.getSelection();
+		boolean trellisSelection = this.trellisButton.getSelection();
 		if (trellisSelection != x264Options.isTrellisEnabled()) {
 
 			// Change profile value
@@ -772,7 +772,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void twoPassSelectionAsChanged() {
+	void twoPassSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -784,7 +784,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		VideoEncodingOptions videoOptions = options.getVideoOptions();
 
 		// Check if value as changed
-		boolean twoPassSelection = twoPassButton.getSelection();
+		boolean twoPassSelection = this.twoPassButton.getSelection();
 		if (twoPassSelection != (videoOptions.getPass() == 2)) {
 
 			// Change profile value
@@ -798,7 +798,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void threadSelectionAsChanged() {
+	void threadSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -814,7 +814,7 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 		X264EncodingOptions x264Options = (X264EncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean threadSelection = threadButton.getSelection();
+		boolean threadSelection = this.threadButton.getSelection();
 		if (threadSelection != x264Options.isThreadsEnabled()) {
 
 			// Change profile value

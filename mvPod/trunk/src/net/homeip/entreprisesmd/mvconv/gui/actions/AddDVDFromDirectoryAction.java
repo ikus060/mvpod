@@ -30,7 +30,7 @@ public class AddDVDFromDirectoryAction extends Action {
 	/**
 	 * List of supported image file extention (*.vob, *.bup, *.ifo, ...).
 	 */
-	private static final String[] EXTENTIONS = { "*.vob;*.VOB", "*.*" };
+	private static final String[] EXTENTIONS = { "*.vob;*.VOB", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * List of localisation identifier of each extentions.
@@ -45,7 +45,7 @@ public class AddDVDFromDirectoryAction extends Action {
 		/**
 		 * DVD device.
 		 */
-		private String filename;
+		String filename;
 
 		/**
 		 * Create a new operation.
@@ -60,46 +60,48 @@ public class AddDVDFromDirectoryAction extends Action {
 		}
 
 		public void cancel() {
+			// Cannot cancel the opperation
 		}
 
 		public void start() {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
-					File file = new File(filename);
+					File file = new File(AddDVDOperation.this.filename);
 					Video video = createInputOutputVideo(file.getParent());
 					if (video != null) {
-						videoList.addInputVideo(video);
+						AddDVDFromDirectoryAction.this.videoList
+								.addInputVideo(video);
 					}
 				}
 			});
 		}
-	};
+	}
 
 	/**
 	 * The video list.
 	 */
-	private VideoList videoList;
+	VideoList videoList;
 
 	/**
 	 * Shell provider.
 	 */
-	private IShellProvider shellProvider;
+	IShellProvider shellProvider;
 
 	/**
 	 * Last file name selected or null.
 	 */
-	private String lastFilePath;
+	String lastFilePath;
 
 	/**
 	 * The output file provider.
 	 */
-	private IVideoOutputFileProvider fileProvider;
+	IVideoOutputFileProvider fileProvider;
 
 	/**
 	 * MPlayer provider.
 	 */
-	private MPlayerProvider mplayerProvider;
-	
+	MPlayerProvider mplayerProvider;
+
 	/**
 	 * Create a new <code>AddVideoFileAction</code>.
 	 * 
@@ -112,7 +114,8 @@ public class AddDVDFromDirectoryAction extends Action {
 	 *            file name of the video.
 	 */
 	public AddDVDFromDirectoryAction(IShellProvider shellProvider,
-			VideoList videoList, IVideoOutputFileProvider fileProvider, MPlayerProvider mplayerProvider) {
+			VideoList videoList, IVideoOutputFileProvider fileProvider,
+			MPlayerProvider mplayerProvider) {
 
 		super(Localization
 				.getString(Localization.ACTION_ADD_DVD_FROM_DIRECTORY));
@@ -142,17 +145,17 @@ public class AddDVDFromDirectoryAction extends Action {
 	 *            the dvd directory.
 	 * @return an input/output video from the filename.
 	 */
-	private Video createInputOutputVideo(String directory) {
+	Video createInputOutputVideo(String directory) {
 		InputVideoDVD inputVideoDvd;
 		try {
 			inputVideoDvd = InputVideoDVD.fromDVDDirectory(new File(directory));
 		} catch (FileNotFoundException e) {
-			ErrorMessage.showLocalizedError(shellProvider.getShell(),
+			ErrorMessage.showLocalizedError(this.shellProvider.getShell(),
 					Localization.ADDDVD_DIRECTORY_NOT_VALID);
 			return null;
 		}
 
-		File output = fileProvider.getFile(inputVideoDvd);
+		File output = this.fileProvider.getFile(inputVideoDvd);
 
 		return new Video(inputVideoDvd, output);
 	}
@@ -162,16 +165,16 @@ public class AddDVDFromDirectoryAction extends Action {
 	 */
 	public void run() {
 
-		//Check if Mplayer exist
-		if (mplayerProvider.getWrapper() == null) {
-			ErrorMessage.showLocalizedError(shellProvider.getShell(),
+		// Check if Mplayer exist
+		if (this.mplayerProvider.getWrapper() == null) {
+			ErrorMessage.showLocalizedError(this.shellProvider.getShell(),
 					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
-		
+
 		// Setup dialog
-		FileDialog dlg = new FileDialog(shellProvider.getShell(), SWT.OPEN);
-		dlg.setFilterPath(lastFilePath);
+		FileDialog dlg = new FileDialog(this.shellProvider.getShell(), SWT.OPEN);
+		dlg.setFilterPath(this.lastFilePath);
 		dlg.setFilterExtensions(EXTENTIONS);
 		String[] localizedNames = new String[EXTENTION_NAMES.length];
 		for (int index = 0; index < EXTENTION_NAMES.length; index++) {
@@ -191,14 +194,14 @@ public class AddDVDFromDirectoryAction extends Action {
 
 			filename = dlg.getFilterPath() + File.separator + dlg.getFileName();
 
-			lastFilePath = dlg.getFilterPath();
+			this.lastFilePath = dlg.getFilterPath();
 			Main.instance().getPreferenceStore().setValue(
-					Main.PREF_LAST_DIRECTORY, lastFilePath);
+					Main.PREF_LAST_DIRECTORY, this.lastFilePath);
 
 			Operation operation = new AddDVDOperation(filename);
 			String progressMessage = Localization
 					.getString(Localization.ACTION_ADD_DVD_FROM_DIRECTORY_PROGRESS_MESSAGE);
-			ProgressDialog progressDlg = new ProgressDialog(shellProvider
+			ProgressDialog progressDlg = new ProgressDialog(this.shellProvider
 					.getShell());
 			progressDlg.setOperation(operation);
 			progressDlg.setProgressMessage(progressMessage);

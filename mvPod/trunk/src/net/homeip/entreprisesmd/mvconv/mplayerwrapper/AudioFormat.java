@@ -15,142 +15,142 @@ import java.util.Map;
  */
 public class AudioFormat {
 
-	public static final AudioFormat FORMAT_AC3 = new AudioFormat("FORMAT_AC3",
-			new String[] { ".ac3" });
+	public static final AudioFormat FORMAT_AC3 = new AudioFormat("FORMAT_AC3", //$NON-NLS-1$
+			new String[] { ".ac3" }); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_ACELP = new AudioFormat(
-			"FORMAT_ACELP", new String[] { ".wma" });
+			"FORMAT_ACELP", new String[] { ".wma" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_ADPCM = new AudioFormat(
-			"FORMAT_ADPCM", new String[] { ".wav" });
+			"FORMAT_ADPCM", new String[] { ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_ALAC = new AudioFormat(
-			"FORMAT_ALAC", new String[] { ".mp4a" });
+			"FORMAT_ALAC", new String[] { ".mp4a" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_ALAW = new AudioFormat(
-			"FORMAT_ALAW", new String[] { ".wav" });
-	public static final AudioFormat FORMAT_ALF = new AudioFormat("FORMAT_ALF",
-			new String[] { ".alf" });
-	public static final AudioFormat FORMAT_AMR = new AudioFormat("FORMAT_AMR",
-			new String[] { ".amr", ".awb" });
+			"FORMAT_ALAW", new String[] { ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final AudioFormat FORMAT_ALF = new AudioFormat("FORMAT_ALF", //$NON-NLS-1$
+			new String[] { ".alf" }); //$NON-NLS-1$
+	public static final AudioFormat FORMAT_AMR = new AudioFormat("FORMAT_AMR", //$NON-NLS-1$
+			new String[] { ".amr", ".awb" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_ATRAC = new AudioFormat(
-			"FORMAT_ATRAC", new String[] { ".wav" });
+			"FORMAT_ATRAC", new String[] { ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_CREATIVE = new AudioFormat(
-			"FORMAT_CREATIVE", new String[] { ".wav" });
-	public static final AudioFormat FORMAT_DTS = new AudioFormat("FORMAT_DTS",
-			new String[] { ".dts", ".wav" });
+			"FORMAT_CREATIVE", new String[] { ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final AudioFormat FORMAT_DTS = new AudioFormat("FORMAT_DTS", //$NON-NLS-1$
+			new String[] { ".dts", ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_DVDPCM = new AudioFormat(
-			"FORMAT_DVDPCM", new String[0]);
+			"FORMAT_DVDPCM", new String[0]); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_FLAC = new AudioFormat(
-			"FORMAT_FLAC", new String[] { ".flac" });
+			"FORMAT_FLAC", new String[] { ".flac" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_G726 = new AudioFormat(
-			"FORMAT_G726", new String[] { ".g726" });
-	public static final AudioFormat FORMAT_GSM = new AudioFormat("FORMAT_GSM",
-			new String[] { ".gsm" });
-	public static final AudioFormat FORMAT_IMA = new AudioFormat("FORMAT_IMA",
-			new String[] { ".wav" });
+			"FORMAT_G726", new String[] { ".g726" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final AudioFormat FORMAT_GSM = new AudioFormat("FORMAT_GSM", //$NON-NLS-1$
+			new String[] { ".gsm" }); //$NON-NLS-1$
+	public static final AudioFormat FORMAT_IMA = new AudioFormat("FORMAT_IMA", //$NON-NLS-1$
+			new String[] { ".wav" }); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_IMA_PCM = new AudioFormat(
-			"FORMAT_IMA_PCM", new String[] { ".pcm" });
-	public static final AudioFormat FORMAT_IMC = new AudioFormat("FORMAT_IMC",
-			new String[] { ".wav" });
+			"FORMAT_IMA_PCM", new String[] { ".pcm" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final AudioFormat FORMAT_IMC = new AudioFormat("FORMAT_IMC", //$NON-NLS-1$
+			new String[] { ".wav" }); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_MAC3 = new AudioFormat(
-			"FORMAT_MAC3", new String[] { ".aiff" });
+			"FORMAT_MAC3", new String[] { ".aiff" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_MAC6 = new AudioFormat(
-			"FORMAT_MAC6", new String[] { ".aiff" });
-	public static final AudioFormat FORMAT_MAD = new AudioFormat("FORMAT_MAD",
-			new String[] { ".mp3" });
-	public static final AudioFormat FORMAT_MP3 = new AudioFormat("FORMAT_MP3",
-			new String[] { ".mp3" });
-	public static final AudioFormat FORMAT_MPC = new AudioFormat("FORMAT_MPC",
-			new String[] { ".mpc" });
+			"FORMAT_MAC6", new String[] { ".aiff" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final AudioFormat FORMAT_MAD = new AudioFormat("FORMAT_MAD", //$NON-NLS-1$
+			new String[] { ".mp3" }); //$NON-NLS-1$
+	public static final AudioFormat FORMAT_MP3 = new AudioFormat("FORMAT_MP3", //$NON-NLS-1$
+			new String[] { ".mp3" }); //$NON-NLS-1$
+	public static final AudioFormat FORMAT_MPC = new AudioFormat("FORMAT_MPC", //$NON-NLS-1$
+			new String[] { ".mpc" }); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_MPEG4_AAC = new AudioFormat(
-			"FORMAT_MPEG4_AAC", new String[] { ".aac", ".aacp" });
-	public static final AudioFormat FORMAT_MSN = new AudioFormat("FORMAT_MSN",
-			new String[] { ".wav" });
-	public static final AudioFormat FORMAT_PCM = new AudioFormat("FORMAT_PCM",
-			new String[] { ".pcm", ".wav" });
+			"FORMAT_MPEG4_AAC", new String[] { ".aac", ".aacp" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public static final AudioFormat FORMAT_MSN = new AudioFormat("FORMAT_MSN", //$NON-NLS-1$
+			new String[] { ".wav" }); //$NON-NLS-1$
+	public static final AudioFormat FORMAT_PCM = new AudioFormat("FORMAT_PCM", //$NON-NLS-1$
+			new String[] { ".pcm", ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_QCLP = new AudioFormat(
-			"FORMAT_QCLP", new String[0]);
+			"FORMAT_QCLP", new String[0]); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_QDM2 = new AudioFormat(
-			"FORMAT_QDM2", new String[0]);
+			"FORMAT_QDM2", new String[0]); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_QDMC = new AudioFormat(
-			"FORMAT_QDMC", new String[0]);
+			"FORMAT_QDMC", new String[0]); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_SHRN = new AudioFormat(
-			"FORMAT_SHRN", new String[] { ".shn" });
-	public static final AudioFormat FORMAT_SPX = new AudioFormat("FORMAT_SPX",
-			new String[] { ".spx" });
+			"FORMAT_SHRN", new String[] { ".shn" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final AudioFormat FORMAT_SPX = new AudioFormat("FORMAT_SPX", //$NON-NLS-1$
+			new String[] { ".spx" }); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_TRSP = new AudioFormat(
-			"FORMAT_TRSP", new String[] { ".wav" });
-	public static final AudioFormat FORMAT_TTA = new AudioFormat("FORMAT_TTA",
-			new String[] { ".tta" });
+			"FORMAT_TRSP", new String[] { ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final AudioFormat FORMAT_TTA = new AudioFormat("FORMAT_TTA", //$NON-NLS-1$
+			new String[] { ".tta" }); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_ULAW = new AudioFormat(
-			"FORMAT_ULAW", new String[] { ".ulaw" });
+			"FORMAT_ULAW", new String[] { ".ulaw" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_VOWR = new AudioFormat(
-			"FORMAT_VOWR", new String[0]);
+			"FORMAT_VOWR", new String[0]); //$NON-NLS-1$
 	public static final AudioFormat FORMAT_VRBS = new AudioFormat(
-			"FORMAT_VRBS", new String[] { ".ogg", ".ogm" });
+			"FORMAT_VRBS", new String[] { ".ogg", ".ogm" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	public static final AudioFormat FORMAT_WAV_PCM = new AudioFormat(
-			"FORMAT_WAV_PCM", new String[] { ".wav" });
+			"FORMAT_WAV_PCM", new String[] { ".wav" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_WMA1 = new AudioFormat(
-			"FORMAT_WMA1", new String[] { ".wma" });
+			"FORMAT_WMA1", new String[] { ".wma" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_WMA9 = new AudioFormat(
-			"FORMAT_WMA9", new String[] { ".wma" });
+			"FORMAT_WMA9", new String[] { ".wma" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final AudioFormat FORMAT_WVPK = new AudioFormat(
-			"FORMAT_WVPK", new String[] { ".wv" });
+			"FORMAT_WVPK", new String[] { ".wv" }); //$NON-NLS-1$ //$NON-NLS-2$
 
 	private static Map<String, AudioFormat> formats = new HashMap<String, AudioFormat>();
 	static {
-		formats.put("0", FORMAT_PCM);
-		formats.put("1", FORMAT_PCM);
-		formats.put("2", FORMAT_PCM);
-		formats.put("3", FORMAT_WVPK);
-		formats.put("6", FORMAT_ALAW);
-		formats.put("7", FORMAT_ULAW);
-		formats.put("17", FORMAT_IMA);
-		formats.put("34", FORMAT_TRSP);
-		formats.put("49", FORMAT_MSN);
-		formats.put("50", FORMAT_MSN);
-		formats.put("69", FORMAT_G726);
-		formats.put("80", FORMAT_MAD);
-		formats.put("85", FORMAT_MP3);
-		formats.put("117", FORMAT_VOWR);
-		formats.put("255", FORMAT_MPEG4_AAC);
-		formats.put("304", FORMAT_ACELP);
-		formats.put("352", FORMAT_WMA1);
-		formats.put("353", FORMAT_WMA9);
-		formats.put("354", FORMAT_WMA9);
-		formats.put("512", FORMAT_CREATIVE);
-		formats.put("624", FORMAT_ATRAC);
-		formats.put("1025", FORMAT_IMC);
-		formats.put("8132", FORMAT_ALF);
-		formats.put("8192", FORMAT_AC3);
-		formats.put("8193", FORMAT_DTS);
-		formats.put("28781", FORMAT_MPEG4_AAC);
-		formats.put("65537", FORMAT_DVDPCM);
-		formats.put("33583981", FORMAT_ADPCM);
-		formats.put("285242221", FORMAT_IMA_PCM);
-		formats.put("agsm", FORMAT_GSM);
-		formats.put("alac", FORMAT_ALAC);
-		formats.put("alaw", FORMAT_ALAW);
-		formats.put("fl32", FORMAT_PCM);
-		formats.put("fLaC", FORMAT_FLAC);
-		formats.put("ima4", FORMAT_IMA);
-		formats.put("MAC3", FORMAT_MAC3);
-		formats.put("MAC6", FORMAT_MAC6);
-		formats.put("MP4A", FORMAT_MPEG4_AAC);
-		formats.put("mp4a", FORMAT_MPEG4_AAC);
-		formats.put("MPC ", FORMAT_MPC);
-		formats.put("NONE", FORMAT_PCM);
-		formats.put("Qclp", FORMAT_QCLP);
-		formats.put("QDM2", FORMAT_QDM2);
-		formats.put("QDMC", FORMAT_QDMC);
-		formats.put("RADV", FORMAT_WAV_PCM);
-		formats.put("raw ", FORMAT_PCM);
-		formats.put("samr", FORMAT_AMR);
-		formats.put("shrn", FORMAT_SHRN);
-		formats.put("sowt", FORMAT_PCM);
-		formats.put("spx ", FORMAT_SPX);
-		formats.put("TTA1", FORMAT_TTA);
-		formats.put("twos", FORMAT_PCM);
-		formats.put("ulaw", FORMAT_ULAW);
-		formats.put("vrbs", FORMAT_VRBS);
-		formats.put("WVPK", FORMAT_WVPK);
+		formats.put("0", FORMAT_PCM); //$NON-NLS-1$
+		formats.put("1", FORMAT_PCM); //$NON-NLS-1$
+		formats.put("2", FORMAT_PCM); //$NON-NLS-1$
+		formats.put("3", FORMAT_WVPK); //$NON-NLS-1$
+		formats.put("6", FORMAT_ALAW); //$NON-NLS-1$
+		formats.put("7", FORMAT_ULAW); //$NON-NLS-1$
+		formats.put("17", FORMAT_IMA); //$NON-NLS-1$
+		formats.put("34", FORMAT_TRSP); //$NON-NLS-1$
+		formats.put("49", FORMAT_MSN); //$NON-NLS-1$
+		formats.put("50", FORMAT_MSN); //$NON-NLS-1$
+		formats.put("69", FORMAT_G726); //$NON-NLS-1$
+		formats.put("80", FORMAT_MAD); //$NON-NLS-1$
+		formats.put("85", FORMAT_MP3); //$NON-NLS-1$
+		formats.put("117", FORMAT_VOWR); //$NON-NLS-1$
+		formats.put("255", FORMAT_MPEG4_AAC); //$NON-NLS-1$
+		formats.put("304", FORMAT_ACELP); //$NON-NLS-1$
+		formats.put("352", FORMAT_WMA1); //$NON-NLS-1$
+		formats.put("353", FORMAT_WMA9); //$NON-NLS-1$
+		formats.put("354", FORMAT_WMA9); //$NON-NLS-1$
+		formats.put("512", FORMAT_CREATIVE); //$NON-NLS-1$
+		formats.put("624", FORMAT_ATRAC); //$NON-NLS-1$
+		formats.put("1025", FORMAT_IMC); //$NON-NLS-1$
+		formats.put("8132", FORMAT_ALF);  //$NON-NLS-1$
+		formats.put("8192", FORMAT_AC3);  //$NON-NLS-1$
+		formats.put("8193", FORMAT_DTS);  //$NON-NLS-1$
+		formats.put("28781", FORMAT_MPEG4_AAC);  //$NON-NLS-1$
+		formats.put("65537", FORMAT_DVDPCM);  //$NON-NLS-1$
+		formats.put("33583981", FORMAT_ADPCM);  //$NON-NLS-1$
+		formats.put("285242221", FORMAT_IMA_PCM);  //$NON-NLS-1$
+		formats.put("agsm", FORMAT_GSM);  //$NON-NLS-1$
+		formats.put("alac", FORMAT_ALAC);  //$NON-NLS-1$
+		formats.put("alaw", FORMAT_ALAW);  //$NON-NLS-1$
+		formats.put("fl32", FORMAT_PCM);  //$NON-NLS-1$
+		formats.put("fLaC", FORMAT_FLAC);  //$NON-NLS-1$
+		formats.put("ima4", FORMAT_IMA);  //$NON-NLS-1$
+		formats.put("MAC3", FORMAT_MAC3);  //$NON-NLS-1$
+		formats.put("MAC6", FORMAT_MAC6);  //$NON-NLS-1$
+		formats.put("MP4A", FORMAT_MPEG4_AAC);  //$NON-NLS-1$
+		formats.put("mp4a", FORMAT_MPEG4_AAC);  //$NON-NLS-1$
+		formats.put("MPC ", FORMAT_MPC);  //$NON-NLS-1$
+		formats.put("NONE", FORMAT_PCM);  //$NON-NLS-1$
+		formats.put("Qclp", FORMAT_QCLP);  //$NON-NLS-1$
+		formats.put("QDM2", FORMAT_QDM2);  //$NON-NLS-1$
+		formats.put("QDMC", FORMAT_QDMC);  //$NON-NLS-1$
+		formats.put("RADV", FORMAT_WAV_PCM);  //$NON-NLS-1$
+		formats.put("raw ", FORMAT_PCM);  //$NON-NLS-1$
+		formats.put("samr", FORMAT_AMR);  //$NON-NLS-1$
+		formats.put("shrn", FORMAT_SHRN);  //$NON-NLS-1$
+		formats.put("sowt", FORMAT_PCM);  //$NON-NLS-1$
+		formats.put("spx ", FORMAT_SPX);  //$NON-NLS-1$
+		formats.put("TTA1", FORMAT_TTA);  //$NON-NLS-1$
+		formats.put("twos", FORMAT_PCM);  //$NON-NLS-1$
+		formats.put("ulaw", FORMAT_ULAW);  //$NON-NLS-1$
+		formats.put("vrbs", FORMAT_VRBS);  //$NON-NLS-1$
+		formats.put("WVPK", FORMAT_WVPK);  //$NON-NLS-1$
 	}
 
 	/**
@@ -192,18 +192,18 @@ public class AudioFormat {
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof AudioFormat) {
-			return ((AudioFormat) obj).formatId.equals(formatId);
+			return ((AudioFormat) obj).formatId.equals(this.formatId);
 		}
 		return false;
 	}
 
-	/**
+	/**this.
 	 * Return the format id.
 	 * 
 	 * @return format identifier.
 	 */
 	public String getFormatID() {
-		return formatId;
+		return this.formatId;
 	}
 
 	/**
@@ -212,14 +212,14 @@ public class AudioFormat {
 	 * @return list of file extentions.
 	 */
 	public String[] getFileExtentions() {
-		return fileExtentions.clone();
+		return this.fileExtentions.clone();
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return formatId.hashCode();
+		return this.formatId.hashCode();
 	}
 
 }

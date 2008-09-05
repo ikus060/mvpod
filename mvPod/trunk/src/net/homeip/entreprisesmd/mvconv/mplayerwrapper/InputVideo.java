@@ -42,12 +42,12 @@ public abstract class InputVideo {
 	 * Aspect ratio, Keep original value.
 	 */
 	public static final double ASPECT_RATIO_KEEP = 0;
-	
+
 	/**
 	 * Aspect ratio.
 	 */
 	private double overwriteAspectRatio = 0;
-	
+
 	/**
 	 * Return True if the <code>obj</code> are equals to this object.
 	 * 
@@ -64,7 +64,7 @@ public abstract class InputVideo {
 	 *         the default value.
 	 */
 	public double getAspectRatio() {
-		return overwriteAspectRatio;
+		return this.overwriteAspectRatio;
 	}
 
 	/**
@@ -87,9 +87,10 @@ public abstract class InputVideo {
 	 *            the video.
 	 */
 	public void setAspectRatio(double value) {
-		if(value<=0)
-			overwriteAspectRatio = 0;
-		overwriteAspectRatio = value;
+		if (value <= 0) {
+			this.overwriteAspectRatio = 0;
+		}
+		this.overwriteAspectRatio = value;
 	}
 
 	/**
@@ -97,19 +98,19 @@ public abstract class InputVideo {
 	 * 
 	 * @return the argument list.
 	 */
-	public String[] toCommandList(){
-		
-		if (overwriteAspectRatio > 0 ) {
+	public String[] toCommandList() {
+
+		if (this.overwriteAspectRatio > 0) {
 
 			String[] args = new String[2];
-			args[0] = "-aspect";
-			args[1] = Double.toString(overwriteAspectRatio) + ":1";
+			args[0] = "-aspect"; //$NON-NLS-1$
+			args[1] = Double.toString(this.overwriteAspectRatio) + ":1"; //$NON-NLS-1$
 			return args;
 
 		}
 
 		return new String[0];
-		
+
 	}
 
 }

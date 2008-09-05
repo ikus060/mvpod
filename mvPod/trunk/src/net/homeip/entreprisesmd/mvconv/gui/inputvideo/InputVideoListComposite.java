@@ -35,21 +35,21 @@ public class InputVideoListComposite extends Composite implements IViewPart {
 	/**
 	 * The property key to retrieve the os value.
 	 */
-	private static final String OS_NAME = "os.name";
+	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
 	/**
 	 * Linux OS name.
 	 */
-	private static final String OS_NAME_LINUX = "Linux";
+	private static final String OS_NAME_LINUX = "Linux"; //$NON-NLS-1$
 
 	/**
 	 * Data identifier.
 	 */
-	private static final String VIDEO_DATA = "InputVideoData";
+	private static final String VIDEO_DATA = "InputVideoData"; //$NON-NLS-1$
 
 	/**
 	 * Usage identifier.
 	 */
-	private static final String USED = "Used";
+	private static final String USED = "Used"; //$NON-NLS-1$
 
 	/**
 	 * The tab folder control.
@@ -117,7 +117,7 @@ public class InputVideoListComposite extends Composite implements IViewPart {
 	 *            the input video object.
 	 * @return the associated TabItem.
 	 */
-	private CTabItem getTabItemForInputVideo(Video video) {
+	CTabItem getTabItemForInputVideo(Video video) {
 		int index = 0;
 		while (index < tabFolder.getItemCount()
 				&& video != tabFolder.getItem(index).getData(VIDEO_DATA)) {
@@ -157,7 +157,7 @@ public class InputVideoListComposite extends Composite implements IViewPart {
 	 * @param list
 	 *            the video list.
 	 */
-	private void updateList(VideoList list) {
+	void updateList(VideoList list) {
 
 		// Set a tag to each tabFolder
 		for (int index = 0; index < tabFolder.getItemCount(); index++) {
@@ -217,7 +217,7 @@ public class InputVideoListComposite extends Composite implements IViewPart {
 	 * @param video
 	 *            the new video selected in the videoList.
 	 */
-	private void setActionContext(Video video) {
+	void setActionContext(Video video) {
 
 		if (video != null) {
 			IStructuredSelection selection = new StructuredSelection(video);

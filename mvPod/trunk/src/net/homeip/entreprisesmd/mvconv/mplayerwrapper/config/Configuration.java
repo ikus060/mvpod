@@ -30,7 +30,7 @@ public class Configuration {
 	/**
 	 * Regex for video output parameters.
 	 */
-	private static final String PATTERN_VIDEO_OUTPUT = "^vo\\s*=\\s*(.*)$";
+	private static final String PATTERN_VIDEO_OUTPUT = "^vo\\s*=\\s*(.*)$"; //$NON-NLS-1$
 	/**
 	 * Video output device list.
 	 */
@@ -51,14 +51,14 @@ public class Configuration {
 		if (videoOutputDevices != null)
 			return videoOutputDevices;
 
-		String[] options = new String[] { "-vo", "help" };
+		String[] options = new String[] { "-vo", "help" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 		// Execute process
 		Process newProcess;
 		try {
 			newProcess = wrapper.mplayer(options);
 		} catch (IOException e) {
-			throw new MPlayerException("Can't run mplayer process", e);
+			throw new MPlayerException("Can't run mplayer process", e); //$NON-NLS-1$
 		}
 
 		final Process proc = newProcess;
@@ -82,7 +82,7 @@ public class Configuration {
 		try {
 			proc.waitFor();
 		} catch (InterruptedException e) {
-			throw new MPlayerException("mplayer process get interrupted", e);
+			throw new MPlayerException("mplayer process get interrupted", e); //$NON-NLS-1$
 		}
 
 		// Check relevant error
@@ -96,7 +96,7 @@ public class Configuration {
 		ArrayList<VideoOutputDevice> list = new ArrayList<VideoOutputDevice>();
 
 		// Parse the output
-		Matcher matcher = Pattern.compile("\t([a-zA-Z0-9]*)\t(.*)").matcher(
+		Matcher matcher = Pattern.compile("\t([a-zA-Z0-9]*)\t(.*)").matcher( //$NON-NLS-1$
 				output);
 		while (matcher.find()) {
 			String name = matcher.group(1);
@@ -125,7 +125,7 @@ public class Configuration {
 		try {
 			reader = new FileReader(configFile);
 		} catch (FileNotFoundException e) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		try {
@@ -137,7 +137,7 @@ public class Configuration {
 			}
 			reader.close();
 		} catch (IOException e) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		return buf.toString();
@@ -181,7 +181,7 @@ public class Configuration {
 	public VideoOutputDevice getVideoOutputDevice() {
 
 		Matcher matcher = Pattern.compile(PATTERN_VIDEO_OUTPUT,Pattern.MULTILINE)
-				.matcher(content);
+				.matcher(this.content);
 
 		String name = null;
 		while (matcher.find()) {
@@ -206,9 +206,9 @@ public class Configuration {
 
 		VideoOutputDevice[] vo = null;
 		try {
-			vo = getAvailableVideoOutputDevices(wrapper);
+			vo = getAvailableVideoOutputDevices(this.wrapper);
 		} catch (MPlayerException e) {
-			return new VideoOutputDevice(name, "");
+			return new VideoOutputDevice(name, ""); //$NON-NLS-1$
 		}
 
 		int index = 0;
@@ -218,7 +218,7 @@ public class Configuration {
 		if (index < vo.length) {
 			return vo[index];
 		}
-		return new VideoOutputDevice(name, "");
+		return new VideoOutputDevice(name, ""); //$NON-NLS-1$
 
 	}
 
@@ -229,9 +229,9 @@ public class Configuration {
 
 		FileWriter writer;
 
-		writer = new FileWriter(configFile);
+		writer = new FileWriter(this.configFile);
 
-		writer.write(content);
+		writer.write(this.content);
 
 		writer.flush();
 		writer.close();
@@ -247,12 +247,12 @@ public class Configuration {
 	public void setVideoOutputDevice(VideoOutputDevice device) {
 
 		Matcher matcher = Pattern.compile(PATTERN_VIDEO_OUTPUT, Pattern.MULTILINE)
-				.matcher(content);
+				.matcher(this.content);
 
 		if (matcher.find()) {
-			content = matcher.replaceAll("vo=" + device.getName());
+			this.content = matcher.replaceAll("vo=" + device.getName()); //$NON-NLS-1$
 		} else {
-			content += "\r\nvo=" + device.getName();
+			this.content += "\r\nvo=" + device.getName(); //$NON-NLS-1$
 		}
 
 	}

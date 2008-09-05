@@ -50,7 +50,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Custom item.
 	 */
-	private static final String CUSTOM_ITEM = "Custom";
+	private static final String CUSTOM_ITEM = "Custom"; //$NON-NLS-1$
 
 	/**
 	 * Increment video bitrate value.
@@ -60,24 +60,24 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Bitrate spinner.
 	 */
-	private SpinnerEditor bitrateSpinner;
+	SpinnerEditor bitrateSpinner;
 	/**
 	 * Frame rate viewer
 	 */
-	private ComboCustomViewer frameRateEditor;
+	ComboCustomViewer frameRateEditor;
 	/**
 	 * Scaling method editor.
 	 */
-	private ComboViewer scalingMethodCombo;
+	ComboViewer scalingMethodCombo;
 
 	/**
 	 * Video width text editor
 	 */
-	private Text widthText;
+	Text widthText;
 	/**
 	 * Video height editor.
 	 */
-	private Text heightText;
+	Text heightText;
 
 	/**
 	 * Frame rate label provider.
@@ -99,7 +99,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 						.getString(Localization.OPTIONS_FRAME_RATE_CUSTOM);
 			}
 			if (key != null) {
-				return element.toString() + " " + Localization.getString(key);
+				return element.toString() + " " + Localization.getString(key); //$NON-NLS-1$
 			}
 			return element.toString();
 		}
@@ -134,7 +134,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -144,9 +144,9 @@ public class GenericVideoOptionsComposite extends Composite implements
 	 */
 	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			if (event.getSource() == frameRateEditor) {
+			if (event.getSource() == GenericVideoOptionsComposite.this.frameRateEditor) {
 				frameRateSelectionAsChanged();
-			} else if (event.getSource() == scalingMethodCombo) {
+			} else if (event.getSource() == GenericVideoOptionsComposite.this.scalingMethodCombo) {
 				scalingMethodAsChanged();
 			}
 		}
@@ -156,11 +156,11 @@ public class GenericVideoOptionsComposite extends Composite implements
 	 */
 	private Listener listener = new Listener() {
 		public void handleEvent(Event e) {
-			if (e.widget == bitrateSpinner) {
+			if (e.widget == GenericVideoOptionsComposite.this.bitrateSpinner) {
 				bitrateSelectionAsChanged();
-			} else if (e.widget == widthText) {
+			} else if (e.widget == GenericVideoOptionsComposite.this.widthText) {
 				dimensionAsChanged();
-			} else if (e.widget == heightText) {
+			} else if (e.widget == GenericVideoOptionsComposite.this.heightText) {
 				dimensionAsChanged();
 			}
 		}
@@ -203,7 +203,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Notify this view that user change the slected bitrate value.
 	 */
-	private void bitrateSelectionAsChanged() {
+	void bitrateSelectionAsChanged() {
 
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
@@ -212,7 +212,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 		}
 
 		// Check if value as changed
-		int videoBitrate = bitrateSpinner.getSelection();
+		int videoBitrate = this.bitrateSpinner.getSelection();
 		EncodingOptions options = profile.getEncodingOptions();
 		VideoEncodingOptions videoOptions = options.getVideoOptions();
 
@@ -231,7 +231,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Notify this view that user change the video dimension value.
 	 */
-	private void dimensionAsChanged() {
+	void dimensionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -262,7 +262,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Notify this class that user select an new frame rate.
 	 */
-	private void frameRateSelectionAsChanged() {
+	void frameRateSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -275,7 +275,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 
 		// Get Selection
 		Double frameRate = null;
-		Object selection = ((IStructuredSelection) frameRateEditor
+		Object selection = ((IStructuredSelection) this.frameRateEditor
 				.getSelection()).getFirstElement();
 		if (CUSTOM_ITEM.equals(selection)) {
 			// Ask new value to user
@@ -318,7 +318,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Notify this class that user as change the scaling method.
 	 */
-	private void scalingMethodAsChanged() {
+	void scalingMethodAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -348,8 +348,8 @@ public class GenericVideoOptionsComposite extends Composite implements
 	 * 
 	 * @return the frame rate selection.
 	 */
-	private Double getFrameRateSelection() {
-		Object selection = ((IStructuredSelection) frameRateEditor
+	Double getFrameRateSelection() {
+		Object selection = ((IStructuredSelection) this.frameRateEditor
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Double)) {
 			return null;
@@ -362,8 +362,8 @@ public class GenericVideoOptionsComposite extends Composite implements
 	 * 
 	 * @return the scaling method.
 	 */
-	private Integer getScalingMethod() {
-		Object selection = ((IStructuredSelection) scalingMethodCombo
+	Integer getScalingMethod() {
+		Object selection = ((IStructuredSelection) this.scalingMethodCombo
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return null;
@@ -376,9 +376,9 @@ public class GenericVideoOptionsComposite extends Composite implements
 	 * 
 	 * @return the width selection.
 	 */
-	private Integer getVideoHeight() {
+	Integer getVideoHeight() {
 		try {
-			return Integer.parseInt(heightText.getText());
+			return Integer.parseInt(this.heightText.getText());
 		} catch (NumberFormatException e) {
 			return null;
 		}
@@ -389,9 +389,9 @@ public class GenericVideoOptionsComposite extends Composite implements
 	 * 
 	 * @return the width selection.
 	 */
-	private Integer getVideoWidth() {
+	Integer getVideoWidth() {
 		try {
-			return Integer.parseInt(widthText.getText());
+			return Integer.parseInt(this.widthText.getText());
 		} catch (NumberFormatException e) {
 			return null;
 		}
@@ -403,7 +403,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return site;
+		return this.site;
 	}
 
 	/**
@@ -442,28 +442,28 @@ public class GenericVideoOptionsComposite extends Composite implements
 		label.setText(bitrateText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		bitrateSpinner = new SpinnerEditor(this, SWT.BORDER);
-		bitrateSpinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
+		this.bitrateSpinner = new SpinnerEditor(this, SWT.BORDER);
+		this.bitrateSpinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
 				false));
-		bitrateSpinner.setUnitString(bitrateUnit);
-		bitrateSpinner.setIncrement(INCREMENT_VIDEO_BITRATE);
-		bitrateSpinner.setMinimum(X264EncodingOptions.BITRATE_MIN_VALUE);
-		bitrateSpinner.setMaximum(X264EncodingOptions.BITRATE_MAX_VALUE);
-		bitrateSpinner.addListener(SWT.Selection, listener);
+		this.bitrateSpinner.setUnitString(bitrateUnit);
+		this.bitrateSpinner.setIncrement(INCREMENT_VIDEO_BITRATE);
+		this.bitrateSpinner.setMinimum(X264EncodingOptions.BITRATE_MIN_VALUE);
+		this.bitrateSpinner.setMaximum(X264EncodingOptions.BITRATE_MAX_VALUE);
+		this.bitrateSpinner.addListener(SWT.Selection, this.listener);
 
 		// Frame rate
 		label = new Label(this, SWT.NONE);
 		label.setText(frameRateText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		frameRateEditor = new ComboCustomViewer(this);
-		frameRateEditor.addSelectionChangedListener(selectionChangeListener);
-		frameRateEditor.setLabelProvider(frameRateLabelProvider);
-		frameRateEditor.add(CUSTOM_ITEM);
-		frameRateEditor.add(-1.0);
-		frameRateEditor.add(VideoEncodingOptions.NTSC_FRAME_RATE);
-		frameRateEditor.add(VideoEncodingOptions.NTSC_FILM_FRAME_RATE);
-		frameRateEditor.add(VideoEncodingOptions.PAL_FRAME_RATE);
+		this.frameRateEditor = new ComboCustomViewer(this);
+		this.frameRateEditor.addSelectionChangedListener(this.selectionChangeListener);
+		this.frameRateEditor.setLabelProvider(this.frameRateLabelProvider);
+		this.frameRateEditor.add(CUSTOM_ITEM);
+		this.frameRateEditor.add(-1.0);
+		this.frameRateEditor.add(VideoEncodingOptions.NTSC_FRAME_RATE);
+		this.frameRateEditor.add(VideoEncodingOptions.NTSC_FILM_FRAME_RATE);
+		this.frameRateEditor.add(VideoEncodingOptions.PAL_FRAME_RATE);
 
 		// Video dimension
 		label = new Label(this, SWT.NONE);
@@ -478,18 +478,18 @@ public class GenericVideoOptionsComposite extends Composite implements
 		videoDimComp
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		widthText = new Text(videoDimComp, SWT.BORDER);
-		widthText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		widthText.addVerifyListener(verifyListener);
-		widthText.addListener(SWT.FocusOut, listener);
+		this.widthText = new Text(videoDimComp, SWT.BORDER);
+		this.widthText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		this.widthText.addVerifyListener(this.verifyListener);
+		this.widthText.addListener(SWT.FocusOut, this.listener);
 
 		label = new Label(videoDimComp, SWT.NONE);
-		label.setText("x");
+		label.setText("x"); //$NON-NLS-1$
 
-		heightText = new Text(videoDimComp, SWT.BORDER);
-		heightText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		heightText.addVerifyListener(verifyListener);
-		heightText.addListener(SWT.FocusOut, listener);
+		this.heightText = new Text(videoDimComp, SWT.BORDER);
+		this.heightText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		this.heightText.addVerifyListener(this.verifyListener);
+		this.heightText.addListener(SWT.FocusOut, this.listener);
 
 		label = new Label(this, SWT.NONE);
 		label = new Label(this, SWT.NONE);
@@ -499,26 +499,26 @@ public class GenericVideoOptionsComposite extends Composite implements
 		label.setText(videoScalingMethode);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		scalingMethodCombo = new ComboViewer(this, SWT.READ_ONLY);
-		scalingMethodCombo.addSelectionChangedListener(selectionChangeListener);
-		scalingMethodCombo.setLabelProvider(scalingMethodLabelProvider);
-		scalingMethodCombo.add(VideoScalingOptions.METHOD_CROP);
-		scalingMethodCombo.add(VideoScalingOptions.METHOD_FILL);
-		scalingMethodCombo.add(VideoScalingOptions.METHOD_SCALE);
-		scalingMethodCombo.add(VideoScalingOptions.METHOD_FIT);
+		this.scalingMethodCombo = new ComboViewer(this, SWT.READ_ONLY);
+		this.scalingMethodCombo.addSelectionChangedListener(this.selectionChangeListener);
+		this.scalingMethodCombo.setLabelProvider(this.scalingMethodLabelProvider);
+		this.scalingMethodCombo.add(VideoScalingOptions.METHOD_CROP);
+		this.scalingMethodCombo.add(VideoScalingOptions.METHOD_FILL);
+		this.scalingMethodCombo.add(VideoScalingOptions.METHOD_SCALE);
+		this.scalingMethodCombo.add(VideoScalingOptions.METHOD_FIT);
 
 		// Force update
 		profileAsChanged();
 
 		// Add listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						GenericVideoOptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -527,7 +527,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
 		// Get the Lame encoding options
 		Profile selectedProfile = getViewSite().getProfileContext()
@@ -541,34 +541,34 @@ public class GenericVideoOptionsComposite extends Composite implements
 				.getScaleOptions();
 
 		// Change bitrate editor
-		if (videoOptions.getBitrate() != bitrateSpinner.getSelection()) {
-			bitrateSpinner.setSelection(videoOptions.getBitrate());
+		if (videoOptions.getBitrate() != this.bitrateSpinner.getSelection()) {
+			this.bitrateSpinner.setSelection(videoOptions.getBitrate());
 		}
 
 		// Change frame rate
 		Double frameRate = getFrameRateSelection();
 		if (frameRate == null || frameRate != videoOptions.getOutputFrameRate()) {
-			frameRateEditor.setSelection(new StructuredSelection(videoOptions
+			this.frameRateEditor.setSelection(new StructuredSelection(videoOptions
 					.getOutputFrameRate()));
 		}
 
 		// Change video dimension
 		Integer width = getVideoWidth();
 		if (width == null || width.intValue() != scaleOptions.getWidth()) {
-			widthText.setText(Integer.toString(scaleOptions.getWidth()));
+			this.widthText.setText(Integer.toString(scaleOptions.getWidth()));
 		}
 
 		// Change video dimension
 		Integer height = getVideoHeight();
 		if (width == null || height.intValue() != scaleOptions.getWidth()) {
-			heightText.setText(Integer.toString(scaleOptions.getHeight()));
+			this.heightText.setText(Integer.toString(scaleOptions.getHeight()));
 		}
 
 		// Change scaling method
 		Integer methode = getScalingMethod();
 		if (methode == null
 				|| methode.intValue() != scaleOptions.getScalingMethod()) {
-			scalingMethodCombo.setSelection(new StructuredSelection(
+			this.scalingMethodCombo.setSelection(new StructuredSelection(
 					scaleOptions.getScalingMethod()));
 		}
 

@@ -12,6 +12,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoInfo;
  * @author patapouf
  * 
  */
+@Deprecated
 public class CropFilter implements VideoFilter {
 
 	/**
@@ -35,10 +36,10 @@ public class CropFilter implements VideoFilter {
 	 */
 	public CropFilter(int width, int height) {
 		if (width <= 0) {
-			throw new IllegalArgumentException("Invalid width value " + width);
+			throw new IllegalArgumentException("Invalid width value " + width); //$NON-NLS-1$
 		}
 		if (height <= 0) {
-			throw new IllegalArgumentException("Invalid height value " + height);
+			throw new IllegalArgumentException("Invalid height value " + height); //$NON-NLS-1$
 		}
 		this.width = width;
 		this.height = height;
@@ -61,16 +62,16 @@ public class CropFilter implements VideoFilter {
 	 */
 	public CropFilter(int width, int height, int x, int y) {
 		if (width <= 0) {
-			throw new IllegalArgumentException("Invalid width value " + width);
+			throw new IllegalArgumentException("Invalid width value " + width); //$NON-NLS-1$
 		}
 		if (height <= 0) {
-			throw new IllegalArgumentException("Invalid height value " + height);
+			throw new IllegalArgumentException("Invalid height value " + height); //$NON-NLS-1$
 		}
 		if (x <= 0) {
-			throw new IllegalArgumentException("Invalid x value " + x);
+			throw new IllegalArgumentException("Invalid x value " + x); //$NON-NLS-1$
 		}
 		if (y <= 0) {
-			throw new IllegalArgumentException("Invalid y vlaue " + y);
+			throw new IllegalArgumentException("Invalid y vlaue " + y); //$NON-NLS-1$
 		}
 
 		this.width = width;
@@ -85,7 +86,7 @@ public class CropFilter implements VideoFilter {
 	 * @return the height
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -110,7 +111,7 @@ public class CropFilter implements VideoFilter {
 	 * @return the position of the crop area on X axis.
 	 */
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class CropFilter implements VideoFilter {
 	 * @return the position of the crop area on Y axis.
 	 */
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	/**
@@ -127,15 +128,15 @@ public class CropFilter implements VideoFilter {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
-		String value = "";
-		if (x > 0 && y > 0) {
-			value = String.format("=%d:%d:%d:%d", width, height, x, y);
+		String value = ""; //$NON-NLS-1$
+		if (this.x > 0 && this.y > 0) {
+			value = String.format("=%d:%d:%d:%d", this.width, this.height, this.x, this.y); //$NON-NLS-1$
 		} else {
-			value = String.format("=%d:%d", width, height);
+			value = String.format("=%d:%d", this.width, this.height); //$NON-NLS-1$
 		}
 
 		String[] args = new String[2];
-		args[0] = "-vf-add";
+		args[0] = "-vf-add"; //$NON-NLS-1$
 		args[1] = value;
 		return args;
 	}

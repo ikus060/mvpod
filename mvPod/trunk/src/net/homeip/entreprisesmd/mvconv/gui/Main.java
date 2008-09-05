@@ -30,48 +30,48 @@ public final class Main {
 	/**
 	 * Key preference to clear job when done.
 	 */
-	public static final String PREF_AUTO_CLEAR_JOBS = "pref.autoClearJobs";
+	public static final String PREF_AUTO_CLEAR_JOBS = "pref.autoClearJobs"; //$NON-NLS-1$
 	/**
 	 * Key preference to replace file when converting.
 	 */
-	public static final String PREF_REPLACE_FILE = "pref.replaceFile";
+	public static final String PREF_REPLACE_FILE = "pref.replaceFile"; //$NON-NLS-1$
 	/**
 	 * Key preference for last directory browse.
 	 */
-	public static final String PREF_LAST_DIRECTORY = "pref.lastDirectory";
+	public static final String PREF_LAST_DIRECTORY = "pref.lastDirectory"; //$NON-NLS-1$
 	/**
 	 * Key preference for mplayer directory.
 	 */
-	public static final String PREF_MPLAYER_DIRECTORY = "pref.mplayerDirectory";
+	public static final String PREF_MPLAYER_DIRECTORY = "pref.mplayerDirectory"; //$NON-NLS-1$
 	/**
 	 * Key preference for mp4box directory.
 	 */
-	public static final String PREF_MP4BOX_DIRECTORY = "pref.mp4BoxDirectory";
+	public static final String PREF_MP4BOX_DIRECTORY = "pref.mp4BoxDirectory"; //$NON-NLS-1$
 
 	/**
 	 * Preference file name.
 	 */
-	private static final String PREFERENCE_FILENAME = ".mvpod";
+	private static final String PREFERENCE_FILENAME = ".mvpod"; //$NON-NLS-1$
 	/**
 	 * Key value for user home directory.
 	 */
-	private static final String USER_HOME = "user.home";
+	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
 	/**
 	 * User profiles key.
 	 */
-	private static final String USER_PROFILE = "USERPROFILE";
+	private static final String USER_PROFILE = "USERPROFILE"; //$NON-NLS-1$
 	/**
 	 * Key value for OS name property.
 	 */
-	private static final String OS_NAME = "os.name";
+	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
 	/**
 	 * Linux OS value.
 	 */
-	private static final String OS_NAME_LINUX = "Linux";
+	private static final String OS_NAME_LINUX = "Linux"; //$NON-NLS-1$
 	/**
 	 * Windows OS value.
 	 */
-	private static final String OS_NAME_WINDOWS = "Windows";
+	private static final String OS_NAME_WINDOWS = "Windows"; //$NON-NLS-1$
 
 	/**
 	 * Unique instance of this class.
@@ -140,7 +140,7 @@ public final class Main {
 	 * Private constructor.
 	 */
 	private Main() {
-
+		// Private constructor to prevent creation of singleton
 	}
 
 	/**
@@ -320,20 +320,20 @@ public final class Main {
 		if (os.equals(OS_NAME_LINUX)) {
 			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
 					.getProperty(USER_HOME));
-			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "/usr/bin");
-			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "/usr/bin");
+			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "/usr/bin"); //$NON-NLS-1$
+			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "/usr/bin"); //$NON-NLS-1$
 			
 			
 		} else if (os.equals(OS_NAME_WINDOWS)) {
 			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System.getenv(USER_PROFILE));			
 			
-			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, ".");
-			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, ".");
+			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "."); //$NON-NLS-1$
+			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "."); //$NON-NLS-1$
 		} else {
 			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
 					.getProperty(USER_HOME));
-			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, ".");
-			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, ".");
+			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "."); //$NON-NLS-1$
+			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "."); //$NON-NLS-1$
 		}
 
 	}

@@ -80,7 +80,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -98,7 +98,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * View site.
 	 */
-	private IViewSite site;
+	private IViewSite viewSite;
 
 	/**
 	 * Create a new composite interface to select audio options for audio
@@ -120,7 +120,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Notify this class that user select a new audio codec.
 	 */
-	private void audioCodecSelectionChanged() {
+	protected void audioCodecSelectionChanged() {
 
 		AudioOptionsMapper mapperSelected = getAudioOptionsMapperSelection();
 		AudioEncodingOptions audioOptions = mapperSelected.getEncodingOptions();
@@ -151,12 +151,12 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	private AudioOptionsMapper findMapper(AudioFormat format) {
 
 		int index = 0;
-		while (index < mappers.size()
-				&& !mappers.get(index).getAudioFormat().equals(format)) {
+		while (index < this.mappers.size()
+				&& !this.mappers.get(index).getAudioFormat().equals(format)) {
 			index++;
 		}
-		if (index < mappers.size()) {
-			return mappers.get(index);
+		if (index < this.mappers.size()) {
+			return this.mappers.get(index);
 		}
 		return null;
 
@@ -168,7 +168,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 * @return the selected mapper.
 	 */
 	private AudioOptionsMapper getAudioOptionsMapperSelection() {
-		Object selection = ((IStructuredSelection) audioCodecViewer
+		Object selection = ((IStructuredSelection) this.audioCodecViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof AudioOptionsMapper)) {
 			return null;
@@ -182,7 +182,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return site;
+		return this.viewSite;
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 */
 	public void init(IViewSite site) {
 
-		this.site = site;
+		this.viewSite = site;
 
 		GridLayout layout = new GridLayout(2, false);
 		this.setLayout(layout);
@@ -205,31 +205,31 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true,false));
 		
 		
-		audioCodecViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
-		audioCodecViewer.setLabelProvider(labelProvider);
-		audioCodecViewer.addSelectionChangedListener(selectionListener);
-		audioCodecViewer.getCombo().setLayoutData(
+		this.audioCodecViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
+		this.audioCodecViewer.setLabelProvider(this.labelProvider);
+		this.audioCodecViewer.addSelectionChangedListener(this.selectionListener);
+		this.audioCodecViewer.getCombo().setLayoutData(
 				new GridData(SWT.LEFT, SWT.FILL, true, false));
-		for (int index = 0; index < mappers.size(); index++) {
-			audioCodecViewer.add(mappers.get(index));
+		for (int index = 0; index < this.mappers.size(); index++) {
+			this.audioCodecViewer.add(this.mappers.get(index));
 		}
 
 		// Composite component
-		comp = new Group(this, SWT.NONE);
-		comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		comp.setLayout(new FillLayout());
+		this.comp = new Group(this, SWT.NONE);
+		this.comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		this.comp.setLayout(new FillLayout());
 
 		profileAsChanged();
 
 		// Add listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						AudioOptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -238,10 +238,10 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
 		// Get audio options from curent profile context
-		Profile selectedProfile = site.getProfileContext().getSelectedProfile();
+		Profile selectedProfile = this.viewSite.getProfileContext().getSelectedProfile();
 		if (selectedProfile instanceof HardCodedProfile) {
 			return;
 		}
@@ -254,25 +254,25 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 		// Set audio codec selection
 		AudioOptionsMapper mapperSelected = getAudioOptionsMapperSelection();
 		if (mapperSelected == null || !mapperSelected.equals(mapper)) {
-			audioCodecViewer.setSelection(new StructuredSelection(mapper));
+			this.audioCodecViewer.setSelection(new StructuredSelection(mapper));
 		}
 
-		if (mapper == lastMapper)
+		if (mapper == this.lastMapper)
 			return;
 
 		// Remove older component
-		Control[] childs = comp.getChildren();
+		Control[] childs = this.comp.getChildren();
 		for (int index = 0; index < childs.length; index++) {
 			childs[index].dispose();
 		}
 
 		// Create new component
-		AudioOptionsInterface optionsInterface = mapper.createInterface(comp,
+		AudioOptionsInterface optionsInterface = mapper.createInterface(this.comp,
 				SWT.NONE);
 		optionsInterface.init(getViewSite());
-		comp.layout();
+		this.comp.layout();
 
-		lastMapper = mapper;
+		this.lastMapper = mapper;
 
 	}
 
@@ -284,7 +284,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 */
 	private void registerMapper(AudioOptionsMapper mapper) {
 
-		mappers.add(mapper);
+		this.mappers.add(mapper);
 
 	}
 

@@ -21,6 +21,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerWrapper;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 
@@ -89,7 +90,7 @@ public class ConvertVideoAction extends Action {
 			throw new NullPointerException();
 		}
 
-		actionContext.addActionContextListener(listener);
+		actionContext.addActionContextListener(this.listener);
 
 		contextChanged(actionContext);
 
@@ -108,7 +109,7 @@ public class ConvertVideoAction extends Action {
 	 * @param context
 	 *            the Action context.
 	 */
-	private void contextChanged(ActionContext context) {
+	void contextChanged(ActionContext context) {
 		boolean enabled = false;
 		if (context.getSelection() instanceof IStructuredSelection) {
 			IStructuredSelection selection = (IStructuredSelection) context
@@ -137,7 +138,7 @@ public class ConvertVideoAction extends Action {
 			encodingJob = mplayer.encode(inputVideo, outputFile, options);
 		} catch (MPlayerException e) {
 			e.printStackTrace();
-			ErrorMessage.showMPlayerException(shellProvider.getShell(), e,
+			ErrorMessage.showMPlayerException(this.shellProvider.getShell(), e,
 					Localization.ACTION_CONVERT_FAILED);
 			return null;
 		}
@@ -153,17 +154,17 @@ public class ConvertVideoAction extends Action {
 	public void run() {
 
 		// Check if mplayer exist
-		MPlayerWrapper mplayer = mplayerProvider.getWrapper();
+		MPlayerWrapper mplayer = this.mplayerProvider.getWrapper();
 		if (mplayer == null) {
-			ErrorMessage.showLocalizedError(shellProvider.getShell(),
+			ErrorMessage.showLocalizedError(this.shellProvider.getShell(),
 					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
 		
 		// Get selected video
 		Video video = null;
-		if (actionContext.getSelection() instanceof IStructuredSelection) {
-			IStructuredSelection selection = (IStructuredSelection) actionContext
+		if (this.actionContext.getSelection() instanceof IStructuredSelection) {
+			IStructuredSelection selection = (IStructuredSelection) this.actionContext
 					.getSelection();
 			Object element = selection.getFirstElement();
 			if (element instanceof Video) {
@@ -182,10 +183,10 @@ public class ConvertVideoAction extends Action {
 			String toogle = Main.instance().getPreferenceStore()
 					.getString(Main.PREF_REPLACE_FILE);
 
-			if (!toogle.equals(ReplaceFileMessageDialog.ALWAYS)) {
+			if (!toogle.equals(MessageDialogWithToggle.ALWAYS)) {
 
 				ReplaceFileMessageDialog dlg = new ReplaceFileMessageDialog(
-						shellProvider.getShell(), outputFile.getName(), false);
+						this.shellProvider.getShell(), outputFile.getName(), false);
 				dlg.setPrefKey(Main.PREF_REPLACE_FILE);
 				dlg.setPrefStore(Main.instance().getPreferenceStore());
 
@@ -198,7 +199,7 @@ public class ConvertVideoAction extends Action {
 
 		// Start to create the convert job
 		EncodingOptions options;
-		options = profileContext.getSelectedProfile().getEncodingOptions();
+		options = this.profileContext.getSelectedProfile().getEncodingOptions();
 
 		// Create the job
 		Job job = createJobForVideo(mplayer, video, options);
@@ -207,9 +208,9 @@ public class ConvertVideoAction extends Action {
 		}
 
 		// Remove the vide from the list
-		videoList.removeVideo(video);
+		this.videoList.removeVideo(video);
 		// Append the job to the jobqueue
-		jobQueue.append(job);
+		this.jobQueue.append(job);
 
 	}
 }

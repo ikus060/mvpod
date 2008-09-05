@@ -22,7 +22,7 @@ public abstract class InputVideoComposite extends Composite implements IViewPart
 	/**
 	 * The view site.
 	 */
-	private IViewSite site;
+	private IViewSite viewSite;
 
 	/**
 	 * Create a new InputVideoComposite.
@@ -42,7 +42,7 @@ public abstract class InputVideoComposite extends Composite implements IViewPart
 	 * @return the input video object.
 	 */
 	public Video getVideo() {
-		return video;
+		return this.video;
 	}
 
 	/**
@@ -51,7 +51,7 @@ public abstract class InputVideoComposite extends Composite implements IViewPart
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return site;
+		return this.viewSite;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public abstract class InputVideoComposite extends Composite implements IViewPart
 	 *            the view site.
 	 */
 	public void init(IViewSite site) {
-		this.site = site;
+		this.viewSite = site;
 	}
 
 }

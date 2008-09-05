@@ -29,7 +29,7 @@ public class InputSpinnerDialog extends Dialog {
 	/**
 	 * The input value; the empty string by default.
 	 */
-	private Double value;//$NON-NLS-1$
+	private Double value;
 
 	/**
 	 * The input validator, or <code>null</code> if none.
@@ -55,28 +55,27 @@ public class InputSpinnerDialog extends Dialog {
 	 * Error message string.
 	 */
 	private String errorMessage;
-	
-	
+
 	/**
 	 * Digits value for spinner component.
 	 */
-	private int digits=0;
+	private int digits = 0;
 	/**
 	 * Increment value for spinner component.
-	 */	
-	private double increment=1;
+	 */
+	private double increment = 1;
 	/**
 	 * Minimum value for spinner component.
 	 */
-	private Double minimum=null;
+	private Double minimum = null;
 	/**
 	 * Maximum value for spinner component.
 	 */
-	private Double maximum=null;
+	private Double maximum = null;
 	/**
 	 * Unit value for spinner component.
 	 */
-	private String unitString = "";
+	private String unitString = ""; //$NON-NLS-1$
 
 	/**
 	 * Creates an input dialog with OK and Cancel buttons. Note that the dialog
@@ -101,7 +100,7 @@ public class InputSpinnerDialog extends Dialog {
 			String dialogMessage, Double initialValue, IInputValidator validator) {
 		super(parentShell);
 		this.title = dialogTitle;
-		message = dialogMessage;
+		this.message = dialogMessage;
 		if (initialValue == null) {
 			throw new NullPointerException();
 		}
@@ -114,9 +113,9 @@ public class InputSpinnerDialog extends Dialog {
 	 */
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.OK_ID) {
-			value = spinner.getSelection();
+			this.value = this.spinner.getSelection();
 		} else {
-			value = null;
+			this.value = null;
 		}
 		super.buttonPressed(buttonId);
 	}
@@ -128,8 +127,8 @@ public class InputSpinnerDialog extends Dialog {
 	 */
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		if (title != null) {
-			shell.setText(title);
+		if (this.title != null) {
+			shell.setText(this.title);
 		}
 	}
 
@@ -140,15 +139,15 @@ public class InputSpinnerDialog extends Dialog {
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
 		// create OK and Cancel buttons by default
-		okButton = createButton(parent, IDialogConstants.OK_ID,
+		this.okButton = createButton(parent, IDialogConstants.OK_ID,
 				IDialogConstants.OK_LABEL, true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
 		// do this here because setting the text will set enablement on the ok
 		// button
-		spinner.setFocus();
-		if (value != null) {
-			spinner.setSelection(value);
+		this.spinner.setFocus();
+		if (this.value != null) {
+			this.spinner.setSelection(this.value);
 		}
 	}
 
@@ -159,9 +158,9 @@ public class InputSpinnerDialog extends Dialog {
 		// create composite
 		Composite composite = (Composite) super.createDialogArea(parent);
 		// create message
-		if (message != null) {
+		if (this.message != null) {
 			Label label = new Label(composite, SWT.WRAP);
-			label.setText(message);
+			label.setText(this.message);
 			GridData data = new GridData(GridData.GRAB_HORIZONTAL
 					| GridData.GRAB_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL
 					| GridData.VERTICAL_ALIGN_CENTER);
@@ -169,31 +168,32 @@ public class InputSpinnerDialog extends Dialog {
 			label.setLayoutData(data);
 			label.setFont(parent.getFont());
 		}
-		spinner = new DigitsSpinner(composite, SWT.BORDER);
-		spinner.setDigits(digits);
-		if(minimum!=null){
-		spinner.setMinimum(minimum);
+		this.spinner = new DigitsSpinner(composite, SWT.BORDER);
+		this.spinner.setDigits(this.digits);
+		if (this.minimum != null) {
+			this.spinner.setMinimum(this.minimum);
 		}
-		if(maximum!=null){
-			spinner.setMaximum(maximum);
+		if (this.maximum != null) {
+			this.spinner.setMaximum(this.maximum);
 		}
-		spinner.setIncrement(increment);
-		spinner.setUnitString(unitString);
-		
-		spinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,false));
-		spinner.addSelectionListener(new SelectionAdapter() {
+		this.spinner.setIncrement(this.increment);
+		this.spinner.setUnitString(this.unitString);
+
+		this.spinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
+				false));
+		this.spinner.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				validateInput();
 			}
 		});
-		errorMessageText = new Text(composite, SWT.READ_ONLY | SWT.WRAP);
-		errorMessageText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
-		errorMessageText.setBackground(errorMessageText.getDisplay()
+		this.errorMessageText = new Text(composite, SWT.READ_ONLY | SWT.WRAP);
+		this.errorMessageText.setLayoutData(new GridData(
+				GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+		this.errorMessageText.setBackground(this.errorMessageText.getDisplay()
 				.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 		// Set the error message text
 		// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=66292
-		setErrorMessage(errorMessage);
+		setErrorMessage(this.errorMessage);
 
 		applyDialogFont(composite);
 		return composite;
@@ -205,7 +205,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the digits.
 	 */
 	public int getDigits() {
-		return digits;
+		return this.digits;
 	}
 
 	/**
@@ -214,6 +214,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the error message label
 	 * @deprecated use setErrorMessage(String) instead
 	 */
+	@Deprecated
 	protected Label getErrorMessageLabel() {
 		return null;
 	}
@@ -225,7 +226,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the increment value.
 	 */
 	public double getIncrement() {
-		return increment;
+		return this.increment;
 	}
 
 	/**
@@ -234,7 +235,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the maximum value.
 	 */
 	public double getMaximum() {
-		return maximum;
+		return this.maximum;
 	}
 
 	/**
@@ -243,7 +244,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the minimum value.
 	 */
 	public double getMinimum() {
-		return minimum;
+		return this.minimum;
 	}
 
 	/**
@@ -252,7 +253,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the ok button
 	 */
 	protected Button getOkButton() {
-		return okButton;
+		return this.okButton;
 	}
 
 	/**
@@ -261,7 +262,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the spinner area
 	 */
 	protected DigitsSpinner getSpinner() {
-		return spinner;
+		return this.spinner;
 	}
 
 	/**
@@ -270,7 +271,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the format expression.
 	 */
 	public String getUnitString() {
-		return unitString;
+		return this.unitString;
 	}
 
 	/**
@@ -279,7 +280,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the validator
 	 */
 	protected IInputValidator getValidator() {
-		return validator;
+		return this.validator;
 	}
 
 	/**
@@ -288,7 +289,7 @@ public class InputSpinnerDialog extends Dialog {
 	 * @return the input string
 	 */
 	public Double getValue() {
-		return value;
+		return this.value;
 	}
 
 	/**
@@ -301,14 +302,14 @@ public class InputSpinnerDialog extends Dialog {
 	 * </p>
 	 */
 	protected void validateInput() {
-		String errorMessage = null;
-		if (validator != null) {
-			errorMessage = validator.isValid(Double.toString(spinner
+		String invalidMessage = null;
+		if (this.validator != null) {
+			invalidMessage = this.validator.isValid(Double.toString(this.spinner
 					.getSelection()));
 		}
 		// Bug 16256: important not to treat "" (blank error) the same as null
 		// (no error)
-		setErrorMessage(errorMessage);
+		setErrorMessage(invalidMessage);
 	}
 
 	/**
@@ -339,8 +340,9 @@ public class InputSpinnerDialog extends Dialog {
 	 */
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
-		if (errorMessageText != null && !errorMessageText.isDisposed()) {
-			errorMessageText
+		if (this.errorMessageText != null
+				&& !this.errorMessageText.isDisposed()) {
+			this.errorMessageText
 					.setText(errorMessage == null ? " \n " : errorMessage); //$NON-NLS-1$
 			// Disable the error message text control if there is no error, or
 			// no error text (empty or whitespace only). Hide it also to avoid
@@ -349,9 +351,9 @@ public class InputSpinnerDialog extends Dialog {
 			boolean hasError = errorMessage != null
 					&& (StringConverter.removeWhiteSpaces(errorMessage))
 							.length() > 0;
-			errorMessageText.setEnabled(hasError);
-			errorMessageText.setVisible(hasError);
-			errorMessageText.getParent().update();
+			this.errorMessageText.setEnabled(hasError);
+			this.errorMessageText.setVisible(hasError);
+			this.errorMessageText.getParent().update();
 			// Access the ok button by id, in case clients have overridden
 			// button creation.
 			// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=113643
@@ -393,7 +395,7 @@ public class InputSpinnerDialog extends Dialog {
 	public void setMinimum(double value) {
 		this.minimum = value;
 	}
-	
+
 	/**
 	 * Sets the format string to disply the value. This string will be use to
 	 * display the value by using the Formatter class. The string must contain

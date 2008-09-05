@@ -124,12 +124,12 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 		
 		
 		if (bitrate < BITRATE_MIN_VALUE || bitrate > BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid bitrate value "
+			throw new IllegalArgumentException("Invalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		if (type != TYPE_AVERAGE_BITRATE && type != TYPE_CONSTANT_BITRATE
 				&& type != TYPE_VARIABLE_BITRATE) {
-			throw new IllegalArgumentException("Invalid type " + type);
+			throw new IllegalArgumentException("Invalid type " + type); //$NON-NLS-1$
 		}
 		this.type = type;
 		this.bitrate = bitrate;
@@ -158,18 +158,18 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 		super(AudioFormat.FORMAT_MP3);
 		
 		if (bitrate < BITRATE_MIN_VALUE || bitrate > BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid bitrate value "
+			throw new IllegalArgumentException("Invalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		if (method != VARIABLE_METHOD_CBR && method != VARIABLE_METHOD_MT
 				&& method != VARIABLE_METHOD_RH
 				&& method != VARIABLE_METHOD_ABR
 				&& method != VARIABLE_METHOD_MTRH) {
-			throw new IllegalArgumentException("Invalid variable methode "
+			throw new IllegalArgumentException("Invalid variable methode " //$NON-NLS-1$
 					+ method);
 		}
 		if (quality < QUALITY_MIN_VALUE || quality > QUALITY_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid quality " + quality);
+			throw new IllegalArgumentException("Invalid quality " + quality); //$NON-NLS-1$
 		}
 		this.type = TYPE_VARIABLE_BITRATE;
 		this.bitrate = bitrate;
@@ -261,7 +261,7 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 	 */
 	public void setBitrate(int bitrate) {
 		if (bitrate < BITRATE_MIN_VALUE || bitrate > BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid bitrate value "
+			throw new IllegalArgumentException("Invalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.bitrate = bitrate;
@@ -278,7 +278,7 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 		if (mode != MODE_AUTO && mode != MODE_STEREO
 				&& mode != MODE_JOIN_STEREO && mode != MODE_DUAL_CHANNEL
 				&& mode != MODE_MONO) {
-			throw new IllegalArgumentException("Invalid channel mode " + mode);
+			throw new IllegalArgumentException("Invalid channel mode " + mode); //$NON-NLS-1$
 		}
 		this.mode = mode;
 	}
@@ -292,7 +292,7 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 	public void setEncodingType(int type) {
 		if (type != TYPE_AVERAGE_BITRATE && type != TYPE_CONSTANT_BITRATE
 				&& type != TYPE_VARIABLE_BITRATE) {
-			throw new IllegalArgumentException("Invalid type " + type);
+			throw new IllegalArgumentException("Invalid type " + type); //$NON-NLS-1$
 		}
 		this.type = type;
 	}
@@ -321,7 +321,7 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 				&& methode != VARIABLE_METHOD_RH
 				&& methode != VARIABLE_METHOD_ABR
 				&& methode != VARIABLE_METHOD_MTRH) {
-			throw new IllegalArgumentException("Invalid variable methode "
+			throw new IllegalArgumentException("Invalid variable methode " //$NON-NLS-1$
 					+ methode);
 		}
 		this.variableMethod = methode;
@@ -336,7 +336,7 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 	 */
 	public void setVariableQuality(int quality) {
 		if (quality < QUALITY_MIN_VALUE || quality > QUALITY_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid quality " + quality);
+			throw new IllegalArgumentException("Invalid quality " + quality); //$NON-NLS-1$
 		}
 		this.quality = quality;
 	}
@@ -353,38 +353,39 @@ public class LameEncodingOptions extends AudioEncodingOptions {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 
-		switch (type) {
+		switch (this.type) {
 		case TYPE_AVERAGE_BITRATE:
-			value += "abr";
-			value += ":br=" + bitrate;
+			value += "abr"; //$NON-NLS-1$
+			value += ":br=" + this.bitrate; //$NON-NLS-1$
 			break;
 
 		case TYPE_CONSTANT_BITRATE:
-			value += "cbr";
-			value += ":br=" + bitrate;
+			value += "cbr"; //$NON-NLS-1$
+			value += ":br=" + this.bitrate; //$NON-NLS-1$
 			break;
 		case TYPE_VARIABLE_BITRATE:
-			value += "vbr=" + variableMethod;
-			value += ":q=" + quality;
-			if (fast) {
-				value += ":fast";
+			value += "vbr=" + this.variableMethod; //$NON-NLS-1$
+			value += ":q=" + this.quality; //$NON-NLS-1$
+			if (this.fast) {
+				value += ":fast"; //$NON-NLS-1$
 			}
+			break;
 		default:
 			// Not supposed to happen
 		}
 
-		if (mode != MODE_AUTO) {
-			value += ":mode=" + mode;
+		if (this.mode != MODE_AUTO) {
+			value += ":mode=" + this.mode; //$NON-NLS-1$
 		}
 
 		String[] defaultArgs = super.toCommandList(inputVideoInfo);
 
 		String[] args = new String[4 + defaultArgs.length];
-		args[0] = "-oac";
-		args[1] = "mp3lame";
-		args[2] = "-lameopts";
+		args[0] = "-oac"; //$NON-NLS-1$
+		args[1] = "mp3lame"; //$NON-NLS-1$
+		args[2] = "-lameopts"; //$NON-NLS-1$
 		args[3] = value;
 
 		System.arraycopy(defaultArgs, 0, args,

@@ -35,23 +35,23 @@ public class DefaultMuxer implements Muxer {
 	/**
 	 * The property key to retrieve the os value.
 	 */
-	private static final String OS_NAME = "os.name";
+	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
 	/**
 	 * Linux OS name.
 	 */
-	private static final String OS_NAME_LINUX = "Linux";
+	private static final String OS_NAME_LINUX = "Linux"; //$NON-NLS-1$
 	/**
 	 * No output file
 	 */
-	private static String NO_OUPUTFILE_LINUX = "/dev/null";
+	private static String NO_OUPUTFILE_LINUX = "/dev/null"; //$NON-NLS-1$
 	/**
 	 * No output file
 	 */
-	private static String NO_OUPUTFILE_WIN = "nul";
+	private static String NO_OUPUTFILE_WIN = "nul"; //$NON-NLS-1$
 	/**
 	 * Define the value for no output file.
 	 */
-	private static String NO_OUPUTFILE = "/dev/null";
+	private static String NO_OUPUTFILE = "/dev/null"; //$NON-NLS-1$
 	static{
 		String os = System.getProperty(OS_NAME);
 		if (os.equals(OS_NAME_LINUX)) {
@@ -197,7 +197,7 @@ public class DefaultMuxer implements Muxer {
 	public static void fillPassLogFile(EncodingCommand command, File passLogFile) {
 
 		String[] args = new String[2];
-		args[0] = "-passlogfile";
+		args[0] = "-passlogfile"; //$NON-NLS-1$
 		try {
 			args[1] = passLogFile.getCanonicalPath();
 		} catch (IOException e) {
@@ -229,7 +229,7 @@ public class DefaultMuxer implements Muxer {
 
 			File passFile = new File(outputFile.getParentFile(), outputFile
 					.getName()
-					+ ".passfile.log");
+					+ ".passfile.log"); //$NON-NLS-1$
 
 			EncodingCommand command1 = new EncodingCommand(inputVideo,
 					new File(NO_OUPUTFILE));
@@ -244,7 +244,7 @@ public class DefaultMuxer implements Muxer {
 			return new DefaultEncodingJob(wrapper, command1, command2, passFile);
 
 		} else {
-			throw new MPlayerException("Invalid number of pass "
+			throw new MPlayerException("Invalid number of pass " //$NON-NLS-1$
 					+ options.getVideoOptions().getPass());
 		}
 

@@ -95,7 +95,7 @@ public class PreviewAction extends Action {
 	 * @param context
 	 *            the Action context.
 	 */
-	private void contextChanged(ActionContext context) {
+	void contextChanged(ActionContext context) {
 		boolean enabled = false;
 		if (context.getSelection() instanceof IStructuredSelection) {
 			IStructuredSelection selection = (IStructuredSelection) context

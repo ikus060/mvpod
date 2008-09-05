@@ -34,12 +34,12 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 
-	private static final String ASPECT_RATIO_PATTERN = "([0-9]+?\\.?[0-9]*):([0-9]+?\\.?[0-9]*)";
+	private static final String ASPECT_RATIO_PATTERN = "([0-9]+?\\.?[0-9]*):([0-9]+?\\.?[0-9]*)"; //$NON-NLS-1$
 
 	/**
 	 * Custom item.
 	 */
-	private static final String CUSTOM_ITEM = "Custom";
+	private static final String CUSTOM_ITEM = "Custom"; //$NON-NLS-1$
 
 	/**
 	 * Frame rate viewer
@@ -58,7 +58,7 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 				key = Localization.INPUTOUTPUT_ASPECT_RATIO_4_3;
 			} else if (element.equals(InputVideo.ASPECT_RATIO_16_9)) {
 				key = Localization.INPUTOUTPUT_ASPECT_RATIO_16_9;
-			} else if(element.equals(CUSTOM_ITEM)){
+			} else if (element.equals(CUSTOM_ITEM)) {
 				key = Localization.INPUTOUTPUT_ASPECT_RATIO_CUSTOM;
 			}
 			if (key != null) {
@@ -104,13 +104,13 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
 	 */
 	protected void configureShell(Shell shell) {
-
+		// Available for sub-class
 	}
 
 	/**
 	 * Notify this class that user select an new aspect ratio.
 	 */
-	private void frameRateSelectionAsChanged() {
+	void frameRateSelectionAsChanged() {
 
 		InputVideo inputVideo = getVideo().getInputVideo();
 
@@ -212,7 +212,8 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 						Double.parseDouble(newText);
 						return null;
 					} catch (NumberFormatException e) {
-
+						// Mplayer generate alot of garbage, so we expecte some
+						// parsing to fail.
 					}
 				}
 
@@ -230,9 +231,9 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 			Matcher matcher = Pattern.compile(ASPECT_RATIO_PATTERN).matcher(
 					value);
 			if (matcher.find()) {
-				double value1 = (int)(Double.parseDouble(matcher.group(1)) * 10000);
-				double value2 = (int)(Double.parseDouble(matcher.group(2)));				
-				aspectRatio = (double)((int)(value1 / value2))/10000;
+				double value1 = (int) (Double.parseDouble(matcher.group(1)) * 10000);
+				double value2 = (int) (Double.parseDouble(matcher.group(2)));
+				aspectRatio = (double) ((int) (value1 / value2)) / 10000;
 			} else {
 				aspectRatio = Double.parseDouble(value);
 			}

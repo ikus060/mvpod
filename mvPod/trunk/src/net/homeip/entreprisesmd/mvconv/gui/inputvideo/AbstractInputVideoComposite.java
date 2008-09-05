@@ -50,29 +50,29 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	/**
 	 * The filename text area (real-only field).
 	 */
-	private Text filename;
+	Text filename;
 
 	/**
 	 * Font with bold style.
 	 */
-	private Font boldFont;
+	Font boldFont;
 
 	/**
 	 * Item to disable audio or subtitle.
 	 */
-	protected String disableElement = Localization
+	String disableElement = Localization
 			.getString(Localization.INPUTOUTPUT_NONE);
 	/**
 	 * Default item selection for viewer.
 	 */
-	protected String defaultElement = Localization
+	String defaultElement = Localization
 			.getString(Localization.INPUTOUTPUT_DEFAULT);
 
 	/**
 	 * This observer are use to be notify of any change of the video so the
 	 * composite can be ubdate to reflect this modification.
 	 */
-	private VideoObserver videoObserver = new VideoObserver() {
+	VideoObserver videoObserver = new VideoObserver() {
 		public void videoHasChanged(Video video) {
 			AbstractInputVideoComposite.this.videoHasChanged();
 		}
@@ -81,13 +81,13 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	/**
 	 * Label provider for language combo viewer and subtitle combo viewer.
 	 */
-	private LabelProvider labelProvider;
+	LabelProvider labelProvider;
 
 	/**
 	 * The selection listener from language combo viewer and subtitle combo
 	 * viewer.
 	 */
-	private SelectionListener selectionListener;
+	SelectionListener selectionListener;
 
 	/**
 	 * Create a new AbstractInputVideoComposite.
@@ -115,7 +115,7 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 					String languageId = ((AudioStream) element).getLanguage();
 					String track = ((AudioStream) element).getAudioID();
 
-					if (languageId != null && !languageId.equals("")) {
+					if (languageId != null && !languageId.equals("")) { //$NON-NLS-1$
 						String languageName = Localization
 								.getLocalizedLanguage(languageId);
 						return languageName;
@@ -129,7 +129,7 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 
 					String languageId = ((SubtitleStream) element)
 							.getLanguage();
-					if (languageId != null && !languageId.equals("")) {
+					if (languageId != null && !languageId.equals("")) { //$NON-NLS-1$
 						String languageName = Localization
 								.getLocalizedLanguage(languageId);
 						return languageName;
@@ -140,7 +140,7 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 							Localization.INPUTOUTPUT_TRACK, track);
 					return track;
 				} else if (element == null) {
-					return "None";
+					return "None"; //$NON-NLS-1$
 				}
 				return element.toString();
 			}
@@ -207,9 +207,9 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 						.getString(Localization.INPUTOUTPUT_FILENAME));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
-		filename = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		filename.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		filename.addModifyListener(new ModifyListener() {
+		this.filename = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		this.filename.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		this.filename.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				outputFilenameChanged();
 			}
@@ -226,7 +226,7 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 			}
 		});
 
-		return filename;
+		return this.filename;
 	}
 
 	/**
@@ -260,16 +260,16 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		ComboViewer subCombo = new ComboViewer(parent, SWT.DROP_DOWN
 				| SWT.READ_ONLY);
 
-		if (labelProvider == null) {
-			labelProvider = createLabelProvider();
+		if (this.labelProvider == null) {
+			this.labelProvider = createLabelProvider();
 		}
-		subCombo.setLabelProvider(labelProvider);
+		subCombo.setLabelProvider(this.labelProvider);
 
-		if (selectionListener == null) {
-			selectionListener = createSelectionListener();
+		if (this.selectionListener == null) {
+			this.selectionListener = createSelectionListener();
 		}
 
-		subCombo.getCombo().addSelectionListener(selectionListener);
+		subCombo.getCombo().addSelectionListener(this.selectionListener);
 
 		subCombo.getCombo().setData(id);
 
@@ -279,7 +279,7 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	/**
 	 * Handle browsing selection to change output file.
 	 */
-	private void handleBrowse() {
+	void handleBrowse() {
 
 		File outputFile = this.getVideo().getOutputFile();
 
@@ -288,9 +288,9 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 
 		FileDialog dlg = new FileDialog(this.getShell(), SWT.SAVE);
 		String path = outputFile.getParent().toString();
-		String filename = outputFile.getName();
+		String defaultFilename = outputFile.getName();
 		dlg.setFilterPath(path);
-		dlg.setFileName(filename);
+		dlg.setFileName(defaultFilename);
 		dlg.setText(dlgTitle);
 		String selection = dlg.open();
 
@@ -318,14 +318,14 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		for (int fontIndex = 0; fontIndex < boldedFontData.length; fontIndex++) {
 			boldedFontData[fontIndex].setStyle(SWT.BOLD);
 		}
-		boldFont = new Font(Display.getCurrent(), boldedFontData);
+		this.boldFont = new Font(Display.getCurrent(), boldedFontData);
 
 		this.setLayout(new GridLayout(1, false));
 
 		Group inputComposite = new Group(this, SWT.SHADOW_NONE);
 		inputComposite.setText(Localization
 				.getString(Localization.INPUTOUTPUT_INPUT));
-		inputComposite.setFont(boldFont);
+		inputComposite.setFont(this.boldFont);
 		inputComposite.setLayout(new FillLayout());
 		inputComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
@@ -333,7 +333,7 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		Group outputComposite = new Group(this, SWT.SHADOW_NONE);
 		outputComposite.setText(Localization
 				.getString(Localization.INPUTOUTPUT_OUPUT));
-		outputComposite.setFont(boldFont);
+		outputComposite.setFont(this.boldFont);
 		outputComposite.setLayout(new FillLayout());
 		outputComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
@@ -345,10 +345,10 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		// Disposal
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				getVideo().removeVideoObserver(videoObserver);
-				videoObserver = null;
-				boldFont.dispose();
-				boldFont = null;
+				getVideo().removeVideoObserver(AbstractInputVideoComposite.this.videoObserver);
+				AbstractInputVideoComposite.this.videoObserver = null;
+				AbstractInputVideoComposite.this.boldFont.dispose();
+				AbstractInputVideoComposite.this.boldFont = null;
 			}
 		});
 	}
@@ -356,10 +356,10 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	/**
 	 * Notify this class that user change the output file name in TextField.
 	 */
-	private void outputFilenameChanged() {
+	void outputFilenameChanged() {
 
 		// Check if value as changed
-		String outputFilename = filename.getText();
+		String outputFilename = this.filename.getText();
 		File file = new File(outputFilename);
 		if (!file.equals(getVideo().getOutputFile())) {
 			// Change the output file value
@@ -407,15 +407,15 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		viewer.getCombo().removeAll();
 
 		if (defaultValue) {
-			viewer.add(defaultElement);
-			if (defaultElement.equals(selection)) {
-				viewer.setSelection(new StructuredSelection(defaultElement));
+			viewer.add(this.defaultElement);
+			if (this.defaultElement.equals(selection)) {
+				viewer.setSelection(new StructuredSelection(this.defaultElement));
 			}
 		}
 		if (disableValue) {
-			viewer.add(disableElement);
-			if (disableElement.equals(selection)) {
-				viewer.setSelection(new StructuredSelection(disableElement));
+			viewer.add(this.disableElement);
+			if (this.disableElement.equals(selection)) {
+				viewer.setSelection(new StructuredSelection(this.disableElement));
 			}
 		}
 
@@ -446,8 +446,8 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 
 		if (getVideo() != null) {
 			String newFilename = getVideo().getOutputFile().getAbsolutePath();
-			if (!filename.getText().equals(newFilename)) {
-				filename.setText(newFilename);
+			if (!this.filename.getText().equals(newFilename)) {
+				this.filename.setText(newFilename);
 			}
 		}
 
@@ -465,7 +465,7 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	 *            the unique identifier of the viewer.
 	 */
 	protected void viewerSelectionHasChanged(int id) {
-
+		// Available for sub-class
 	}
 
 	/**
@@ -476,12 +476,12 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 	 */
 	public void setVideo(Video video) {
 		if (getVideo() != null) {
-			getVideo().removeVideoObserver(videoObserver);
+			getVideo().removeVideoObserver(this.videoObserver);
 		}
 
 		super.setVideo(video);
 
-		video.addVideoObserver(videoObserver);
+		video.addVideoObserver(this.videoObserver);
 
 		videoHasChanged();
 	}

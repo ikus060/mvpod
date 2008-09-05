@@ -73,7 +73,7 @@ public class FAACEncodingOptions extends AudioEncodingOptions {
 		super(AudioFormat.FORMAT_MPEG4_AAC);
 		
 		if (bitrate < BITRATE_MIN_VALUE || bitrate>BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid bitrate value "
+			throw new IllegalArgumentException("Invalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.bitrate = bitrate;
@@ -124,7 +124,7 @@ public class FAACEncodingOptions extends AudioEncodingOptions {
 	 */
 	public void setBitrate(int bitrate) {
 		if (bitrate < BITRATE_MIN_VALUE || bitrate>BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid bitrate value "
+			throw new IllegalArgumentException("Invalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.bitrate = bitrate;
@@ -138,7 +138,7 @@ public class FAACEncodingOptions extends AudioEncodingOptions {
 	 */
 	public void setMPEGVersion(int version) {
 		if (version != MPEG_VERSION_2 && version != MPEG_VERSION_4) {
-			throw new IllegalArgumentException("Invalid mpeg version "
+			throw new IllegalArgumentException("Invalid mpeg version " //$NON-NLS-1$
 					+ version);
 		}
 		this.mpegVersion = version;
@@ -151,10 +151,10 @@ public class FAACEncodingOptions extends AudioEncodingOptions {
 	 *            the object type complexcity.
 	 */
 	public void setObjectType(int type) {
-		if (objectType != OBJECT_TYPE_MAIN && objectType != OBJECT_TYPE_LOW
-				&& objectType != OBJECT_TYPE_SSR
-				&& objectType != OBJECT_TYPE_LTP) {
-			throw new IllegalArgumentException("Invalid object type " + type);
+		if (this.objectType != OBJECT_TYPE_MAIN && this.objectType != OBJECT_TYPE_LOW
+				&& this.objectType != OBJECT_TYPE_SSR
+				&& this.objectType != OBJECT_TYPE_LTP) {
+			throw new IllegalArgumentException("Invalid object type " + type); //$NON-NLS-1$
 		}
 		this.objectType = type;
 	}
@@ -164,20 +164,20 @@ public class FAACEncodingOptions extends AudioEncodingOptions {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 
-		value += "br=" + bitrate;
-		value += ":mpeg=" + mpegVersion;
-		value += ":object=" + objectType;
+		value += "br=" + this.bitrate; //$NON-NLS-1$
+		value += ":mpeg=" + this.mpegVersion; //$NON-NLS-1$
+		value += ":object=" + this.objectType; //$NON-NLS-1$
 
 		String[] defaultArgs = super.toCommandList(inputVideoInfo);
 
 		String[] args = new String[6 + defaultArgs.length];
-		args[0] = "-oac";
-		args[1] = "faac";
-		args[2] = "-faacopts";
+		args[0] = "-oac"; //$NON-NLS-1$
+		args[1] = "faac"; //$NON-NLS-1$
+		args[2] = "-faacopts"; //$NON-NLS-1$
 		args[3] = value;
-		args[4] = "-channels";
+		args[4] = "-channels"; //$NON-NLS-1$
 		args[5] = Integer.toString(2);
 
 		System.arraycopy(defaultArgs, 0, args,

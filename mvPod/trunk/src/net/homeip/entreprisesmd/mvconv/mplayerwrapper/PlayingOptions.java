@@ -29,4 +29,8 @@ package net.homeip.entreprisesmd.mvconv.mplayerwrapper;
  */
 public class PlayingOptions extends GenericOptions {
 
+	/**
+	 * No special options for playing. Further specific playing options will go
+	 * there.
+	 */
 }

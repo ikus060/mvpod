@@ -31,7 +31,7 @@ public class VideoInfo {
 	/**
 	 * Regular expression to check if a file is valid.
 	 */
-	private static final String VALID_FILE = "Starting playback...";
+	private static final String VALID_FILE = "Starting playback..."; //$NON-NLS-1$
 
 	/**
 	 * Convert factor.
@@ -110,24 +110,24 @@ public class VideoInfo {
 	 */
 	public List<AudioStream> getAudioStreams() {
 
-		if (audioStreams != null) {
-			return audioStreams;
+		if (this.audioStreams != null) {
+			return this.audioStreams;
 		}
-		audioStreams = new LinkedList<AudioStream>();
+		this.audioStreams = new LinkedList<AudioStream>();
 
 		// Find all audio identifer
 		Set<String> audioIds = new HashSet<String>();
-		Matcher matcher = Pattern.compile("^ID_AUDIO_ID=([0-9]+)$",
-				Pattern.MULTILINE).matcher(mplayerOutput);
+		Matcher matcher = Pattern.compile("^ID_AUDIO_ID=([0-9]+)$", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
 		while (matcher.find()) {
 			audioIds.add(matcher.group(1));
 
 		}
 
 		// Find selected audio ID
-		matcher = Pattern.compile("'-aid' '([0-9]+)'", Pattern.MULTILINE)
-				.matcher(mplayerOutput);
-		String defaultAudioID = "";
+		matcher = Pattern.compile("'-aid' '([0-9]+)'", Pattern.MULTILINE) //$NON-NLS-1$
+				.matcher(this.mplayerOutput);
+		String defaultAudioID = ""; //$NON-NLS-1$
 		if (matcher.find()) {
 			defaultAudioID = matcher.group(1);
 		} else if (audioIds.size() == 1) {
@@ -145,18 +145,18 @@ public class VideoInfo {
 			AudioFormat format = null;
 
 			// Find out audio stream language if available
-			String language = "";
-			matcher = Pattern.compile("^ID_AID_" + audioID + "_LANG=(.*)$",
-					Pattern.MULTILINE).matcher(mplayerOutput);
+			String language = ""; //$NON-NLS-1$
+			matcher = Pattern.compile("^ID_AID_" + audioID + "_LANG=(.*)$", //$NON-NLS-1$ //$NON-NLS-2$
+					Pattern.MULTILINE).matcher(this.mplayerOutput);
 			if (matcher.find()) {
 				language = matcher.group(1);
 			}
 
 			// Search more detail
 			matcher = Pattern.compile(
-					"^audio stream: .* format: (.*) language: (.*) aid: "
-							+ audioID + ".$", Pattern.MULTILINE).matcher(
-					mplayerOutput);
+					"^audio stream: .* format: (.*) language: (.*) aid: " //$NON-NLS-1$
+							+ audioID + ".$", Pattern.MULTILINE).matcher( //$NON-NLS-1$
+									this.mplayerOutput);
 			if (matcher.find()) {
 				AudioFormat.fromMplayerAudioFormatID(matcher.group(1));
 				language = matcher.group(2);
@@ -164,42 +164,42 @@ public class VideoInfo {
 
 			if (audioID.equals(defaultAudioID)) {
 				// Search for default audio stream
-				matcher = Pattern.compile("^ID_AUDIO_BITRATE=(.*)$",
-						Pattern.MULTILINE).matcher(mplayerOutput);
+				matcher = Pattern.compile("^ID_AUDIO_BITRATE=(.*)$", //$NON-NLS-1$
+						Pattern.MULTILINE).matcher(this.mplayerOutput);
 				while (matcher.find()) {
 					bitrate = Integer.parseInt(matcher.group(1))
 							/ KPBS_TO_BPS_FACTOR;
 				}
 
-				matcher = Pattern.compile("^ID_AUDIO_RATE=(.*)$",
-						Pattern.MULTILINE).matcher(mplayerOutput);
+				matcher = Pattern.compile("^ID_AUDIO_RATE=(.*)$", //$NON-NLS-1$
+						Pattern.MULTILINE).matcher(this.mplayerOutput);
 				while (matcher.find()) {
 					sampleRate = Integer.parseInt(matcher.group(1)); // in Hz
 				}
-				matcher = Pattern.compile("^ID_AUDIO_NCH=(.*)$",
-						Pattern.MULTILINE).matcher(mplayerOutput);
+				matcher = Pattern.compile("^ID_AUDIO_NCH=(.*)$", //$NON-NLS-1$
+						Pattern.MULTILINE).matcher(this.mplayerOutput);
 				while (matcher.find()) {
 					channel = Integer.parseInt(matcher.group(1));
 				}
-				matcher = Pattern.compile("^ID_AUDIO_FORMAT=(.*)$",
-						Pattern.MULTILINE).matcher(mplayerOutput);
+				matcher = Pattern.compile("^ID_AUDIO_FORMAT=(.*)$", //$NON-NLS-1$
+						Pattern.MULTILINE).matcher(this.mplayerOutput);
 				while (matcher.find()) {
 					format = AudioFormat.fromMplayerAudioFormatID(matcher.group(1));
 				}
 			}
 
 			// Add this stream information to the list
-			audioStreams.add(new AudioStream(audioID, bitrate, sampleRate,
+			this.audioStreams.add(new AudioStream(audioID, bitrate, sampleRate,
 					channel, format, language));
 
 			bitrate = -1;
 			sampleRate = -1;
 			channel = -1;
 			format = null;
-			language = "";
+			language = ""; //$NON-NLS-1$
 		}
 
-		return audioStreams;
+		return this.audioStreams;
 	}
 
 	/**
@@ -209,25 +209,25 @@ public class VideoInfo {
 	 */
 	public double getFrameRate() {
 
-		if (framerate != -1) {
-			return framerate;
+		if (this.framerate != -1) {
+			return this.framerate;
 		}
 
-		framerate = -1;
-		Matcher matcher = Pattern.compile("^ID_VIDEO_FPS=([0-9.]*)$",
-				Pattern.MULTILINE).matcher(mplayerOutput);
+		this.framerate = -1;
+		Matcher matcher = Pattern.compile("^ID_VIDEO_FPS=([0-9.]*)$", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
 		if (matcher.find()) {
 			try {
-				framerate = Double.parseDouble(matcher.group(1));
-				if (framerate == WMV_FRAMERATE) {
-					framerate = -1;
+				this.framerate = Double.parseDouble(matcher.group(1));
+				if (this.framerate == WMV_FRAMERATE) {
+					this.framerate = -1;
 				}
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
 
-		return framerate;
+		return this.framerate;
 	}
 
 	/**
@@ -237,21 +237,21 @@ public class VideoInfo {
 	 */
 	public double getLength() {
 
-		if (length != -1) {
-			return length;
+		if (this.length != -1) {
+			return this.length;
 		}
 
-		length = 0;
-		Matcher matcher = Pattern.compile("^ID_LENGTH=([0-9.]*)$",
-				Pattern.MULTILINE).matcher(mplayerOutput);
+		this.length = 0;
+		Matcher matcher = Pattern.compile("^ID_LENGTH=([0-9.]*)$", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
 		if (matcher.find()) {
 			try {
-				length = Double.parseDouble(matcher.group(1));
+				this.length = Double.parseDouble(matcher.group(1));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
-		return length;
+		return this.length;
 	}
 
 	/**
@@ -265,8 +265,8 @@ public class VideoInfo {
 
 		int numberOfChapters = -1;
 		Matcher matcher = Pattern.compile(
-				"^ID_DVD_TITLE_" + title + "_ANGLES=([1-9]+)$").matcher(
-				mplayerOutput);
+				"^ID_DVD_TITLE_" + title + "_ANGLES=([1-9]+)$").matcher( //$NON-NLS-1$ //$NON-NLS-2$
+						this.mplayerOutput);
 		if (matcher.find()) {
 			numberOfChapters = Integer.parseInt(matcher.group(1));
 		}
@@ -281,17 +281,17 @@ public class VideoInfo {
 	 */
 	public int getNumberOfTitles() {
 
-		if (numberOfTitle != -1) {
-			return numberOfTitle;
+		if (this.numberOfTitle != -1) {
+			return this.numberOfTitle;
 		}
 
-		numberOfTitle = 0;
-		Matcher matcher = Pattern.compile("^ID_DVD_TITLES=([0-9]*)$",
-				Pattern.MULTILINE).matcher(mplayerOutput);
+		this.numberOfTitle = 0;
+		Matcher matcher = Pattern.compile("^ID_DVD_TITLES=([0-9]*)$", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
 		if (matcher.find()) {
-			numberOfTitle = Integer.parseInt(matcher.group(1));
+			this.numberOfTitle = Integer.parseInt(matcher.group(1));
 		}
-		return numberOfTitle;
+		return this.numberOfTitle;
 	}
 
 	/**
@@ -305,8 +305,8 @@ public class VideoInfo {
 
 		int numberOfChapters = -1;
 		Matcher matcher = Pattern.compile(
-				"^ID_DVD_TITLE_" + title + "_CHAPTERS=([1-9]+)$",
-				Pattern.MULTILINE).matcher(mplayerOutput);
+				"^ID_DVD_TITLE_" + title + "_CHAPTERS=([1-9]+)$", //$NON-NLS-1$ //$NON-NLS-2$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
 		if (matcher.find()) {
 			numberOfChapters = Integer.parseInt(matcher.group(1));
 		}
@@ -321,23 +321,23 @@ public class VideoInfo {
 	 */
 	public List<SubtitleStream> getSubtitleLanguages() {
 
-		if (subtitleLanguages != null) {
-			return subtitleLanguages;
+		if (this.subtitleLanguages != null) {
+			return this.subtitleLanguages;
 		}
 
-		List<SubtitleStream> subtitleLanguages = new ArrayList<SubtitleStream>();
+		this.subtitleLanguages = new ArrayList<SubtitleStream>();
 
 		// Parse embedded subtitles (tested with matroska, ogg vorbis)
 
-		Matcher matcher = Pattern.compile("^ID_SUBTITLE_ID=([0-9]+)$",
-				Pattern.MULTILINE).matcher(mplayerOutput);
+		Matcher matcher = Pattern.compile("^ID_SUBTITLE_ID=([0-9]+)$", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
 		while (matcher.find()) {
 			String sid = matcher.group(1);
-			String description = "";
+			String description = ""; //$NON-NLS-1$
 
 			Matcher descMatcher = Pattern.compile(
-					"^ID_SID_" + sid + "_LANG=(.*)$", Pattern.MULTILINE)
-					.matcher(mplayerOutput);
+					"^ID_SID_" + sid + "_LANG=(.*)$", Pattern.MULTILINE) //$NON-NLS-1$ //$NON-NLS-2$
+					.matcher(this.mplayerOutput);
 			if (descMatcher.find()) {
 				description = descMatcher.group(1);
 			}
@@ -355,25 +355,25 @@ public class VideoInfo {
 			// [mkv] Track ID 5: subtitles (S_TEXT/SSA) "Subtitles with
 			// Karaoke", -sid 1, -slang eng
 
-			descMatcher = Pattern.compile("^ID_SID_" + sid + "_NAME=(.*)$",
-					Pattern.MULTILINE).matcher(mplayerOutput);
+			descMatcher = Pattern.compile("^ID_SID_" + sid + "_NAME=(.*)$", //$NON-NLS-1$ //$NON-NLS-2$
+					Pattern.MULTILINE).matcher(this.mplayerOutput);
 			if (descMatcher.find()) {
-				description = description + ": " + descMatcher.group(1);
+				description = description + ": " + descMatcher.group(1); //$NON-NLS-1$
 			}
 
 			// hack: Add matroska subtitle format info.
-			String t = "^\\[mkv\\] Track ID .*: subtitles \\((.*)\\).* -sid "
-					+ sid + ",.*$";
+			String t = "^\\[mkv\\] Track ID .*: subtitles \\((.*)\\).* -sid " //$NON-NLS-1$
+					+ sid + ",.*$"; //$NON-NLS-1$
 			descMatcher = Pattern.compile(t, Pattern.MULTILINE).matcher(
-					mplayerOutput);
+					this.mplayerOutput);
 			if (descMatcher.find()) {
-				description = description + " (" + descMatcher.group(1) + ")";
+				description = description + " (" + descMatcher.group(1) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-			subtitleLanguages.add(new SubtitleStream(sid, description));
+			this.subtitleLanguages.add(new SubtitleStream(sid, description));
 		}
 
-		return subtitleLanguages;
+		return this.subtitleLanguages;
 	}
 
 	/**
@@ -382,18 +382,18 @@ public class VideoInfo {
 	 * @return the video bitrate in Kbps.
 	 */
 	public double getVideoBitrate() {
-		if (videoBitrate != -1) {
-			return videoBitrate;
+		if (this.videoBitrate != -1) {
+			return this.videoBitrate;
 		}
 
-		Matcher matcher = Pattern.compile("^ID_VIDEO_BITRATE=([0-9.]*)$",
-				Pattern.MULTILINE).matcher(mplayerOutput);
-		videoBitrate = -1;
+		Matcher matcher = Pattern.compile("^ID_VIDEO_BITRATE=([0-9.]*)$", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
+		this.videoBitrate = -1;
 		if (matcher.find()) {
-			videoBitrate = Integer.parseInt(matcher.group(1))
+			this.videoBitrate = Integer.parseInt(matcher.group(1))
 					/ KPBS_TO_BPS_FACTOR;
 		}
-		return videoBitrate;
+		return this.videoBitrate;
 	}
 
 	/**
@@ -402,12 +402,12 @@ public class VideoInfo {
 	 * @return height of the video.
 	 */
 	public VideoDimension getVideoDimention() {
-		if (dimension != null) {
-			return dimension;
+		if (this.dimension != null) {
+			return this.dimension;
 		}
 
 		parseHeightAndWidth();
-		return dimension;
+		return this.dimension;
 	}
 
 	/**
@@ -417,23 +417,23 @@ public class VideoInfo {
 	 */
 	public VideoFormat getVideoFormat() {
 
-		if (videoformat != null) {
-			return videoformat;
+		if (this.videoformat != null) {
+			return this.videoformat;
 		}
 
-		Matcher matcher = Pattern.compile("ID_VIDEO_FORMAT=(.*)",
-				Pattern.MULTILINE).matcher(mplayerOutput);
+		Matcher matcher = Pattern.compile("ID_VIDEO_FORMAT=(.*)", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
 		if (matcher.find()) {
-			videoformat = VideoFormat.fromMplayerVideoFormatID(matcher.group(1));
+			this.videoformat = VideoFormat.fromMplayerVideoFormatID(matcher.group(1));
 		}
-		return videoformat;
+		return this.videoformat;
 	}
 
 	public String getMPlayerAudioCodec() {
 
-		Matcher matcher = Pattern.compile("ID_AUDIO_CODEC=(.*)",
-				Pattern.MULTILINE).matcher(mplayerOutput);
-		String audiocodec = "";
+		Matcher matcher = Pattern.compile("ID_AUDIO_CODEC=(.*)", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
+		String audiocodec = ""; //$NON-NLS-1$
 		if (matcher.find()) {
 			audiocodec = matcher.group(1);
 		}
@@ -442,9 +442,9 @@ public class VideoInfo {
 
 	public String getMPlayerAudioFormat() {
 
-		Matcher matcher = Pattern.compile("ID_AUDIO_FORMAT=(.*)",
-				Pattern.MULTILINE).matcher(mplayerOutput);
-		String audioformat = "";
+		Matcher matcher = Pattern.compile("ID_AUDIO_FORMAT=(.*)", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
+		String audioformat = ""; //$NON-NLS-1$
 		if (matcher.find()) {
 			audioformat = matcher.group(1);
 		}
@@ -452,17 +452,17 @@ public class VideoInfo {
 	}
 
 	public String getMPlayerVideoCodec() {
-		if (videocodec != null) {
-			return videocodec;
+		if (this.videocodec != null) {
+			return this.videocodec;
 		}
 
-		Matcher matcher = Pattern.compile("ID_VIDEO_CODEC=(.*)",
-				Pattern.MULTILINE).matcher(mplayerOutput);
-		videocodec = "";
+		Matcher matcher = Pattern.compile("ID_VIDEO_CODEC=(.*)", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
+		this.videocodec = ""; //$NON-NLS-1$
 		if (matcher.find()) {
-			videocodec = matcher.group(1);
+			this.videocodec = matcher.group(1);
 		}
-		return videocodec;
+		return this.videocodec;
 	}
 
 	/**
@@ -472,9 +472,9 @@ public class VideoInfo {
 	 */
 	public String getMplayerVideoFormat() {
 
-		Matcher matcher = Pattern.compile("ID_VIDEO_FORMAT=(.*)",
-				Pattern.MULTILINE).matcher(mplayerOutput);
-		String mplayerFormat = "";
+		Matcher matcher = Pattern.compile("ID_VIDEO_FORMAT=(.*)", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
+		String mplayerFormat = ""; //$NON-NLS-1$
 		if (matcher.find()) {
 			mplayerFormat = matcher.group(1);
 		}
@@ -488,17 +488,17 @@ public class VideoInfo {
 	 */
 	public String getMplayerVideoMuxer() {
 
-		if (videoMuxer != null) {
-			return videoMuxer;
+		if (this.videoMuxer != null) {
+			return this.videoMuxer;
 		}
 
-		Matcher matcher = Pattern.compile("ID_DEMUXER=(.*)",
-				Pattern.MULTILINE).matcher(mplayerOutput);
-		videoMuxer = "";
+		Matcher matcher = Pattern.compile("ID_DEMUXER=(.*)", //$NON-NLS-1$
+				Pattern.MULTILINE).matcher(this.mplayerOutput);
+		this.videoMuxer = ""; //$NON-NLS-1$
 		if (matcher.find()) {
-			videoMuxer = matcher.group(1);
+			this.videoMuxer = matcher.group(1);
 		}
-		return videoMuxer;
+		return this.videoMuxer;
 	}
 
 	/**
@@ -511,14 +511,14 @@ public class VideoInfo {
 		Matcher matcher;
 
 		try {
-			matcher = Pattern.compile("ID_VIDEO_WIDTH=(\\d+)").matcher(
-					mplayerOutput);
+			matcher = Pattern.compile("ID_VIDEO_WIDTH=(\\d+)").matcher( //$NON-NLS-1$
+					this.mplayerOutput);
 			if (matcher.find()) {
 				width = Integer.parseInt(matcher.group(1));
 			}
 
-			matcher = Pattern.compile("ID_VIDEO_HEIGHT=(\\d+)").matcher(
-					mplayerOutput);
+			matcher = Pattern.compile("ID_VIDEO_HEIGHT=(\\d+)").matcher( //$NON-NLS-1$
+					this.mplayerOutput);
 			if (matcher.find()) {
 				height = Integer.parseInt(matcher.group(1));
 			}
@@ -528,7 +528,7 @@ public class VideoInfo {
 		}
 
 		if (width != -1 && height != -1) {
-			dimension = new VideoDimension(width, height);
+			this.dimension = new VideoDimension(width, height);
 		}
 	}
 
@@ -537,14 +537,14 @@ public class VideoInfo {
 	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("AudioStream : " + getAudioStreams() + "\r\n");
-		buf.append("Subtitle Languages : " + getSubtitleLanguages() + "\r\n");
-		buf.append("Number Of Title : " + getNumberOfTitles() + "\r\n");
-		buf.append("Video Format : " + getVideoFormat() + "\r\n");
-		buf.append("Video Framerate : " + getFrameRate() + "\r\n");
-		buf.append("Video Bitrate : " + getVideoBitrate() + "\r\n");
-		buf.append("Dimention : " + getVideoDimention() + "\r\n");
-		buf.append("Length : " + getLength() + "\r\n");
+		buf.append("AudioStream : " + getAudioStreams() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("Subtitle Languages : " + getSubtitleLanguages() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("Number Of Title : " + getNumberOfTitles() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("Video Format : " + getVideoFormat() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("Video Framerate : " + getFrameRate() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("Video Bitrate : " + getVideoBitrate() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("Dimention : " + getVideoDimention() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("Length : " + getLength() + "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return buf.toString();
 	}

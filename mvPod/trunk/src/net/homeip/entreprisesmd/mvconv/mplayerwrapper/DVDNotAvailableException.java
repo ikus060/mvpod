@@ -26,7 +26,7 @@ public class DVDNotAvailableException extends MPlayerException {
 	 *            the unavailable device
 	 */
 	public DVDNotAvailableException(String device) {
-		super("Couldn't open DVD device");
+		super("Couldn't open DVD device"); //$NON-NLS-1$
 		this.unavailableDevice = device;
 	}
 
@@ -35,7 +35,7 @@ public class DVDNotAvailableException extends MPlayerException {
 	 * @return the device.
 	 */
 	public String getDevice() {
-		return unavailableDevice;
+		return this.unavailableDevice;
 	}
 
 }

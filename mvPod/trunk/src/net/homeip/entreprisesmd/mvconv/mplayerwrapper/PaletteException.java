@@ -17,7 +17,7 @@ public class PaletteException extends MPlayerException {
 	 * Create a new exception.
 	 */
 	public PaletteException() {
-		super("Palette skipped entry (out of count)");
+		super("Palette skipped entry (out of count)"); //$NON-NLS-1$
 	}
 
 }

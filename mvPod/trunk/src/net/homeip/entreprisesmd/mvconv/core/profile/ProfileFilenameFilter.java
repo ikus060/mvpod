@@ -14,7 +14,7 @@ public class ProfileFilenameFilter implements FilenameFilter {
 	/**
 	 * Profile filename extention.
 	 */
-	private static final String PROFILE_EXTENTION = ".profile";
+	private static final String PROFILE_EXTENTION = ".profile"; //$NON-NLS-1$
 
 	/**
 	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
