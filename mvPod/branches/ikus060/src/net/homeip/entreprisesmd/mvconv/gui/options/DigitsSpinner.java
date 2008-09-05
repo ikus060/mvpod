@@ -25,27 +25,27 @@ public class DigitsSpinner extends Composite {
 	/**
 	 * Margin for label layout calculation.
 	 */
-	private static final int VALUE_MARGIN = 2;
+	static final int VALUE_MARGIN = 2;
 
 	/**
 	 * Scale component use to change the value.
 	 */
-	private Spinner spinner;
+	Spinner spinner;
 
 	/**
 	 * Label showing the selected value.
 	 */
-	private Label value;
+	Label value;
 
 	/**
 	 * Expression to format the display value.
 	 */
-	private String unitExpression = "";
+	String unitExpression = ""; //$NON-NLS-1$
 
 	/**
 	 * Selection listener to dispatch event.
 	 */
-	private Listener listener = new Listener() {
+	Listener listener = new Listener() {
 		public void handleEvent(Event event) {
 			DigitsSpinner.this.notifyListeners(event.type, event);
 		}
@@ -67,21 +67,21 @@ public class DigitsSpinner extends Composite {
 		layout.marginWidth = 0;
 		super.setLayout(layout);
 
-		spinner = new Spinner(this, style);
-		spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		this.spinner = new Spinner(this, style);
+		this.spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		int[] types = new int[] { SWT.Modify, SWT.Selection,
 				SWT.DefaultSelection, SWT.MouseDoubleClick, SWT.MouseDown,
 				SWT.MouseUp };
 		for (int index = 0; index < types.length; index++) {
-			spinner.addListener(types[index], listener);
+			this.spinner.addListener(types[index], this.listener);
 		}
 
-		value = new Label(this, SWT.NONE);
-		value.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+		this.value = new Label(this, SWT.NONE);
+		this.value.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
 		updateLayoutValue();
-		value.setText(unitExpression);
+		this.value.setText(this.unitExpression);
 
 	}
 
@@ -105,12 +105,12 @@ public class DigitsSpinner extends Composite {
 	/**
 	 * Use to convert value from digits to integer.
 	 * 
-	 * @param value
+	 * @param dblValue
 	 *            the double value.
 	 * @return the integer value.
 	 */
-	private int fromDigits(double value) {
-		return (int) (value * Math.pow(10, spinner.getDigits()));
+	private int fromDigits(double dblValue) {
+		return (int) (dblValue * Math.pow(10, this.spinner.getDigits()));
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class DigitsSpinner extends Composite {
 	 * @return the digits.
 	 */
 	public int getDigits() {
-		return spinner.getDigits();
+		return this.spinner.getDigits();
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class DigitsSpinner extends Composite {
 	 * @return the increment value.
 	 */
 	public double getIncrement() {
-		return toDigits(spinner.getIncrement());
+		return toDigits(this.spinner.getIncrement());
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public class DigitsSpinner extends Composite {
 	 * @return the maximum value.
 	 */
 	public double getMaximum() {
-		return toDigits(spinner.getMaximum());
+		return toDigits(this.spinner.getMaximum());
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class DigitsSpinner extends Composite {
 	 * @return the minimum value.
 	 */
 	public double getMinimum() {
-		return toDigits(spinner.getMinimum());
+		return toDigits(this.spinner.getMinimum());
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class DigitsSpinner extends Composite {
 	 * @return the selection.
 	 */
 	public double getSelection() {
-		return toDigits(spinner.getSelection());
+		return toDigits(this.spinner.getSelection());
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class DigitsSpinner extends Composite {
 	 * @return the format expression.
 	 */
 	public String getUnitString() {
-		return unitExpression;
+		return this.unitExpression;
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class DigitsSpinner extends Composite {
 	 *            the new digits (must be greater than or equal to zero)
 	 */
 	public void setDigits(int value) {
-		spinner.setDigits(value);
+		this.spinner.setDigits(value);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class DigitsSpinner extends Composite {
 	 */
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		value.setEnabled(enabled);
+		this.value.setEnabled(enabled);
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class DigitsSpinner extends Composite {
 	 *            the increment value.
 	 */
 	public void setIncrement(double value) {
-		spinner.setIncrement(fromDigits(value));
+		this.spinner.setIncrement(fromDigits(value));
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class DigitsSpinner extends Composite {
 	 *            the maximum value.
 	 */
 	public void setMaximum(double value) {
-		spinner.setMaximum(fromDigits(value));
+		this.spinner.setMaximum(fromDigits(value));
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class DigitsSpinner extends Composite {
 	 *            the minimum value.
 	 */
 	public void setMinimum(double value) {
-		spinner.setMinimum(fromDigits(value));
+		this.spinner.setMinimum(fromDigits(value));
 	}
 	
 	/**
@@ -256,7 +256,7 @@ public class DigitsSpinner extends Composite {
 	 *            the value
 	 */
 	public void setSelection(double value) {
-		spinner.setSelection(fromDigits(value));
+		this.spinner.setSelection(fromDigits(value));
 	}
 
 
@@ -270,7 +270,7 @@ public class DigitsSpinner extends Composite {
 	 */
 	public void setUnitString(String unit) {
 		this.unitExpression = unit;
-		value.setText(unitExpression);
+		this.value.setText(this.unitExpression);
 		updateLayoutValue();
 		
 	}
@@ -278,12 +278,12 @@ public class DigitsSpinner extends Composite {
 	/**
 	 * Use to convert value to digits from integer.
 	 * 
-	 * @param value
+	 * @param intValue
 	 *            the integer value.
 	 * @return the double value.
 	 */
-	private double toDigits(int value) {
-		return value / Math.pow(10, spinner.getDigits());
+	private double toDigits(int intValue) {
+		return intValue / Math.pow(10, this.spinner.getDigits());
 	}
 
 	/**
@@ -292,11 +292,9 @@ public class DigitsSpinner extends Composite {
 	private void updateLayoutValue() {
 
 		GC gc = new GC(this);
-		Point size = gc.textExtent(unitExpression);
+		Point size = gc.textExtent(this.unitExpression);
 		gc.dispose();
 
-		value.setLayoutData(new GridData(size.x + VALUE_MARGIN, SWT.DEFAULT));
-
+		this.value.setLayoutData(new GridData(size.x + VALUE_MARGIN, SWT.DEFAULT));
 	}
-
 }

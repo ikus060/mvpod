@@ -115,13 +115,6 @@ public class JobQueue {
 	};
 
 	/**
-	 * Create a new JobQueue.
-	 */
-	public JobQueue() {
-
-	}
-
-	/**
 	 * @see java.lang.Object#finalize()
 	 */
 	protected void finalize() {

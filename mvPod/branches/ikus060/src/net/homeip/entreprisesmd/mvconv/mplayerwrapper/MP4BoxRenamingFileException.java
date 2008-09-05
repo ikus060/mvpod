@@ -25,8 +25,8 @@ public class MP4BoxRenamingFileException extends MPlayerException {
 	 *            the file name use by MP4Box
 	 */
 	public MP4BoxRenamingFileException(String newFileName) {
-		super("Error detected. MP4Box rename the output file '" + newFileName
-				+ "'");
+		super("Error detected. MP4Box rename the output file '" + newFileName //$NON-NLS-1$
+				+ "'"); //$NON-NLS-1$
 		this.newFileName = newFileName;
 	}
 
@@ -36,7 +36,7 @@ public class MP4BoxRenamingFileException extends MPlayerException {
 	 * @return the output file name.
 	 */
 	public String getFileName() {
-		return newFileName;
+		return this.newFileName;
 	}
 
 }

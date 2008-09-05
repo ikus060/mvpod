@@ -23,33 +23,35 @@ public abstract class AbstractJob implements Job {
 	 */
 	public void addJobObserver(JobObserver observer) {
 		int index = 0;
-		while (index < observers.length && observers[index] != observer) {
+		while (index < this.observers.length
+				&& this.observers[index] != observer) {
 			index++;
 		}
 
-		if (index < observers.length) {
+		if (index < this.observers.length) {
 			return;
 		}
 
-		JobObserver[] newObservers = new JobObserver[observers.length + 1];
-		System.arraycopy(observers, 0, newObservers, 0, observers.length);
-		newObservers[observers.length] = observer;
-		observers = newObservers;
+		JobObserver[] newObservers = new JobObserver[this.observers.length + 1];
+		System.arraycopy(this.observers, 0, newObservers, 0,
+				this.observers.length);
+		newObservers[this.observers.length] = observer;
+		this.observers = newObservers;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.Job#getPercentCompleted()
 	 */
 	public int getPercentCompleted() {
-		return percent;
+		return this.percent;
 	}
 
 	/**
 	 * Use by sub-class to notify Observer.
 	 */
 	protected void notifyObservers() {
-		for (int index = 0; index < observers.length; index++) {
-			observers[index].jobProgressHasChanged(this);
+		for (int index = 0; index < this.observers.length; index++) {
+			this.observers[index].jobProgressHasChanged(this);
 		}
 	}
 
@@ -59,19 +61,20 @@ public abstract class AbstractJob implements Job {
 	public void removeJobObserver(JobObserver observer) {
 
 		int index = 0;
-		while (index < observers.length && observers[index] != observer) {
+		while (index < this.observers.length
+				&& this.observers[index] != observer) {
 			index++;
 		}
 
-		if (index >= observers.length) {
+		if (index >= this.observers.length) {
 			return;
 		}
 
-		JobObserver[] newObservers = new JobObserver[observers.length - 1];
-		System.arraycopy(observers, 0, newObservers, 0, index);
-		System.arraycopy(observers, index + 1, newObservers, index,
-				observers.length - index - 1);
-		observers = newObservers;
+		JobObserver[] newObservers = new JobObserver[this.observers.length - 1];
+		System.arraycopy(this.observers, 0, newObservers, 0, index);
+		System.arraycopy(this.observers, index + 1, newObservers, index,
+				this.observers.length - index - 1);
+		this.observers = newObservers;
 
 	}
 

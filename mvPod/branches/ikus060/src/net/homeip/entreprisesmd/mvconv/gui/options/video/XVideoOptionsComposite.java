@@ -63,16 +63,16 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Button to enable/disable B-Frame usage.
 	 */
-	private Button bframeButton;
+	Button bframeButton;
 	/**
 	 * Button to enable/disable Cartoon optimization.
 	 */
-	private Button cartoonButton;
+	Button cartoonButton;
 
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -81,17 +81,17 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Selection listener to bitrate editor.
 	 */
-	private SelectionListener selectionListener = new SelectionAdapter() {
+	SelectionListener selectionListener = new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent e) {
-			if (e.widget == bframeButton) {
+			if (e.widget == XVideoOptionsComposite.this.bframeButton) {
 				bframeSelectionAsChanged();
-			} else if (e.widget == trellisButton) {
+			} else if (e.widget == XVideoOptionsComposite.this.trellisButton) {
 				trellisSelectionAsChanged();
-			} else if (e.widget == twoPassButton) {
+			} else if (e.widget == XVideoOptionsComposite.this.twoPassButton) {
 				twoPassSelectionAsChanged();
-			} else if (e.widget == cartoonButton) {
+			} else if (e.widget == XVideoOptionsComposite.this.cartoonButton) {
 				cartoonSelectionAsChanged();
-			} else if (e.widget == quarterPixelButton) {
+			} else if (e.widget == XVideoOptionsComposite.this.quarterPixelButton) {
 				quarterPixelSelectionAsChanged();
 			}
 		}
@@ -99,15 +99,15 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Button to enable/disable quarter pixel options.
 	 */
-	private Button quarterPixelButton;
+	Button quarterPixelButton;
 	/**
 	 * Trellis enable/disable button.
 	 */
-	private Button trellisButton;
+	Button trellisButton;
 	/**
 	 * Two pass quality button.
 	 */
-	private Button twoPassButton;
+	Button twoPassButton;
 
 	/**
 	 * Create a new lame composite interface.
@@ -124,7 +124,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this view that user change the selection of b-frame.
 	 */
-	private void bframeSelectionAsChanged() {
+	void bframeSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -140,7 +140,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 		XVideoEncodingOptions xVidOptions = (XVideoEncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean bframeSelected = bframeButton.getSelection();
+		boolean bframeSelected = this.bframeButton.getSelection();
 		if (bframeSelected != (xVidOptions.getMaxBFrame() > 0)) {
 
 			// Change profile value
@@ -154,7 +154,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this view that user change the selection of cartoon optimization.
 	 */
-	private void cartoonSelectionAsChanged() {
+	void cartoonSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -170,7 +170,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 		XVideoEncodingOptions xVidOptions = (XVideoEncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean cartoonSelected = cartoonButton.getSelection();
+		boolean cartoonSelected = this.cartoonButton.getSelection();
 		if (cartoonSelected != xVidOptions.isCartoonEnabled()) {
 
 			// Change profile value
@@ -196,50 +196,50 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 		// B-Frame
 		String bframeText = Localization
 				.getString(Localization.OPTIONS_XVID_BFRAME);
-		bframeButton = new Button(this, SWT.CHECK);
-		bframeButton.setText(bframeText);
-		bframeButton.addSelectionListener(selectionListener);
+		this.bframeButton = new Button(this, SWT.CHECK);
+		this.bframeButton.setText(bframeText);
+		this.bframeButton.addSelectionListener(this.selectionListener);
 
 		// Trellis
 		String trellisText = Localization
 				.getString(Localization.OPTIONS_XVID_TRELLIS);
-		trellisButton = new Button(this, SWT.CHECK);
-		trellisButton.setText(trellisText);
-		trellisButton.addSelectionListener(selectionListener);
+		this.trellisButton = new Button(this, SWT.CHECK);
+		this.trellisButton.setText(trellisText);
+		this.trellisButton.addSelectionListener(this.selectionListener);
 
 		// Two-pass
 		String twoPassText = Localization
 				.getString(Localization.OPTIONS_TWO_PASS);
-		twoPassButton = new Button(this, SWT.CHECK);
-		twoPassButton.setText(twoPassText);
-		twoPassButton.addSelectionListener(selectionListener);
+		this.twoPassButton = new Button(this, SWT.CHECK);
+		this.twoPassButton.setText(twoPassText);
+		this.twoPassButton.addSelectionListener(this.selectionListener);
 
 		// Cartoon
 		String cartoonText = Localization
 				.getString(Localization.OPTIONS_XVID_CARTOON);
-		cartoonButton = new Button(this, SWT.CHECK);
-		cartoonButton.setText(cartoonText);
-		cartoonButton.addSelectionListener(selectionListener);
+		this.cartoonButton = new Button(this, SWT.CHECK);
+		this.cartoonButton.setText(cartoonText);
+		this.cartoonButton.addSelectionListener(this.selectionListener);
 
 		// QuarterPixel
 		String quarterPixelText = Localization
 				.getString(Localization.OPTIONS_XVID_QUARTER_PIXEL);
-		quarterPixelButton = new Button(this, SWT.CHECK);
-		quarterPixelButton.setText(quarterPixelText);
-		quarterPixelButton.addSelectionListener(selectionListener);
+		this.quarterPixelButton = new Button(this, SWT.CHECK);
+		this.quarterPixelButton.setText(quarterPixelText);
+		this.quarterPixelButton.addSelectionListener(this.selectionListener);
 
 		// Force update
 		profileAsChanged();
 
 		// Add listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						XVideoOptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -248,7 +248,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
 		// Get the Lame encoding options
 		Profile selectedProfile = getViewSite().getProfileContext()
@@ -264,30 +264,30 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 		XVideoEncodingOptions xVidOptions = (XVideoEncodingOptions) videoOptions;
 
 		// Change trellis
-		if (trellisButton.getSelection() != xVidOptions.isTrellisEnabled()) {
-			trellisButton.setSelection(xVidOptions.isTrellisEnabled());
+		if (this.trellisButton.getSelection() != xVidOptions.isTrellisEnabled()) {
+			this.trellisButton.setSelection(xVidOptions.isTrellisEnabled());
 		}
 
 		// Change B-Frame
-		if (bframeButton.getSelection() != (xVidOptions.getMaxBFrame() > 0)) {
-			bframeButton.setSelection(xVidOptions.getMaxBFrame() > 0);
+		if (this.bframeButton.getSelection() != (xVidOptions.getMaxBFrame() > 0)) {
+			this.bframeButton.setSelection(xVidOptions.getMaxBFrame() > 0);
 		}
 
 		// Change two-pass
-		if (twoPassButton.getSelection() != (xVidOptions.getPass() == 2)) {
-			twoPassButton.setSelection(xVidOptions.getPass() == 2);
+		if (this.twoPassButton.getSelection() != (xVidOptions.getPass() == 2)) {
+			this.twoPassButton.setSelection(xVidOptions.getPass() == 2);
 		}
 
 		// Change Cartoon
-		if (cartoonButton.getSelection() != xVidOptions.isCartoonEnabled()) {
-			cartoonButton.setSelection(xVidOptions.isCartoonEnabled());
+		if (this.cartoonButton.getSelection() != xVidOptions.isCartoonEnabled()) {
+			this.cartoonButton.setSelection(xVidOptions.isCartoonEnabled());
 		}
 
 		// Change Cartoon
-		if (quarterPixelButton.getSelection() != xVidOptions
+		if (this.quarterPixelButton.getSelection() != xVidOptions
 				.isQuarterPixelEnabled()) {
-			quarterPixelButton
-					.setSelection(xVidOptions.isQuarterPixelEnabled());
+			this.quarterPixelButton.setSelection(xVidOptions
+					.isQuarterPixelEnabled());
 		}
 
 		this.layout();
@@ -296,7 +296,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void quarterPixelSelectionAsChanged() {
+	void quarterPixelSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -312,7 +312,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 		XVideoEncodingOptions xVidOptions = (XVideoEncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean quarterPixelSelection = quarterPixelButton.getSelection();
+		boolean quarterPixelSelection = this.quarterPixelButton.getSelection();
 		if (quarterPixelSelection != xVidOptions.isQuarterPixelEnabled()) {
 
 			// Change profile value
@@ -326,7 +326,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void trellisSelectionAsChanged() {
+	void trellisSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -342,7 +342,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 		XVideoEncodingOptions xVidOptions = (XVideoEncodingOptions) videoOptions;
 
 		// Check if value as changed
-		boolean trellisSelection = trellisButton.getSelection();
+		boolean trellisSelection = this.trellisButton.getSelection();
 		if (trellisSelection != xVidOptions.isTrellisEnabled()) {
 
 			// Change profile value
@@ -356,7 +356,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	/**
 	 * Notify this class that user change the selected trellis mode.
 	 */
-	private void twoPassSelectionAsChanged() {
+	void twoPassSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -368,7 +368,7 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 		VideoEncodingOptions videoOptions = options.getVideoOptions();
 
 		// Check if value as changed
-		boolean twoPassSelection = twoPassButton.getSelection();
+		boolean twoPassSelection = this.twoPassButton.getSelection();
 		if (twoPassSelection != (videoOptions.getPass() == 2)) {
 
 			// Change profile value

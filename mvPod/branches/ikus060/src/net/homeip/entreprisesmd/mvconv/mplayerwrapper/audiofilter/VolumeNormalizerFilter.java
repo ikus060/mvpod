@@ -54,10 +54,10 @@ public class VolumeNormalizerFilter implements AudioFilter {
 	 */
 	public VolumeNormalizerFilter(int method, double target) {
 		if (method != METHODE_SINGLE && method != METHODE_MULTIPLE) {
-			throw new IllegalArgumentException("Invalid methode");
+			throw new IllegalArgumentException("Invalid methode"); //$NON-NLS-1$
 		}
 		if (target <= 0 || target > 1) {
-			throw new IllegalArgumentException("Invalid target");
+			throw new IllegalArgumentException("Invalid target"); //$NON-NLS-1$
 		}
 
 		this.method = method;
@@ -88,8 +88,8 @@ public class VolumeNormalizerFilter implements AudioFilter {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 		String[] args = new String[2];
-		args[0] = "-af-add";
-		args[1] = "volnorm=" + getMethod() + ":" + getTarget();
+		args[0] = "-af-add"; //$NON-NLS-1$
+		args[1] = "volnorm=" + getMethod() + ":" + getTarget(); //$NON-NLS-1$ //$NON-NLS-2$
 		return args;
 	}
 

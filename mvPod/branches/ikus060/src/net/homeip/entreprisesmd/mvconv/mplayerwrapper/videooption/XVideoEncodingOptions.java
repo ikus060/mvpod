@@ -61,7 +61,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 		super(VideoFormat.FORMAT_MPEG_XVID);
 
 		if (bitrate < BITRATE_MIN_VALUE || bitrate > BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid bitrate value "
+			throw new IllegalArgumentException("Invalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.bitrate = bitrate;
@@ -116,7 +116,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 * @return the bitrate in Kbps
 	 */
 	public int getBitrate() {
-		return bitrate;
+		return this.bitrate;
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 * @return the maximum number of B-frames
 	 */
 	public int getMaxBFrame() {
-		return maxBFrame;
+		return this.maxBFrame;
 	}
 	/**
 	 * Return True if cartoon option are enable.
@@ -134,7 +134,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 * @return True if cartoon option are enable.
 	 */
 	public boolean isCartoonEnabled() {
-		return enableCartoon;
+		return this.enableCartoon;
 	}
 	/**
 	 * Return True if quarter pixel options are enabled.
@@ -142,7 +142,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 * @return True if quarter pixel options are enabled.
 	 */
 	public boolean isQuarterPixelEnabled() {
-		return enableQuarterPixel;
+		return this.enableQuarterPixel;
 	}
 	/**
 	 * Return True if rate-distortion optimal quantization are enabled.
@@ -150,7 +150,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 * @return True if rate-distortion optimal quantization are enabled
 	 */
 	public boolean isTrellisEnabled() {
-		return enableTrellis;
+		return this.enableTrellis;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 */
 	public void setBitrate(int bitrate) {
 		if (bitrate < BITRATE_MIN_VALUE || bitrate > BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid bitrate value "
+			throw new IllegalArgumentException("Invalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.bitrate = bitrate;
@@ -175,7 +175,7 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 */
 	public void setMaxBFrame(int maxBFrame) {
 		if (maxBFrame < 0 || maxBFrame > MAX_BFRAME) {
-			throw new IllegalArgumentException("Invalid max B-Frame value "
+			throw new IllegalArgumentException("Invalid max B-Frame value " //$NON-NLS-1$
 					+ maxBFrame);
 		}
 		this.maxBFrame = maxBFrame;
@@ -186,34 +186,34 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo, int pass) {
 
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 
 		if (super.getPass() > 1) {
-			value += ":pass=" + pass;
+			value += ":pass=" + pass; //$NON-NLS-1$
 		}
 
-		value += "bitrate=" + bitrate;
+		value += "bitrate=" + this.bitrate; //$NON-NLS-1$
 
-		value += ":max_bframes=" + maxBFrame;
+		value += ":max_bframes=" + this.maxBFrame; //$NON-NLS-1$
 
-		if(enableCartoon){
-			value += ":cartoon";
-		}
-		
-		if(enableQuarterPixel){
-			value += ":qpel";
+		if(this.enableCartoon){
+			value += ":cartoon"; //$NON-NLS-1$
 		}
 		
-		if (!enableTrellis) {
-			value += ":notrellis";
+		if(this.enableQuarterPixel){
+			value += ":qpel"; //$NON-NLS-1$
+		}
+		
+		if (!this.enableTrellis) {
+			value += ":notrellis"; //$NON-NLS-1$
 		}
 
 		String[] defaultArgs = super.toCommandList(inputVideoInfo, pass);
 
 		String[] args = new String[4 + defaultArgs.length];
-		args[0] = "-ovc";
-		args[1] = "xvid";
-		args[2] = "-xvidencopts";
+		args[0] = "-ovc"; //$NON-NLS-1$
+		args[1] = "xvid"; //$NON-NLS-1$
+		args[2] = "-xvidencopts"; //$NON-NLS-1$
 		args[3] = value;
 
 		System.arraycopy(defaultArgs, 0, args,

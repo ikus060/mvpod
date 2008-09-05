@@ -322,7 +322,7 @@ public class QueueItem extends Composite {
 	 *            the description of the action.
 	 */
 	public void setAction1Description(String actionDescription) {
-		action1.setText("<a>" + actionDescription + "</a>");
+		action1.setText("<a>" + actionDescription + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.layout();
 	}
 
@@ -333,7 +333,7 @@ public class QueueItem extends Composite {
 	 *            the description of the action.
 	 */
 	public void setAction2Description(String actionDescription) {
-		action2.setText("<a>" + actionDescription + "</a>");
+		action2.setText("<a>" + actionDescription + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.layout();
 	}
 
@@ -387,7 +387,7 @@ public class QueueItem extends Composite {
 	 */
 	public void setPercentCompleted(int percent) {
 		if (percent < -1 || percent > MAX_PERCENT + 1) {
-			throw new IllegalArgumentException("Invalid percent value "
+			throw new IllegalArgumentException("Invalid percent value " //$NON-NLS-1$
 					+ percent);
 		}
 		if (percent == -1) {

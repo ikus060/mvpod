@@ -19,17 +19,17 @@ public class InputVideoDVD extends InputVideo {
 	/**
 	 * Key value to retreive OS.
 	 */
-	private static final String OS_NAME = "os.name";
+	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
 
 	/**
 	 * Linux OS value.
 	 */
-	private static final String OS_NAME_LINUX = "Linux";
+	private static final String OS_NAME_LINUX = "Linux"; //$NON-NLS-1$
 
 	/**
 	 * Windows OS value.
 	 */
-	private static final String OS_NAME_WINDOWS = "Windows";
+	private static final String OS_NAME_WINDOWS = "Windows"; //$NON-NLS-1$
 
 	/**
 	 * This private static class are use to filter the listing of directory and
@@ -43,8 +43,8 @@ public class InputVideoDVD extends InputVideo {
 		/**
 		 * List of needed files.
 		 */
-		private static String[] fileTypes = new String[] { "VIDEO_TS.BUP",
-				"VIDEO_TS.IFO" };
+		private static String[] fileTypes = new String[] { "VIDEO_TS.BUP", //$NON-NLS-1$
+				"VIDEO_TS.IFO" }; //$NON-NLS-1$
 
 		/**
 		 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
@@ -126,17 +126,17 @@ public class InputVideoDVD extends InputVideo {
 
 		if (!directory.exists()) {
 			throw new FileNotFoundException(directory.getAbsolutePath()
-					+ " not found");
+					+ " not found"); //$NON-NLS-1$
 		}
 		if (!directory.isDirectory()) {
-			throw new FileNotFoundException("Directory "
-					+ directory.getAbsolutePath() + " not found");
+			throw new FileNotFoundException("Directory " //$NON-NLS-1$
+					+ directory.getAbsolutePath() + " not found"); //$NON-NLS-1$
 		}
 
 		int count = directory.list(new DVDDirectoryFilenameFilter()).length;
 		if (count <= 0) {
-			throw new FileNotFoundException("DVD files in "
-					+ directory.getAbsolutePath() + " not found");
+			throw new FileNotFoundException("DVD files in " //$NON-NLS-1$
+					+ directory.getAbsolutePath() + " not found"); //$NON-NLS-1$
 		}
 
 		try {
@@ -162,7 +162,7 @@ public class InputVideoDVD extends InputVideo {
 
 		if (!imageFile.exists()) {
 			throw new FileNotFoundException(imageFile.getAbsolutePath()
-					+ " not found");
+					+ " not found"); //$NON-NLS-1$
 		}
 
 		try {
@@ -190,7 +190,7 @@ public class InputVideoDVD extends InputVideo {
 
 		} else if (OS.equals(OS_NAME_LINUX)) {
 			// TODO : Cross Platform : Complete this list
-			String[] devices = new String[] { "/dev/dvd" };
+			String[] devices = new String[] { "/dev/dvd" }; //$NON-NLS-1$
 			return devices;
 		} else {
 			// TODO : Cross Platform : Support MAC
@@ -266,28 +266,28 @@ public class InputVideoDVD extends InputVideo {
 
 			InputVideoDVD inputVideo = (InputVideoDVD) obj;
 
-			if (!device.equals(inputVideo.device)) {
+			if (!this.device.equals(inputVideo.device)) {
 				return false;
 			}
-			if (audioTrack != null && !audioTrack.equals(inputVideo.audioTrack)) {
+			if (this.audioTrack != null && !this.audioTrack.equals(inputVideo.audioTrack)) {
 				return false;
 			}
 			if (inputVideo.audioTrack != null
-					&& !inputVideo.audioTrack.equals(audioTrack)) {
+					&& !inputVideo.audioTrack.equals(this.audioTrack)) {
 				return false;
 			}
-			if (subtitleTrack != null
-					&& !subtitleTrack.equals(inputVideo.subtitleTrack)) {
+			if (this.subtitleTrack != null
+					&& !this.subtitleTrack.equals(inputVideo.subtitleTrack)) {
 				return false;
 			}
 			if (inputVideo.subtitleTrack != null
-					&& !inputVideo.subtitleTrack.equals(subtitleTrack)) {
+					&& !inputVideo.subtitleTrack.equals(this.subtitleTrack)) {
 				return false;
 			}
-			if (title != null && !title.equals(inputVideo.title)) {
+			if (this.title != null && !this.title.equals(inputVideo.title)) {
 				return false;
 			}
-			if (inputVideo.title != null && !inputVideo.title.equals(title)) {
+			if (inputVideo.title != null && !inputVideo.title.equals(this.title)) {
 				return false;
 			}
 			return true;
@@ -301,7 +301,7 @@ public class InputVideoDVD extends InputVideo {
 	 * @return the audio track identifier or null.
 	 */
 	public String getAudioTrack() {
-		return audioTrack;
+		return this.audioTrack;
 	}
 
 	/**
@@ -310,7 +310,7 @@ public class InputVideoDVD extends InputVideo {
 	 * @return the DVD device
 	 */
 	public String getDevice() {
-		return device;
+		return this.device;
 	}
 
 	/**
@@ -319,7 +319,7 @@ public class InputVideoDVD extends InputVideo {
 	 * @return the selected track identifier or null
 	 */
 	public String getSubtitleTrack() {
-		return subtitleTrack;
+		return this.subtitleTrack;
 	}
 
 	/**
@@ -328,14 +328,14 @@ public class InputVideoDVD extends InputVideo {
 	 * @return the selected title
 	 */
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return device.hashCode();
+		return this.device.hashCode();
 	}
 
 	/**
@@ -346,25 +346,25 @@ public class InputVideoDVD extends InputVideo {
 	public String[] toCommandList() {
 
 		String argTitle;
-		if (title != null) {
-			argTitle = String.format("dvd://%s", title);
+		if (this.title != null) {
+			argTitle = String.format("dvd://%s", this.title); //$NON-NLS-1$
 		} else {
-			argTitle = "dvd://";
+			argTitle = "dvd://"; //$NON-NLS-1$
 		}
 
 		List<String> argsList = new LinkedList<String>();
 		argsList.add(argTitle);
 
-		argsList.add("-dvd-device");
-		argsList.add(device);
+		argsList.add("-dvd-device"); //$NON-NLS-1$
+		argsList.add(this.device);
 
-		if (audioTrack != null) {
-			argsList.add("-aid");
-			argsList.add(audioTrack);
+		if (this.audioTrack != null) {
+			argsList.add("-aid"); //$NON-NLS-1$
+			argsList.add(this.audioTrack);
 		}
-		if (subtitleTrack != null) {
-			argsList.add("-sid");
-			argsList.add(subtitleTrack);
+		if (this.subtitleTrack != null) {
+			argsList.add("-sid"); //$NON-NLS-1$
+			argsList.add(this.subtitleTrack);
 		}
 
 		String[] defaultArgs = super.toCommandList();

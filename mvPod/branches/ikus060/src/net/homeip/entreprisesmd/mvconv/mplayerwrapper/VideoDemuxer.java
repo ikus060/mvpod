@@ -15,134 +15,134 @@ import java.util.Map;
  */
 public class VideoDemuxer {
 
-	public static final VideoDemuxer MUXER_3GP = new VideoDemuxer("MUXER_3GP",
-			new String[] { ".3gp", ".3g2" });
-	public static final VideoDemuxer MUXER_AAC = new VideoDemuxer("MUXER_AAC",
-			new String[] { ".aac", ".aacp" });
-	public static final VideoDemuxer MUXER_ASF = new VideoDemuxer("MUXER_ASF",
-			new String[] { ".asf", ".asx", ".wma", ".wmv" });
+	public static final VideoDemuxer MUXER_3GP = new VideoDemuxer("MUXER_3GP", //$NON-NLS-1$
+			new String[] { ".3gp", ".3g2" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final VideoDemuxer MUXER_AAC = new VideoDemuxer("MUXER_AAC", //$NON-NLS-1$
+			new String[] { ".aac", ".aacp" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final VideoDemuxer MUXER_ASF = new VideoDemuxer("MUXER_ASF", //$NON-NLS-1$
+			new String[] { ".asf", ".asx", ".wma", ".wmv" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final VideoDemuxer MUXER_AUDIO = new VideoDemuxer(
-			"MUXER_AUDIO", new String[0]);
+			"MUXER_AUDIO", new String[0]); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_AVINI = new VideoDemuxer(
-			"MUXER_AVINI", new String[] { ".avi" });
-	public static final VideoDemuxer MUXER_AVI = new VideoDemuxer("MUXER_AVI",
-			new String[] { ".avi" });
-	public static final VideoDemuxer MUXER_AVS = new VideoDemuxer("MUXER_AVS",
-			new String[] { ".avi" });
+			"MUXER_AVINI", new String[] { ".avi" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final VideoDemuxer MUXER_AVI = new VideoDemuxer("MUXER_AVI", //$NON-NLS-1$
+			new String[] { ".avi" }); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_AVS = new VideoDemuxer("MUXER_AVS", //$NON-NLS-1$
+			new String[] { ".avi" }); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_FILM = new VideoDemuxer(
-			"MUXER_FILM", new String[] { ".cpk", ".cak", ".film" });
-	public static final VideoDemuxer MUXER_FLI = new VideoDemuxer("MUXER_FLI",
-			new String[] { ".fli", ".flc", ".cel" });
-	public static final VideoDemuxer MUXER_GIF = new VideoDemuxer("MUXER_GIF",
-			new String[] { ".gif" });
+			"MUXER_FILM", new String[] { ".cpk", ".cak", ".film" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	public static final VideoDemuxer MUXER_FLI = new VideoDemuxer("MUXER_FLI", //$NON-NLS-1$
+			new String[] { ".fli", ".flc", ".cel" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public static final VideoDemuxer MUXER_GIF = new VideoDemuxer("MUXER_GIF", //$NON-NLS-1$
+			new String[] { ".gif" }); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_H264ES = new VideoDemuxer(
-			"MUXER_H264ES", new String[] { ".h264" });
+			"MUXER_H264ES", new String[] { ".h264" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final VideoDemuxer MUXER_LAVF = new VideoDemuxer(
-			"MUXER_LAVF", new String[0]);
+			"MUXER_LAVF", new String[0]); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_LAVFPREF = new VideoDemuxer(
-			"MUXER_LAVFPREF", new String[0]);
+			"MUXER_LAVFPREF", new String[0]); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_LMLM4 = new VideoDemuxer(
-			"MUXER_LMLM4", new String[0]);
-	public static final VideoDemuxer MUXER_MF = new VideoDemuxer("MUXER_MF",
+			"MUXER_LMLM4", new String[0]); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_MF = new VideoDemuxer("MUXER_MF", //$NON-NLS-1$
 			new String[0]);
-	public static final VideoDemuxer MUXER_MKV = new VideoDemuxer("MUXER_MKV",
-			new String[] { ".mkv" });
-	public static final VideoDemuxer MUXER_MOV = new VideoDemuxer("MUXER_MOV",
-			new String[] { ".mov", ".qt" });
+	public static final VideoDemuxer MUXER_MKV = new VideoDemuxer("MUXER_MKV", //$NON-NLS-1$
+			new String[] { ".mkv" }); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_MOV = new VideoDemuxer("MUXER_MOV", //$NON-NLS-1$
+			new String[] { ".mov", ".qt" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final VideoDemuxer MUXER_MPG4 = new VideoDemuxer(
-			"MUXER_MPG4", new String[] { ".mp4" });
-	public static final VideoDemuxer MUXER_MPC = new VideoDemuxer("MUXER_MPC",
-			new String[] { ".mpc" });
+			"MUXER_MPG4", new String[] { ".mp4" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final VideoDemuxer MUXER_MPC = new VideoDemuxer("MUXER_MPC", //$NON-NLS-1$
+			new String[] { ".mpc" }); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_MPEG4ES = new VideoDemuxer(
-			"MUXER_MPEG4ES", new String[] { ".mpg", ".m2p", ".vob" });
+			"MUXER_MPEG4ES", new String[] { ".mpg", ".m2p", ".vob" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final VideoDemuxer MUXER_MPEGES = new VideoDemuxer(
-			"MUXER_MPEGES", new String[] { ".mpg", ".m2p", ".vob" });
+			"MUXER_MPEGES", new String[] { ".mpg", ".m2p", ".vob" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final VideoDemuxer MUXER_MPEGGXF = new VideoDemuxer(
-			"MUXER_MPEGGXF", new String[] { ".mpg", ".m2p", ".vob" });
+			"MUXER_MPEGGXF", new String[] { ".mpg", ".m2p", ".vob" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final VideoDemuxer MUXER_MPEGPES = new VideoDemuxer(
-			"MUXER_MPEGPES", new String[] { ".mpg", ".m2p", ".vob" });
+			"MUXER_MPEGPES", new String[] { ".mpg", ".m2p", ".vob" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final VideoDemuxer MUXER_MPEGPS = new VideoDemuxer(
-			"MUXER_MPEGPS", new String[] { ".mpg", ".m2p", ".vob", ".evo",
-					".eac3" });
+			"MUXER_MPEGPS", new String[] { ".mpg", ".m2p", ".vob", ".evo", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					".eac3" }); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_MPEGTS = new VideoDemuxer(
-			"MUXER_MPEGTS", new String[] { ".mpg", ".m2p", ".ts" });
-	public static final VideoDemuxer MUXER_NSV = new VideoDemuxer("MUXER_NSV",
-			new String[] { ".nsv" });
-	public static final VideoDemuxer MUXER_NUV = new VideoDemuxer("MUXER_NUV",
-			new String[] { ".nuv" });
-	public static final VideoDemuxer MUXER_OGG = new VideoDemuxer("MUXER_OGG",
-			new String[] { ".ogg", ".spx", ".ogm" });
-	public static final VideoDemuxer MUXER_PVA = new VideoDemuxer("MUXER_PVA",
-			new String[] { ".pva" });
+			"MUXER_MPEGTS", new String[] { ".mpg", ".m2p", ".ts" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	public static final VideoDemuxer MUXER_NSV = new VideoDemuxer("MUXER_NSV", //$NON-NLS-1$
+			new String[] { ".nsv" }); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_NUV = new VideoDemuxer("MUXER_NUV", //$NON-NLS-1$
+			new String[] { ".nuv" }); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_OGG = new VideoDemuxer("MUXER_OGG", //$NON-NLS-1$
+			new String[] { ".ogg", ".spx", ".ogm" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public static final VideoDemuxer MUXER_PVA = new VideoDemuxer("MUXER_PVA", //$NON-NLS-1$
+			new String[] { ".pva" }); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_RAWAUDIO = new VideoDemuxer(
-			"MUXER_RAWAUDIO", new String[0]);
+			"MUXER_RAWAUDIO", new String[0]); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_RAWDV = new VideoDemuxer(
-			"MUXER_RAWDV", new String[] { ".eac3" });
+			"MUXER_RAWDV", new String[] { ".eac3" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final VideoDemuxer MUXER_RAWVIDEO = new VideoDemuxer(
-			"MUXER_RAWVIDEO", new String[0]);
+			"MUXER_RAWVIDEO", new String[0]); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_REAL = new VideoDemuxer(
-			"MUXER_REAL", new String[0]);
+			"MUXER_REAL", new String[0]); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_REALAUDIO = new VideoDemuxer(
-			"MUXER_REALAUDIO", new String[0]);
-	public static final VideoDemuxer MUXER_ROQ = new VideoDemuxer("MUXER_ROQ",
+			"MUXER_REALAUDIO", new String[0]); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_ROQ = new VideoDemuxer("MUXER_ROQ", //$NON-NLS-1$
 			new String[0]);
-	public static final VideoDemuxer MUXER_RTP = new VideoDemuxer("MUXER_RTP",
+	public static final VideoDemuxer MUXER_RTP = new VideoDemuxer("MUXER_RTP", //$NON-NLS-1$
 			new String[0]);
 	public static final VideoDemuxer MUXER_SMJPEG = new VideoDemuxer(
-			"MUXER_SMJPEG", new String[0]);
+			"MUXER_SMJPEG", new String[0]); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_TIVO = new VideoDemuxer(
-			"MUXER_TIVO", new String[0]);
-	public static final VideoDemuxer MUXER_TV = new VideoDemuxer("MUXER_TV",
+			"MUXER_TIVO", new String[0]); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_TV = new VideoDemuxer("MUXER_TV", //$NON-NLS-1$
 			new String[0]);
 	public static final VideoDemuxer MUXER_VIVO = new VideoDemuxer(
-			"MUXER_VIVO", new String[0]);
-	public static final VideoDemuxer MUXER_VQF = new VideoDemuxer("MUXER_VQF",
+			"MUXER_VIVO", new String[0]); //$NON-NLS-1$
+	public static final VideoDemuxer MUXER_VQF = new VideoDemuxer("MUXER_VQF", //$NON-NLS-1$
 			new String[0]);
-	public static final VideoDemuxer MUXER_Y4M = new VideoDemuxer("MUXER_Y4M",
+	public static final VideoDemuxer MUXER_Y4M = new VideoDemuxer("MUXER_Y4M", //$NON-NLS-1$
 			new String[0]);
 
 	private static Map<String, VideoDemuxer> demuxers = new HashMap<String, VideoDemuxer>();
 	static {
-		demuxers.put("aac", MUXER_AAC);
-		demuxers.put("asf", MUXER_ASF);
-		demuxers.put("audio", MUXER_AUDIO);
-		demuxers.put("avini", MUXER_AVINI);
-		demuxers.put("avi", MUXER_AVI);
-		demuxers.put("avs", MUXER_AVS);
-		demuxers.put("film", MUXER_FILM);
-		demuxers.put("fli", MUXER_FLI);
-		demuxers.put("gif", MUXER_GIF);
-		demuxers.put("h264es", MUXER_H264ES);
-		demuxers.put("lavf", MUXER_LAVF);
-		demuxers.put("lavfpref", MUXER_LAVFPREF);
-		demuxers.put("lmlm4", MUXER_LMLM4);
-		demuxers.put("mf", MUXER_MF);
-		demuxers.put("mkv", MUXER_MKV);
-		demuxers.put("mov", MUXER_MOV);
-		demuxers.put("mpc", MUXER_MPC);
-		demuxers.put("mpeg4es", MUXER_MPEG4ES);
-		demuxers.put("mpeges", MUXER_MPEGES);
-		demuxers.put("mpeggxf", MUXER_MPEGGXF);
-		demuxers.put("mpegpes", MUXER_MPEGPES);
-		demuxers.put("mpegps", MUXER_MPEGPS);
-		demuxers.put("mpegts", MUXER_MPEGTS);
-		demuxers.put("nsv", MUXER_NSV);
-		demuxers.put("nuv", MUXER_NUV);
-		demuxers.put("ogg", MUXER_OGG);
-		demuxers.put("pva", MUXER_PVA);
-		demuxers.put("rawaudio", MUXER_RAWAUDIO);
-		demuxers.put("rawdv", MUXER_RAWDV);
-		demuxers.put("rawvideo", MUXER_RAWVIDEO);
-		demuxers.put("real", MUXER_REAL);
-		demuxers.put("realaudio", MUXER_REALAUDIO);
-		demuxers.put("roq", MUXER_ROQ);
-		demuxers.put("rtp", MUXER_RTP);
-		demuxers.put("smjpeg", MUXER_SMJPEG);
-		demuxers.put("tivo", MUXER_TIVO);
-		demuxers.put("tv", MUXER_TV);
-		demuxers.put("vivo", MUXER_VIVO);
-		demuxers.put("vqf", MUXER_VQF);
-		demuxers.put("y4m", MUXER_Y4M);
+		demuxers.put("aac", MUXER_AAC); //$NON-NLS-1$
+		demuxers.put("asf", MUXER_ASF); //$NON-NLS-1$
+		demuxers.put("audio", MUXER_AUDIO); //$NON-NLS-1$
+		demuxers.put("avini", MUXER_AVINI); //$NON-NLS-1$
+		demuxers.put("avi", MUXER_AVI); //$NON-NLS-1$
+		demuxers.put("avs", MUXER_AVS); //$NON-NLS-1$
+		demuxers.put("film", MUXER_FILM); //$NON-NLS-1$
+		demuxers.put("fli", MUXER_FLI);  //$NON-NLS-1$
+		demuxers.put("gif", MUXER_GIF);  //$NON-NLS-1$
+		demuxers.put("h264es", MUXER_H264ES);  //$NON-NLS-1$
+		demuxers.put("lavf", MUXER_LAVF);  //$NON-NLS-1$
+		demuxers.put("lavfpref", MUXER_LAVFPREF);  //$NON-NLS-1$
+		demuxers.put("lmlm4", MUXER_LMLM4);  //$NON-NLS-1$
+		demuxers.put("mf", MUXER_MF);  //$NON-NLS-1$
+		demuxers.put("mkv", MUXER_MKV);  //$NON-NLS-1$
+		demuxers.put("mov", MUXER_MOV);  //$NON-NLS-1$
+		demuxers.put("mpc", MUXER_MPC);  //$NON-NLS-1$
+		demuxers.put("mpeg4es", MUXER_MPEG4ES);  //$NON-NLS-1$
+		demuxers.put("mpeges", MUXER_MPEGES);  //$NON-NLS-1$
+		demuxers.put("mpeggxf", MUXER_MPEGGXF);  //$NON-NLS-1$
+		demuxers.put("mpegpes", MUXER_MPEGPES);  //$NON-NLS-1$
+		demuxers.put("mpegps", MUXER_MPEGPS);  //$NON-NLS-1$
+		demuxers.put("mpegts", MUXER_MPEGTS);  //$NON-NLS-1$
+		demuxers.put("nsv", MUXER_NSV);  //$NON-NLS-1$
+		demuxers.put("nuv", MUXER_NUV);  //$NON-NLS-1$
+		demuxers.put("ogg", MUXER_OGG);  //$NON-NLS-1$
+		demuxers.put("pva", MUXER_PVA);  //$NON-NLS-1$
+		demuxers.put("rawaudio", MUXER_RAWAUDIO);  //$NON-NLS-1$
+		demuxers.put("rawdv", MUXER_RAWDV);  //$NON-NLS-1$
+		demuxers.put("rawvideo", MUXER_RAWVIDEO);  //$NON-NLS-1$
+		demuxers.put("real", MUXER_REAL);  //$NON-NLS-1$
+		demuxers.put("realaudio", MUXER_REALAUDIO);  //$NON-NLS-1$
+		demuxers.put("roq", MUXER_ROQ);  //$NON-NLS-1$
+		demuxers.put("rtp", MUXER_RTP);  //$NON-NLS-1$
+		demuxers.put("smjpeg", MUXER_SMJPEG);  //$NON-NLS-1$
+		demuxers.put("tivo", MUXER_TIVO);  //$NON-NLS-1$
+		demuxers.put("tv", MUXER_TV);  //$NON-NLS-1$
+		demuxers.put("vivo", MUXER_VIVO);  //$NON-NLS-1$
+		demuxers.put("vqf", MUXER_VQF);  //$NON-NLS-1$
+		demuxers.put("y4m", MUXER_Y4M);  //$NON-NLS-1$
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class VideoDemuxer {
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof VideoDemuxer) {
-			return ((VideoDemuxer) obj).demuxerId.equals(demuxerId);
+			return ((VideoDemuxer) obj).demuxerId.equals(this.demuxerId);
 		}
 		return false;
 	}
@@ -195,7 +195,7 @@ public class VideoDemuxer {
 	 * @return format identifier.
 	 */
 	public String getDemuxerID() {
-		return demuxerId;
+		return this.demuxerId;
 	}
 
 	/**
@@ -204,14 +204,14 @@ public class VideoDemuxer {
 	 * @return list of file extentions.
 	 */
 	public String[] getFileExtentions() {
-		return fileExtentions.clone();
+		return this.fileExtentions.clone();
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return demuxerId.hashCode();
+		return this.demuxerId.hashCode();
 	}
 
 }

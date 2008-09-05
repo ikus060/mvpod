@@ -2,8 +2,6 @@ package net.homeip.entreprisesmd.mvconv.core.profile;
 
 import java.io.File;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-
 import net.homeip.entreprisesmd.mvconv.core.Localization;
 import net.homeip.entreprisesmd.mvconv.gui.Main;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
@@ -11,8 +9,9 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoScalingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.FAACEncodingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4BoxMuxer;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videofilter.HarddupFilter;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videofilter.PullupFilter;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.XVideoEncodingOptions;
+
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * This profile are intended to produce video file that are compatible with iPod

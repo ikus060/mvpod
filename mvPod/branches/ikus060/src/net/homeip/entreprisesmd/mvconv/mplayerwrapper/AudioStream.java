@@ -84,7 +84,7 @@ public class AudioStream {
 	 * @return the audio format
 	 */
 	public AudioFormat getAudioFormat() {
-		return format;
+		return this.format;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class AudioStream {
 	 * @return the audio track ID
 	 */
 	public String getAudioID() {
-		return audioID;
+		return this.audioID;
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class AudioStream {
 	 * @return the bitrate in Kbps
 	 */
 	public int getBitrate() {
-		return bitrate;
+		return this.bitrate;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class AudioStream {
 	 * @return the channel mode
 	 */
 	public int getChannelMode() {
-		return channel;
+		return this.channel;
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class AudioStream {
 	 * @return the language identifier as define in the ISO 639-1 or ISO 639-2
 	 */
 	public String getLanguage() {
-		return langage;
+		return this.langage;
 	}
 
 	/**
@@ -129,14 +129,14 @@ public class AudioStream {
 	 * @return the sample rate in Hz
 	 */
 	public int getSampleRate() {
-		return sampleRate;
+		return this.sampleRate;
 	}
 
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "AudioID " + audioID;
+		return "AudioID " + this.audioID; //$NON-NLS-1$
 	}
 
 }

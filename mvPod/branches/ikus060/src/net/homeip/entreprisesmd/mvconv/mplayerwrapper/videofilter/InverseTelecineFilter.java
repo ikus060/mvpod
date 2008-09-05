@@ -30,7 +30,7 @@ public class InverseTelecineFilter implements VideoFilter {
 	public InverseTelecineFilter(double outputFrameRate) {
 		if (outputFrameRate <= 0) {
 			throw new IllegalArgumentException(
-					"Invalid ouput frame rate value " + outputFrameRate);
+					"Invalid ouput frame rate value " + outputFrameRate); //$NON-NLS-1$
 		}
 		this.outputFrameRate = outputFrameRate;
 	}
@@ -41,7 +41,7 @@ public class InverseTelecineFilter implements VideoFilter {
 	 * @return the output frame rate.
 	 */
 	public double getOutputFrameRate() {
-		return outputFrameRate;
+		return this.outputFrameRate;
 	}
 
 	/**
@@ -56,14 +56,14 @@ public class InverseTelecineFilter implements VideoFilter {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
-		String value = "";
-		value += "filmdint=";
-		value += String.format("io=%s:%s",
+		String value = ""; //$NON-NLS-1$
+		value += "filmdint="; //$NON-NLS-1$
+		value += String.format("io=%s:%s", //$NON-NLS-1$
 				inputVideoInfo.getFrameRate(),
-				outputFrameRate);
+				this.outputFrameRate);
 
 		String[] args = new String[2];
-		args[0] = "-vf-add";
+		args[0] = "-vf-add"; //$NON-NLS-1$
 		args[1] = value;
 		return args;
 	}

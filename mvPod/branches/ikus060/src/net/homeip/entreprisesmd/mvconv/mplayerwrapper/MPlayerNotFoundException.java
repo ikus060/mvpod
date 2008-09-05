@@ -40,7 +40,7 @@ public class MPlayerNotFoundException extends MPlayerException {
 	 * Create a new mplayer not found exception.
 	 */
 	public MPlayerNotFoundException(String componentName) {
-		super(componentName + " not found");
+		super(componentName + " not found"); //$NON-NLS-1$
 		this.componentName = componentName;
 	}
 	
@@ -49,7 +49,7 @@ public class MPlayerNotFoundException extends MPlayerException {
 	 * @return the missing component name.
 	 */
 	public String getComponentName(){
-		return componentName;
+		return this.componentName;
 	}
 
 }

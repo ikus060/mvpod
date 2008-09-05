@@ -86,7 +86,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -95,7 +95,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * MPEG version viewer.
 	 */
-	private ComboViewer mpegVersionViewer;
+	ComboViewer mpegVersionViewer;
 	/**
 	 * MPEG label provider
 	 */
@@ -137,18 +137,18 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Type viewer.
 	 */
-	private ComboViewer objectTypeViewer;
+	ComboViewer objectTypeViewer;
 	/**
 	 * Sample rate combo viewer.
 	 */
-	private ComboViewer sampleRateViewer;
+	ComboViewer sampleRateViewer;
 	/**
 	 * Sample rate label provider.
 	 */
 	private LabelProvider sampleRateViewerLabelProvider = new LabelProvider() {
 		public String getText(Object element) {
 			if (element instanceof Integer) {
-				return element.toString() + " Hz";
+				return element.toString() + " Hz"; //$NON-NLS-1$
 			}
 			return element.toString();
 		}
@@ -159,11 +159,11 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
 
-			if (event.getSource() == objectTypeViewer) {
+			if (event.getSource() == FAACOptionsComposite.this.objectTypeViewer) {
 				objectTypeSelectionAsChanged();
-			} else if (event.getSource() == mpegVersionViewer) {
+			} else if (event.getSource() == FAACOptionsComposite.this.mpegVersionViewer) {
 				mpegVersionSelectionAsChanged();
-			} else if (event.getSource() == sampleRateViewer) {
+			} else if (event.getSource() == FAACOptionsComposite.this.sampleRateViewer) {
 				sampleRateAsChanged();
 			}
 
@@ -193,7 +193,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this view that user change the slected bitrate value.
 	 */
-	private void bitrateSelectionAsChanged() {
+	void bitrateSelectionAsChanged() {
 
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
@@ -202,7 +202,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		}
 
 		// Check if value as changed
-		int audioBitrate = bitrateEditor.getSelection();
+		int audioBitrate = this.bitrateEditor.getSelection();
 		EncodingOptions options = profile.getEncodingOptions();
 		AudioEncodingOptions audioOptions = options.getAudioOptions();
 
@@ -223,8 +223,8 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	 * 
 	 * @return the select type.
 	 */
-	private int getMpegVersionSelection() {
-		Object selection = ((IStructuredSelection) mpegVersionViewer
+	int getMpegVersionSelection() {
+		Object selection = ((IStructuredSelection) this.mpegVersionViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return -1;
@@ -237,8 +237,8 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	 * 
 	 * @return the select type.
 	 */
-	private int getObjectTypeSelection() {
-		Object selection = ((IStructuredSelection) objectTypeViewer
+	int getObjectTypeSelection() {
+		Object selection = ((IStructuredSelection) this.objectTypeViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return -1;
@@ -250,8 +250,8 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	 * 
 	 * @return the selected sample rate.
 	 */
-	private Integer getSampleRateSelection() {
-		Object selection = ((IStructuredSelection) sampleRateViewer
+	Integer getSampleRateSelection() {
+		Object selection = ((IStructuredSelection) this.sampleRateViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return null;
@@ -292,73 +292,73 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		firstColumnWidth = Math.max(firstColumnWidth, sampleTextSize.x);
 
 		// Bitrate
-		bitrateLabel = new Label(this, SWT.NONE);
-		bitrateLabel.setText(bitrateText);
-		bitrateLabel.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
+		this.bitrateLabel = new Label(this, SWT.NONE);
+		this.bitrateLabel.setText(bitrateText);
+		this.bitrateLabel.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		bitrateEditor = new ScaleEditor(this, SWT.NONE);
-		bitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+		this.bitrateEditor = new ScaleEditor(this, SWT.NONE);
+		this.bitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 3, 1));
-		bitrateEditor.setFormatValue(bitrateValueFormat);
-		bitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
-		bitrateEditor.setPageIncrement(PAGE_INCREMENT_AUDIO_BITRATE);
-		bitrateEditor.setRange(FAACEncodingOptions.BITRATE_MIN_VALUE,
+		this.bitrateEditor.setFormatValue(bitrateValueFormat);
+		this.bitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
+		this.bitrateEditor.setPageIncrement(PAGE_INCREMENT_AUDIO_BITRATE);
+		this.bitrateEditor.setRange(FAACEncodingOptions.BITRATE_MIN_VALUE,
 				FAACEncodingOptions.BITRATE_MAX_VALUE);
-		bitrateEditor.addSelectionListener(selectionListener);
+		this.bitrateEditor.addSelectionListener(this.selectionListener);
 
 		// Type
 		Label label = new Label(this, SWT.NONE);
 		label.setText(typeText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		objectTypeViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
-		objectTypeViewer.getCombo().setLayoutData(
+		this.objectTypeViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
+		this.objectTypeViewer.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, false, false));
-		objectTypeViewer.setLabelProvider(objectTypeLabelProvider);
-		objectTypeViewer.addSelectionChangedListener(selectionChangeListener);
-		objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_MAIN);
-		objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_LOW);
-		objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_SSR);
-		objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_LTP);
+		this.objectTypeViewer.setLabelProvider(this.objectTypeLabelProvider);
+		this.objectTypeViewer.addSelectionChangedListener(this.selectionChangeListener);
+		this.objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_MAIN);
+		this.objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_LOW);
+		this.objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_SSR);
+		this.objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_LTP);
 	
 		// MPEG version
 		label = new Label(this, SWT.NONE);
 		label.setText(mpegVersionText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		mpegVersionViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
-		mpegVersionViewer.getCombo().setLayoutData(
+		this.mpegVersionViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
+		this.mpegVersionViewer.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, false, false));
-		mpegVersionViewer.setLabelProvider(mpegVersionLabelProvider);
-		mpegVersionViewer.addSelectionChangedListener(selectionChangeListener);
-		mpegVersionViewer.add(FAACEncodingOptions.MPEG_VERSION_2);
-		mpegVersionViewer.add(FAACEncodingOptions.MPEG_VERSION_4);
+		this.mpegVersionViewer.setLabelProvider(this.mpegVersionLabelProvider);
+		this.mpegVersionViewer.addSelectionChangedListener(this.selectionChangeListener);
+		this.mpegVersionViewer.add(FAACEncodingOptions.MPEG_VERSION_2);
+		this.mpegVersionViewer.add(FAACEncodingOptions.MPEG_VERSION_4);
 
 		// Sample rate
 		label = new Label(this, SWT.NONE);
 		label.setText(sampleRateText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		sampleRateViewer = new ComboViewer(this, SWT.DROP_DOWN | SWT.READ_ONLY);
-		sampleRateViewer.getCombo().setLayoutData(
+		this.sampleRateViewer = new ComboViewer(this, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.sampleRateViewer.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false));
-		sampleRateViewer.setLabelProvider(sampleRateViewerLabelProvider);
-		sampleRateViewer.add(48000);
-		sampleRateViewer.add(44100);
-		sampleRateViewer.addSelectionChangedListener(selectionChangeListener);
+		this.sampleRateViewer.setLabelProvider(this.sampleRateViewerLabelProvider);
+		this.sampleRateViewer.add(48000);
+		this.sampleRateViewer.add(44100);
+		this.sampleRateViewer.addSelectionChangedListener(this.selectionChangeListener);
 		
 		// Force update
 		profileAsChanged();
 
 		// Add listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						FAACOptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -366,7 +366,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this class that user change the sample rate.
 	 */
-	private void sampleRateAsChanged() {
+	void sampleRateAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -394,7 +394,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
 		// Get the Lame encoding options
 		Profile selectedProfile = getViewSite().getProfileContext()
@@ -410,21 +410,21 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		FAACEncodingOptions faacOptions = (FAACEncodingOptions) audioOptions;
 
 		// Change bitrate editor
-		if (faacOptions.getBitrate() != bitrateEditor.getSelection()) {
-			bitrateEditor.setSelection(faacOptions.getBitrate());
+		if (faacOptions.getBitrate() != this.bitrateEditor.getSelection()) {
+			this.bitrateEditor.setSelection(faacOptions.getBitrate());
 		}
 
 		// Type viewer
 		int typeSelected = getObjectTypeSelection();
 		if (typeSelected != faacOptions.getObjectType()) {
-			objectTypeViewer.setSelection(new StructuredSelection(faacOptions
+			this.objectTypeViewer.setSelection(new StructuredSelection(faacOptions
 					.getObjectType()));
 		}
 
 		// MPEG viewer
 		int mpegVersionSelected = getMpegVersionSelection();
 		if (mpegVersionSelected != faacOptions.getMPEGVersion()) {
-			mpegVersionViewer.setSelection(new StructuredSelection(faacOptions
+			this.mpegVersionViewer.setSelection(new StructuredSelection(faacOptions
 					.getMPEGVersion()));
 		}
 
@@ -432,7 +432,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		Integer sampleRateSelected = getSampleRateSelection();
 		if (sampleRateSelected == null
 				|| sampleRateSelected != faacOptions.getOutputSampleRate()) {
-			sampleRateViewer.setSelection(new StructuredSelection(faacOptions
+			this.sampleRateViewer.setSelection(new StructuredSelection(faacOptions
 					.getOutputSampleRate()));
 		}
 		
@@ -441,7 +441,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this class that user change the mpeg version.
 	 */
-	private void mpegVersionSelectionAsChanged() {
+	void mpegVersionSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -470,7 +470,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this class that user change the type.
 	 */
-	private void objectTypeSelectionAsChanged() {
+	void objectTypeSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {

@@ -57,7 +57,7 @@ public class QueueWindow extends Dialog {
 	/**
 	 * Key value to store job data.
 	 */
-	private static final String JOB_DATA = "JobData";
+	private static final String JOB_DATA = "JobData"; //$NON-NLS-1$
 
 	/**
 	 * Count number of runnable.
@@ -297,7 +297,7 @@ public class QueueWindow extends Dialog {
 	 *            the job.
 	 * @return the queue item.
 	 */
-	private QueueItem getQueueItemForJob(Job job) {
+	QueueItem getQueueItemForJob(Job job) {
 		int index = 0;
 		while (index < queueList.getItemCount()
 				&& queueList.getItem(index).getData(JOB_DATA) != job) {
@@ -318,7 +318,7 @@ public class QueueWindow extends Dialog {
 	 * @param event
 	 *            the selection event.
 	 */
-	private void handleQueueItemActionSelected(int action, SelectionEvent event) {
+	void handleQueueItemActionSelected(int action, SelectionEvent event) {
 
 		QueueItem item = (QueueItem) event.widget;
 		Job job = (Job) item.getData(JOB_DATA);
@@ -378,7 +378,7 @@ public class QueueWindow extends Dialog {
 	/**
 	 * Update the list of job.
 	 */
-	private void updateJobList() {
+	void updateJobList() {
 
 		Job[] jobs = jobQueue.getJobs();
 		for (int index = 0; index < jobs.length; index++) {
@@ -417,7 +417,7 @@ public class QueueWindow extends Dialog {
 	 * @param job
 	 *            the job.
 	 */
-	private void updateJobProgress(Job job) {
+	void updateJobProgress(Job job) {
 
 		QueueItem queueItem = getQueueItemForJob(job);
 		if (queueItem == null) {
@@ -434,7 +434,7 @@ public class QueueWindow extends Dialog {
 	 * @param job
 	 *            the job.
 	 */
-	private void updateJobStatus(final Job job) {
+	void updateJobStatus(final Job job) {
 
 		int status = jobQueue.getJobStatus(job);
 		if (status == JobQueue.STATUS_QUEUED) {
@@ -444,7 +444,7 @@ public class QueueWindow extends Dialog {
 					QueueItem queueItem = getQueueItemForJob(job);
 					queueItem.setAction1Description(Localization
 							.getString(Localization.JOB_QUEUE_WINDOW_REMOVE));
-					queueItem.setAction2Description("");
+					queueItem.setAction2Description(""); //$NON-NLS-1$
 					queueItem.setProgressDescription(Localization
 							.getString(Localization.JOB_QUEUE_WINDOW_QUEUED));
 					queueItem.setPercentCompleted(-1);
@@ -461,8 +461,8 @@ public class QueueWindow extends Dialog {
 					QueueItem queueItem = getQueueItemForJob(job);
 					queueItem.setAction1Description(Localization
 							.getString(Localization.JOB_QUEUE_WINDOW_CANCEL));
-					queueItem.setAction2Description("");
-					queueItem.setProgressDescription("");
+					queueItem.setAction2Description(""); //$NON-NLS-1$
+					queueItem.setProgressDescription(""); //$NON-NLS-1$
 					updateJobProgress(job);
 					runnableCount--;
 				}
@@ -517,7 +517,7 @@ public class QueueWindow extends Dialog {
 					QueueItem queueItem = getQueueItemForJob(job);
 					queueItem.setAction1Description(Localization
 							.getString(Localization.JOB_QUEUE_WINDOW_CLEAR));
-					queueItem.setAction2Description("");
+					queueItem.setAction2Description(""); //$NON-NLS-1$
 					queueItem.setProgressDescription(Localization
 							.getString(Localization.JOB_QUEUE_WINDOW_CANCELED));
 					queueItem.setPercentCompleted(-1);

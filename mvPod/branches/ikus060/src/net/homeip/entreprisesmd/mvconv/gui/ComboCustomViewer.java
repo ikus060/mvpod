@@ -14,11 +14,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class ComboCustomViewer extends AbstractListViewer {
-	
+
 	/**
 	 * Custom element that been add.
 	 */
-	private Object customSelection;
+	Object customSelection;
 
 	/**
 	 * This viewer's list control if this viewer is instantiated with a combo
@@ -26,7 +26,7 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * 
 	 * @see #ComboViewer(Combo)
 	 */
-	private Combo combo;
+	Combo combo;
 
 	/**
 	 * This viewer's list control if this viewer is instantiated with a CCombo
@@ -35,7 +35,7 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * @see #ComboViewer(CCombo)
 	 * @since 3.3
 	 */
-	private CCombo ccombo;
+	CCombo ccombo;
 
 	/**
 	 * Creates a combo viewer on a newly-created combo control under the given
@@ -92,58 +92,56 @@ public class ComboCustomViewer extends AbstractListViewer {
 	}
 
 	protected void listAdd(String string, int index) {
-		if (combo == null) {
-			ccombo.add(string, index);
+		if (this.combo == null) {
+			this.ccombo.add(string, index);
 		} else {
-			combo.add(string, index);
+			this.combo.add(string, index);
 		}
 	}
 
 	protected void listSetItem(int index, String string) {
-		if (combo == null) {
-			ccombo.setItem(index, string);
+		if (this.combo == null) {
+			this.ccombo.setItem(index, string);
 		} else {
-			combo.setItem(index, string);
+			this.combo.setItem(index, string);
 		}
 	}
 
 	protected int[] listGetSelectionIndices() {
-		if (combo == null) {
-			return new int[] { ccombo.getSelectionIndex() };
-		} else {
-			return new int[] { combo.getSelectionIndex() };
+		if (this.combo == null) {
+			return new int[] { this.ccombo.getSelectionIndex() };
 		}
+		return new int[] { this.combo.getSelectionIndex() };
 	}
 
 	protected int listGetItemCount() {
-		if (combo == null) {
-			return ccombo.getItemCount();
-		} else {
-			return combo.getItemCount();
+		if (this.combo == null) {
+			return this.ccombo.getItemCount();
 		}
+		return this.combo.getItemCount();
 	}
 
 	protected void listSetItems(String[] labels) {
-		if (combo == null) {
-			ccombo.setItems(labels);
+		if (this.combo == null) {
+			this.ccombo.setItems(labels);
 		} else {
-			combo.setItems(labels);
+			this.combo.setItems(labels);
 		}
 	}
 
 	protected void listRemoveAll() {
-		if (combo == null) {
-			ccombo.removeAll();
+		if (this.combo == null) {
+			this.ccombo.removeAll();
 		} else {
-			combo.removeAll();
+			this.combo.removeAll();
 		}
 	}
 
 	protected void listRemove(int index) {
-		if (combo == null) {
-			ccombo.remove(index);
+		if (this.combo == null) {
+			this.ccombo.remove(index);
 		} else {
-			combo.remove(index);
+			this.combo.remove(index);
 		}
 	}
 
@@ -151,11 +149,10 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * (non-Javadoc) Method declared on Viewer.
 	 */
 	public Control getControl() {
-		if (combo == null) {
-			return ccombo;
-		} else {
-			return combo;
+		if (this.combo == null) {
+			return this.ccombo;
 		}
+		return this.combo;
 	}
 
 	/**
@@ -166,8 +163,8 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * @since 3.3
 	 */
 	public CCombo getCCombo() {
-		Assert.isNotNull(ccombo);
-		return ccombo;
+		Assert.isNotNull(this.ccombo);
+		return this.ccombo;
 	}
 
 	/**
@@ -177,8 +174,8 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * @return the list control
 	 */
 	public Combo getCombo() {
-		Assert.isNotNull(combo);
-		return combo;
+		Assert.isNotNull(this.combo);
+		return this.combo;
 	}
 
 	/*
@@ -187,6 +184,7 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * selection. Method defined on StructuredViewer.
 	 */
 	public void reveal(Object element) {
+		// Empty block
 	}
 
 	/*
@@ -195,13 +193,13 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * @see org.eclipse.jface.viewers.AbstractListViewer#listSetSelection(int[])
 	 */
 	protected void listSetSelection(int[] ixs) {
-		if (combo == null) {
+		if (this.combo == null) {
 			for (int idx = 0; idx < ixs.length; idx++) {
-				ccombo.select(ixs[idx]);
+				this.ccombo.select(ixs[idx]);
 			}
 		} else {
 			for (int idx = 0; idx < ixs.length; idx++) {
-				combo.select(ixs[idx]);
+				this.combo.select(ixs[idx]);
 			}
 		}
 	}
@@ -212,12 +210,12 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * @see org.eclipse.jface.viewers.AbstractListViewer#listDeselectAll()
 	 */
 	protected void listDeselectAll() {
-		if (combo == null) {
-			ccombo.deselectAll();
-			ccombo.clearSelection();
+		if (this.combo == null) {
+			this.ccombo.deselectAll();
+			this.ccombo.clearSelection();
 		} else {
-			combo.deselectAll();
-			combo.clearSelection();
+			this.combo.deselectAll();
+			this.combo.clearSelection();
 		}
 	}
 
@@ -227,6 +225,7 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * @see org.eclipse.jface.viewers.AbstractListViewer#listShowSelection()
 	 */
 	protected void listShowSelection() {
+		// Available for sub-class
 	}
 
 	/**
@@ -236,34 +235,37 @@ public class ComboCustomViewer extends AbstractListViewer {
 	 * This implementation ensure to set the selection to the given element. If
 	 * the element doesn't exist, it's created.
 	 * </p>
+	 * 
 	 * @see org.eclipse.jface.viewers.StructuredViewer#setSelectionToWidget(org.eclipse.jface.viewers.ISelection,
 	 *      boolean)
 	 */
 	protected void setSelectionToWidget(ISelection selection, boolean reveal) {
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelection = (IStructuredSelection) selection;
-			List wantedSelection = strucSelection.toList();
+			List<?> wantedSelection = strucSelection.toList();
 			setSelectionToWidget(wantedSelection, reveal);
 
-			List curSelection = ((IStructuredSelection) this.getSelection())
+			List<?> curSelection = ((IStructuredSelection) this.getSelection())
 					.toList();
 
 			if (wantedSelection.size() == 1
 					&& !wantedSelection.equals(curSelection)) {
-				if (customSelection != null) {
-					this.remove(customSelection);
+				if (this.customSelection != null) {
+					this.remove(this.customSelection);
 				}
 
 				Object element = wantedSelection.get(0);
-				customSelection = element;
-				this.add(customSelection);
+				this.customSelection = element;
+				this.add(this.customSelection);
 
-				super.setSelection(new StructuredSelection(customSelection));
+				super
+						.setSelection(new StructuredSelection(
+								this.customSelection));
 
 			}
 
 		} else {
-			setSelectionToWidget((List) null, reveal);
+			setSelectionToWidget((List<?>) null, reveal);
 		}
 
 	}

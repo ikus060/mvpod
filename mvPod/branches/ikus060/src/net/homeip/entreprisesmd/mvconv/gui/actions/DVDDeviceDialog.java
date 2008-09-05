@@ -35,22 +35,22 @@ public class DVDDeviceDialog extends Dialog {
 	/**
 	 * The combo box.
 	 */
-	private Combo deviceCombo;
+	Combo deviceCombo;
 
 	/**
 	 * The selected dvd device.
 	 */
-	private String device;
+	String device;
 
 	/**
 	 * Available devices list.
 	 */
-	private String[] devices;
+	String[] devices;
 
 	/**
 	 * The image.
 	 */
-	private Image image;
+	Image image;
 
 	/**
 	 * Create a new dialog to select the dvd device.
@@ -100,8 +100,8 @@ public class DVDDeviceDialog extends Dialog {
 		Label imageLabel = new Label(comp, SWT.NONE);
 		imageLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false,
 				1, 2));
-		if (image != null) {
-			imageLabel.setImage(image);
+		if (this.image != null) {
+			imageLabel.setImage(this.image);
 		} else {
 			imageLabel.setImage(Display.getCurrent().getSystemImage(
 					SWT.ICON_QUESTION));
@@ -111,14 +111,14 @@ public class DVDDeviceDialog extends Dialog {
 		label.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false));
 		label.setText(Localization.getString(Localization.DVD_DIALOG_LABEL));
 
-		deviceCombo = new Combo(comp, SWT.NONE);
-		deviceCombo.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		this.deviceCombo = new Combo(comp, SWT.NONE);
+		this.deviceCombo.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		for (int i = 0; i < devices.length; i++) {
-			deviceCombo.add(devices[i], i);
+		for (int i = 0; i < this.devices.length; i++) {
+			this.deviceCombo.add(this.devices[i], i);
 		}
 
-		deviceCombo.select(0);
+		this.deviceCombo.select(0);
 
 		return comp;
 	}
@@ -130,7 +130,7 @@ public class DVDDeviceDialog extends Dialog {
 	 * @return the select device in the list.
 	 */
 	public String getDevice() {
-		return device;
+		return this.device;
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class DVDDeviceDialog extends Dialog {
 	 * @return the image or null.
 	 */
 	public Image getImage() {
-		return image;
+		return this.image;
 	}
 
 	/**
@@ -147,9 +147,9 @@ public class DVDDeviceDialog extends Dialog {
 	 * implementation get the currently selected device in the list.
 	 */
 	protected void okPressed() {
-		int index = deviceCombo.getSelectionIndex();
+		int index = this.deviceCombo.getSelectionIndex();
 		if (index != -1) {
-			device = deviceCombo.getItem(index);
+			this.device = this.deviceCombo.getItem(index);
 		}
 
 		super.okPressed();

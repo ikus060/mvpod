@@ -31,9 +31,9 @@ public class AddVideoFileAction extends Action {
 	 * List of supported video file extention (*.avi, *.wmv, ...).
 	 */
 	private static final String[] EXTENTIONS = {
-			"*.mov;*.duk;*.h264;*.264;*.qt;*.cam;*.rar;*.avi;*.mp4;*.qt;"
-					+ "*.wmv;*.ogv;*.mpg;*.p64;*.nsv;*.mkv;*.ogg;*.mpq;*.vob;*.vp5;"
-					+ "*.dv;*.asf;*.ts;*.vp6;*.asxl;*.flv", "*.*" };
+			"*.mov;*.duk;*.h264;*.264;*.qt;*.cam;*.rar;*.avi;*.mp4;*.qt;" //$NON-NLS-1$
+					+ "*.wmv;*.ogv;*.mpg;*.p64;*.nsv;*.mkv;*.ogg;*.mpq;*.vob;*.vp5;" //$NON-NLS-1$
+					+ "*.dv;*.asf;*.ts;*.vp6;*.asxl;*.flv", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * List of localization identifier of each extentions.
@@ -52,11 +52,11 @@ public class AddVideoFileAction extends Action {
 		/**
 		 * File names
 		 */
-		private String fileNames[];
+		String fileNames[];
 		/**
 		 * File path
 		 */
-		private String filePath;
+		String filePath;
 
 		/**
 		 * Create a new operation.
@@ -72,50 +72,50 @@ public class AddVideoFileAction extends Action {
 		}
 
 		public void cancel() {
-			cancel = true;
+			this.cancel = true;
 		}
 
 		public void start() {
-			for (int index = 0; index < fileNames.length && !cancel; index++) {
-				final Video video = createInputOutputVideo(filePath + File.separator
-						+ fileNames[index]);
+			for (int index = 0; index < this.fileNames.length && !this.cancel; index++) {
+				final Video video = createInputOutputVideo(this.filePath
+						+ File.separator + this.fileNames[index]);
 				if (video != null) {
-					Display.getDefault().asyncExec(new Runnable(){
+					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
-							videoList.addInputVideo(video);
+							AddVideoFileAction.this.videoList
+									.addInputVideo(video);
 						}
 					});
 				}
 			}
 		}
-
-	};
+	}
 
 	/**
 	 * The output file provider.
 	 */
-	private IVideoOutputFileProvider fileProvider;
+	IVideoOutputFileProvider fileProvider;
 
 	/**
 	 * Last file name selected or null.
 	 */
-	private String lastFilePath;
+	String lastFilePath;
 
 	/**
 	 * Shell provider.
 	 */
-	private IShellProvider shellProvider;
+	IShellProvider shellProvider;
 
 	/**
 	 * The video list.
 	 */
-	private VideoList videoList;
+	VideoList videoList;
 
 	/**
 	 * MPlayer provider.
 	 */
-	private MPlayerProvider mplayerProvider;
-	
+	MPlayerProvider mplayerProvider;
+
 	/**
 	 * Create a new <code>AddVideoFileAction</code>.
 	 * 
@@ -128,7 +128,8 @@ public class AddVideoFileAction extends Action {
 	 *            file name of the video.
 	 */
 	public AddVideoFileAction(IShellProvider shellProvider,
-			VideoList videoList, IVideoOutputFileProvider fileProvider, MPlayerProvider mplayerProvider) {
+			VideoList videoList, IVideoOutputFileProvider fileProvider,
+			MPlayerProvider mplayerProvider) {
 
 		super(Localization.getString(Localization.ACTION_ADD_VIDEO_FILE));
 
@@ -148,7 +149,7 @@ public class AddVideoFileAction extends Action {
 		this.fileProvider = fileProvider;
 		this.mplayerProvider = mplayerProvider;
 
-		lastFilePath = Main.instance().getPreferenceStore().getString(
+		this.lastFilePath = Main.instance().getPreferenceStore().getString(
 				Main.PREF_LAST_DIRECTORY);
 	}
 
@@ -159,7 +160,7 @@ public class AddVideoFileAction extends Action {
 	 *            the inputfile name
 	 * @return an input/output video from the filename
 	 */
-	private Video createInputOutputVideo(String filename) {
+	Video createInputOutputVideo(String filename) {
 		InputVideoFile inputVideoFile;
 		try {
 			inputVideoFile = new InputVideoFile(new File(filename));
@@ -167,7 +168,7 @@ public class AddVideoFileAction extends Action {
 			return null;
 		}
 
-		File output = fileProvider.getFile(inputVideoFile);
+		File output = this.fileProvider.getFile(inputVideoFile);
 
 		return new Video(inputVideoFile, output);
 	}
@@ -177,19 +178,18 @@ public class AddVideoFileAction extends Action {
 	 */
 	public void run() {
 
-		//Check if Mplayer exist
-		if (mplayerProvider.getWrapper() == null) {
-			ErrorMessage.showLocalizedError(shellProvider.getShell(),
+		// Check if Mplayer exist
+		if (this.mplayerProvider.getWrapper() == null) {
+			ErrorMessage.showLocalizedError(this.shellProvider.getShell(),
 					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
-		
-		
+
 		// Setup dialog
-		FileDialog dlg = new FileDialog(shellProvider.getShell(), SWT.OPEN
+		FileDialog dlg = new FileDialog(this.shellProvider.getShell(), SWT.OPEN
 				| SWT.MULTI);
 
-		dlg.setFilterPath(lastFilePath);
+		dlg.setFilterPath(this.lastFilePath);
 		dlg.setFilterExtensions(EXTENTIONS);
 		String[] localizedNames = new String[EXTENTION_NAMES.length];
 		for (int index = 0; index < EXTENTION_NAMES.length; index++) {
@@ -211,14 +211,15 @@ public class AddVideoFileAction extends Action {
 		if (dlg.getFileNames() != null) {
 			String filePath = dlg.getFilterPath();
 			String[] fileNames = dlg.getFileNames();
-			lastFilePath = dlg.getFilterPath();
+			this.lastFilePath = dlg.getFilterPath();
 			Main.instance().getPreferenceStore().setValue(
-					Main.PREF_LAST_DIRECTORY, lastFilePath);
+					Main.PREF_LAST_DIRECTORY, this.lastFilePath);
 
-			
 			Operation operation = new AddFileOperation(filePath, fileNames);
-			String progressMessage = Localization.getString(Localization.ACTION_ADD_VIDEO_FILE_PROGRESS_MESSAGE);
-			ProgressDialog progressDlg = new ProgressDialog(shellProvider.getShell());
+			String progressMessage = Localization
+					.getString(Localization.ACTION_ADD_VIDEO_FILE_PROGRESS_MESSAGE);
+			ProgressDialog progressDlg = new ProgressDialog(this.shellProvider
+					.getShell());
 			progressDlg.setOperation(operation);
 			progressDlg.setProgressMessage(progressMessage);
 			progressDlg.open();

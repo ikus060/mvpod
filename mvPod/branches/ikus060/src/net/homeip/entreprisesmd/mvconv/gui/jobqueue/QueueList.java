@@ -256,7 +256,7 @@ public class QueueList extends Composite {
 	 *            the index of the tab item to be selected
 	 */
 	public void setSelection(int index) {
-
+		// TODO, implement this function
 	}
 
 }

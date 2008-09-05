@@ -34,67 +34,67 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	/**
 	 * Level 1.0.
 	 */
-	public static final String LEVEL_10 = "1";
+	public static final String LEVEL_10 = "1"; //$NON-NLS-1$
 	/**
 	 * Level 1b.
 	 */
-	public static final String LEVEL_1B = "1b";
+	public static final String LEVEL_1B = "1b"; //$NON-NLS-1$
 	/**
 	 * Level 1.1.
 	 */
-	public static final String LEVEL_11 = "11";
+	public static final String LEVEL_11 = "11"; //$NON-NLS-1$
 	/**
 	 * Level 1.2.
 	 */
-	public static final String LEVEL_12 = "12";
+	public static final String LEVEL_12 = "12"; //$NON-NLS-1$
 	/**
 	 * Level 1.3.
 	 */
-	public static final String LEVEL_13 = "13";
+	public static final String LEVEL_13 = "13"; //$NON-NLS-1$
 	/**
 	 * Level 2.0.
 	 */
-	public static final String LEVEL_20 = "2";
+	public static final String LEVEL_20 = "2"; //$NON-NLS-1$
 	/**
 	 * Level 2.1.
 	 */
-	public static final String LEVEL_21 = "21";
+	public static final String LEVEL_21 = "21"; //$NON-NLS-1$
 	/**
 	 * Level 2.2.
 	 */
-	public static final String LEVEL_22 = "22";
+	public static final String LEVEL_22 = "22"; //$NON-NLS-1$
 	/**
 	 * Level 3.0.
 	 */
-	public static final String LEVEL_30 = "3";
+	public static final String LEVEL_30 = "3"; //$NON-NLS-1$
 	/**
 	 * Level 3.1.
 	 */
-	public static final String LEVEL_31 = "31";
+	public static final String LEVEL_31 = "31"; //$NON-NLS-1$
 	/**
 	 * Level 3.2.
 	 */
-	public static final String LEVEL_32 = "32";
+	public static final String LEVEL_32 = "32"; //$NON-NLS-1$
 	/**
 	 * Level 4.0.
 	 */
-	public static final String LEVEL_40 = "4";
+	public static final String LEVEL_40 = "4"; //$NON-NLS-1$
 	/**
 	 * Level 4.1.
 	 */
-	public static final String LEVEL_41 = "41";
+	public static final String LEVEL_41 = "41"; //$NON-NLS-1$
 	/**
 	 * Level 4.2.
 	 */
-	public static final String LEVEL_42 = "42";
+	public static final String LEVEL_42 = "42"; //$NON-NLS-1$
 	/**
 	 * Level 5.0.
 	 */
-	public static final String LEVEL_50 = "5";
+	public static final String LEVEL_50 = "5"; //$NON-NLS-1$
 	/**
 	 * Level 5.1.
 	 */
-	public static final String LEVEL_51 = "51";
+	public static final String LEVEL_51 = "51"; //$NON-NLS-1$
 	/**
 	 * Diamond search, radius 1 (fast).
 	 */
@@ -226,7 +226,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 		super(VideoFormat.FORMAT_H264_AVC);
 
 		if (bitrate < BITRATE_MIN_VALUE || bitrate > BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Ivalid bitrate value "
+			throw new IllegalArgumentException("Ivalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.averagePeriode = -1;
@@ -308,7 +308,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the average bitrate in Kbps
 	 */
 	public int getBitrate() {
-		return bitrate;
+		return this.bitrate;
 	}
 
 	/**
@@ -318,7 +318,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the bit stream level
 	 */
 	public String getBitStreamLevel() {
-		return bitStreamLevel;
+		return this.bitStreamLevel;
 	}
 
 	/**
@@ -328,7 +328,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the maximum number of B-frames
 	 */
 	public int getMaxBFrame() {
-		return maxBFrame;
+		return this.maxBFrame;
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the average buffer size for the maximum local bitrate in kbits.
 	 */
 	public int getMaximumBufferSize() {
-		return averagePeriode;
+		return this.averagePeriode;
 	}
 
 	/**
@@ -346,7 +346,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the maximum local bitrate value in Kbps.
 	 */
 	public int getMaximumLocalBitrate() {
-		return maxLocalBitrate;
+		return this.maxLocalBitrate;
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the fullpixel motion estimation algorithm
 	 */
 	public int getMotionEstimation() {
-		return motionEstimation;
+		return this.motionEstimation;
 	}
 
 	/**
@@ -365,7 +365,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the type of motion prediction used
 	 */
 	public int getMotionPrediction() {
-		return motionPrediction;
+		return this.motionPrediction;
 	}
 
 	/**
@@ -375,7 +375,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the number of previous frames used as predictors
 	 */
 	public int getReferenceFrame() {
-		return frameref;
+		return this.frameref;
 	}
 
 	/**
@@ -384,7 +384,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return the subpel refinement quality value
 	 */
 	public int getSubpelRefinement() {
-		return subpelQuality;
+		return this.subpelQuality;
 	}
 
 	/**
@@ -393,7 +393,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return True if B-Frame adaptation are enable.
 	 */
 	public boolean isBFrameAdaptEnabled() {
-		return enableBFrameAdapt;
+		return this.enableBFrameAdapt;
 	}
 
 	/**
@@ -403,7 +403,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return True if CABAC are enabled.
 	 */
 	public boolean isCabacEnabled() {
-		return enableCabac;
+		return this.enableCabac;
 	}
 
 	/**
@@ -412,7 +412,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return True if optional partitions are enabled
 	 */
 	public boolean isPartitionsEnabled() {
-		return enablePartitions;
+		return this.enablePartitions;
 	}
 
 	/**
@@ -421,7 +421,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return True if multi-threading are enabled.
 	 */
 	public boolean isThreadsEnabled() {
-		return enableThreads;
+		return this.enableThreads;
 	}
 
 	/**
@@ -430,7 +430,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 * @return True if rate-distortion optimal quantization are enabled
 	 */
 	public boolean isTrellisEnabled() {
-		return enableTrellis;
+		return this.enableTrellis;
 	}
 
 	/**
@@ -444,7 +444,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 */
 	public void setBitrate(int bitrate) {
 		if (bitrate < BITRATE_MIN_VALUE || bitrate > BITRATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Ivalid bitrate value "
+			throw new IllegalArgumentException("Ivalid bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.bitrate = bitrate;
@@ -470,7 +470,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 				&& !level.equals(LEVEL_41) && !level.equals(LEVEL_42)
 				&& !level.equals(LEVEL_50) && !level.equals(LEVEL_51)) {
 			throw new IllegalArgumentException(
-					"Invalid bit stream level value " + level);
+					"Invalid bit stream level value " + level); //$NON-NLS-1$
 		}
 		this.bitStreamLevel = level;
 	}
@@ -483,7 +483,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 */
 	public void setMaxBFrame(int maxBFrame) {
 		if (maxBFrame < BFRAME_MIN_VALUE || maxBFrame > BFRAME_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid max B-Frame value "
+			throw new IllegalArgumentException("Invalid max B-Frame value " //$NON-NLS-1$
 					+ maxBFrame);
 		}
 		this.maxBFrame = maxBFrame;
@@ -501,10 +501,10 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	public void setMaximumLocalBitrate(int bitrate, int bufferSize) {
 		if (bitrate <= 0 && bitrate != -1) {
 			throw new IllegalArgumentException(
-					"Invalid maximum local bitrate value " + bitrate);
+					"Invalid maximum local bitrate value " + bitrate); //$NON-NLS-1$
 		}
 		if (bufferSize <= 0) {
-			throw new IllegalArgumentException("Invalid buffer size value "
+			throw new IllegalArgumentException("Invalid buffer size value " //$NON-NLS-1$
 					+ bufferSize);
 		}
 		this.maxLocalBitrate = bitrate;
@@ -524,7 +524,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 				&& algorithm != MOTION_ESTIMATION_UNEVEN
 				&& algorithm != MOTION_ESTIMATION_EXHAUSTIVE) {
 			throw new IllegalArgumentException(
-					"Invalid motion estination algorithm value " + algorithm);
+					"Invalid motion estination algorithm value " + algorithm); //$NON-NLS-1$
 		}
 		this.motionEstimation = algorithm;
 	}
@@ -542,7 +542,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 				&& motionPrediction != MOTION_PREDICTION_SPATIAL
 				&& motionPrediction != MOTION_PREDICTION_TEMPORAL) {
 			throw new IllegalArgumentException(
-					"Invalid motion prediction value " + motionPrediction);
+					"Invalid motion prediction value " + motionPrediction); //$NON-NLS-1$
 		}
 		this.motionPrediction = motionPrediction;
 	}
@@ -563,7 +563,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 		if (number < REFERENCE_FRAME_MIN_VALUE
 				|| number > REFERENCE_FRAME_MAX_VALUE) {
 			throw new IllegalArgumentException(
-					"Invalid reference frame number value " + number);
+					"Invalid reference frame number value " + number); //$NON-NLS-1$
 		}
 		this.frameref = number;
 	}
@@ -599,7 +599,7 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	public void setSubpelRefinement(int value) {
 		if (value < SUQ_MIN_VALUE || value > SUQ_MAX_VALUE) {
 			throw new IllegalArgumentException(
-					"Invalid subpel refinement value " + value);
+					"Invalid subpel refinement value " + value); //$NON-NLS-1$
 		}
 		this.subpelQuality = value;
 	}
@@ -610,43 +610,43 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo, int pass) {
 
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 
-		value += "bitrate=" + bitrate;
+		value += "bitrate=" + this.bitrate; //$NON-NLS-1$
 
-		if (!enableCabac) {
-			value += ":nocabac";
+		if (!this.enableCabac) {
+			value += ":nocabac"; //$NON-NLS-1$
 		}
 
-		switch (motionPrediction) {
+		switch (this.motionPrediction) {
 		case MOTION_PREDICTION_NONE:
-			value += ":direct_pred=none";
+			value += ":direct_pred=none"; //$NON-NLS-1$
 			break;
 		case MOTION_PREDICTION_SPATIAL:
-			value += ":direct_pred=spatial";
+			value += ":direct_pred=spatial"; //$NON-NLS-1$
 			break;
 		case MOTION_PREDICTION_TEMPORAL:
-			value += ":direct_pred=temporal";
+			value += ":direct_pred=temporal"; //$NON-NLS-1$
 			break;
 		case MOTION_PREDICTION_AUTO:
-			value += ":direct_pred=auto";
+			value += ":direct_pred=auto"; //$NON-NLS-1$
 			break;
 		default:
 			// Not supposed to happen
 		}
 
-		switch (motionEstimation) {
+		switch (this.motionEstimation) {
 		case MOTION_ESTIMATION_DIAMON:
-			value += ":me=dia";
+			value += ":me=dia"; //$NON-NLS-1$
 			break;
 		case MOTION_ESTIMATION_HEXAGON:
-			value += ":me=hex";
+			value += ":me=hex"; //$NON-NLS-1$
 			break;
 		case MOTION_ESTIMATION_UNEVEN:
-			value += ":me=umh";
+			value += ":me=umh"; //$NON-NLS-1$
 			break;
 		case MOTION_ESTIMATION_EXHAUSTIVE:
-			value += ":me=esa";
+			value += ":me=esa"; //$NON-NLS-1$
 			break;
 		default:
 			// Not supposed to happen
@@ -654,50 +654,50 @@ public class X264EncodingOptions extends VideoEncodingOptions {
 
 		boolean enableTurbo = super.getPass() > 1 && pass == 1;
 		if (!enableTurbo) {
-			value += ":frameref=" + frameref;
+			value += ":frameref=" + this.frameref; //$NON-NLS-1$
 		}
 
-		value += ":level_idc=" + bitStreamLevel;
+		value += ":level_idc=" + this.bitStreamLevel; //$NON-NLS-1$
 
-		if (enablePartitions) {
-			value += ":partitions=all";
+		if (this.enablePartitions) {
+			value += ":partitions=all"; //$NON-NLS-1$
 		}
 
 		if (super.getPass() > 1) {
-			value += ":pass=" + pass;
+			value += ":pass=" + pass; //$NON-NLS-1$
 		}
 
 		if (!enableTurbo) {
-			value += ":subq=" + subpelQuality;
+			value += ":subq=" + this.subpelQuality; //$NON-NLS-1$
 		}
 
-		if (enableThreads) {
-			value += ":threads=auto";
+		if (this.enableThreads) {
+			value += ":threads=auto"; //$NON-NLS-1$
 		}
-		if (enableTrellis) {
-			value += ":trellis=1";
+		if (this.enableTrellis) {
+			value += ":trellis=1"; //$NON-NLS-1$
 		}
 
 		if (enableTurbo) {
-			value += ":turbo=1";
+			value += ":turbo=1"; //$NON-NLS-1$
 		}
 
-		if (maxLocalBitrate != -1) {
-			value += ":vbv_maxrate=" + maxLocalBitrate;
-			value += ":vbv_bufsize=" + averagePeriode;
+		if (this.maxLocalBitrate != -1) {
+			value += ":vbv_maxrate=" + this.maxLocalBitrate; //$NON-NLS-1$
+			value += ":vbv_bufsize=" + this.averagePeriode; //$NON-NLS-1$
 		}
 
-		value += ":bframes=" + maxBFrame;
-		if (maxBFrame > 0 && !enableBFrameAdapt) {
-			value += ":nob_adapt";
+		value += ":bframes=" + this.maxBFrame; //$NON-NLS-1$
+		if (this.maxBFrame > 0 && !this.enableBFrameAdapt) {
+			value += ":nob_adapt"; //$NON-NLS-1$
 		}
 
 		String[] defaultArgs = super.toCommandList(inputVideoInfo, pass);
 
 		String[] args = new String[4 + defaultArgs.length];
-		args[0] = "-ovc";
-		args[1] = "x264";
-		args[2] = "-x264encopts";
+		args[0] = "-ovc"; //$NON-NLS-1$
+		args[1] = "x264"; //$NON-NLS-1$
+		args[2] = "-x264encopts"; //$NON-NLS-1$
 		args[3] = value;
 
 		System.arraycopy(defaultArgs, 0, args,

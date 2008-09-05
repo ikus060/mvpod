@@ -56,20 +56,13 @@ public abstract class GenericOptions {
 	private List<VideoFilter> videoFilters = new ArrayList<VideoFilter>();
 
 	/**
-	 * Create a new generic options.
-	 */
-	public GenericOptions() {
-
-	}
-
-	/**
 	 * Add an audio filter to the encoding options.
 	 * 
 	 * @param filter
 	 *            the audio option to add
 	 */
 	public void addAudioFilter(AudioFilter filter) {
-		audioFilters.add(filter);
+		this.audioFilters.add(filter);
 	}
 
 	/**
@@ -79,7 +72,7 @@ public abstract class GenericOptions {
 	 *            the audio option to add
 	 */
 	public void addVideoFilter(VideoFilter filter) {
-		videoFilters.add(filter);
+		this.videoFilters.add(filter);
 	}
 
 	/**
@@ -89,7 +82,7 @@ public abstract class GenericOptions {
 	 */
 	public AudioFilter[] getAudioFilter() {
 		AudioFilter[] filters = new AudioFilter[0];
-		return audioFilters.toArray(filters);
+		return this.audioFilters.toArray(filters);
 	}
 
 	/**
@@ -98,7 +91,7 @@ public abstract class GenericOptions {
 	 * @return the muser
 	 */
 	public Muxer getMuxer() {
-		return muxer;
+		return this.muxer;
 	}
 
 	/**
@@ -107,7 +100,7 @@ public abstract class GenericOptions {
 	 * @return the scaling options or null if the video are not resized.
 	 */
 	public VideoScalingOptions getScaleOptions() {
-		return scaleOptions;
+		return this.scaleOptions;
 	}
 
 	/**
@@ -118,7 +111,7 @@ public abstract class GenericOptions {
 	public VideoFilter[] getVideoFilter() {
 		VideoFilter[] filters = new VideoFilter[0];
 
-		return videoFilters.toArray(filters);
+		return this.videoFilters.toArray(filters);
 	}
 
 	/**

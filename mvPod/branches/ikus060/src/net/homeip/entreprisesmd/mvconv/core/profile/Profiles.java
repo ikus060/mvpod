@@ -26,12 +26,12 @@ public class Profiles {
 	/**
 	 * Key value for user home directory.
 	 */
-	private static final String USER_HOME = "user.home";
+	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
 	/**
 	 * Relative path to the user directory of user profile.
 	 */
 	// TODO : Cross Platform : This value must be change under windows
-	private static final String USER_HOME_PROFILE_DIRECTORY = ".mvPod/profiles";
+	private static final String USER_HOME_PROFILE_DIRECTORY = ".mvPod/profiles"; //$NON-NLS-1$
 
 	/**
 	 * Create a new profile base on the encoding options.
@@ -154,6 +154,6 @@ public class Profiles {
 	 * Private constructor.
 	 */
 	private Profiles() {
-
+		// Private constructor to prevent creation of utility class
 	}
 }

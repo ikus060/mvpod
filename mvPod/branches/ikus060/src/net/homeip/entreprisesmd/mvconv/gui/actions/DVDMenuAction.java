@@ -26,61 +26,61 @@ public class DVDMenuAction extends Action {
 	/**
 	 * AddDVDFromDevice action.
 	 */
-	private Action addDVDFromDevice;
+	Action addDVDFromDevice;
 	/**
 	 * AddDVDFromDirectory action.
 	 */
-	private Action addDVDFromDirectory;
+	Action addDVDFromDirectory;
 	/**
 	 * AddDVDFromIso action.
 	 */
-	private Action addDVDFromIso;
+	Action addDVDFromIso;
 	
 	/**
 	 * Menu creator.
 	 */
-	private IMenuCreator menuCreator = new IMenuCreator() {
+	IMenuCreator menuCreator = new IMenuCreator() {
 
-		private Menu controlMenu;
-		private Menu subMenu;
+		Menu controlMenu;
+		Menu subMenu;
 
 		public void dispose() {
-			if (controlMenu != null) {
-				controlMenu.dispose();
+			if (this.controlMenu != null) {
+				this.controlMenu.dispose();
 			}
-			controlMenu = null;
+			this.controlMenu = null;
 
-			if (subMenu != null) {
-				subMenu.dispose();
+			if (this.subMenu != null) {
+				this.subMenu.dispose();
 			}
-			subMenu = null;
+			this.subMenu = null;
 		}
 
 		public Menu getMenu(Control parent) {
-			if (controlMenu != null) {
-				return controlMenu;
+			if (this.controlMenu != null) {
+				return this.controlMenu;
 			}
 
 			Menu menu = new Menu(parent);
-			addMenuItem(menu, addDVDFromDevice);
-			addMenuItem(menu, addDVDFromDirectory);
-			addMenuItem(menu, addDVDFromIso);
+			addMenuItem(menu, DVDMenuAction.this.addDVDFromDevice);
+			addMenuItem(menu, DVDMenuAction.this.addDVDFromDirectory);
+			addMenuItem(menu, DVDMenuAction.this.addDVDFromIso);
 
-			controlMenu = menu;
+			this.controlMenu = menu;
 			return menu;
 		}
 
 		public Menu getMenu(Menu parent) {
-			if (subMenu != null) {
-				return subMenu;
+			if (this.subMenu != null) {
+				return this.subMenu;
 			}
 
 			Menu menu = new Menu(parent);
-			addMenuItem(menu, addDVDFromDevice);
-			addMenuItem(menu, addDVDFromDirectory);
-			addMenuItem(menu, addDVDFromIso);
+			addMenuItem(menu, DVDMenuAction.this.addDVDFromDevice);
+			addMenuItem(menu, DVDMenuAction.this.addDVDFromDirectory);
+			addMenuItem(menu, DVDMenuAction.this.addDVDFromIso);
 
-			subMenu = menu;
+			this.subMenu = menu;
 			return menu;
 		}
 
@@ -105,22 +105,22 @@ public class DVDMenuAction extends Action {
 			VideoList videoList, IVideoOutputFileProvider fileProvider, MPlayerProvider mplayerProvider) {
 		
 		super(Localization.getString(Localization.ACTION_ADD_DVD),
-				Action.AS_DROP_DOWN_MENU);
+				IAction.AS_DROP_DOWN_MENU);
 		
 		setImageDescriptor(IconLoader.loadIcon(IconLoader.ICON_DVD_22));
 
-		addDVDFromDevice = new AddDVDFromDeviceAction(shellProvider, videoList, fileProvider, mplayerProvider);
-		addDVDFromDirectory = new AddDVDFromDirectoryAction(shellProvider, videoList, fileProvider, mplayerProvider);
-		addDVDFromIso = new AddDVDFromIsoAction(shellProvider, videoList, fileProvider, mplayerProvider);
+		this.addDVDFromDevice = new AddDVDFromDeviceAction(shellProvider, videoList, fileProvider, mplayerProvider);
+		this.addDVDFromDirectory = new AddDVDFromDirectoryAction(shellProvider, videoList, fileProvider, mplayerProvider);
+		this.addDVDFromIso = new AddDVDFromIsoAction(shellProvider, videoList, fileProvider, mplayerProvider);
 
-		this.setMenuCreator(menuCreator);
+		this.setMenuCreator(this.menuCreator);
 	}
 
 	/**
 	 * This implementation of this methode add a new video to the video list.
 	 */
 	public void run() {
-		addDVDFromDevice.run();
+		this.addDVDFromDevice.run();
 	}
 
 }
