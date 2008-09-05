@@ -51,11 +51,11 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Font with bold style.
 	 */
-	private Font boldFont;
+	Font boldFont;
 	/**
 	 * Daker background color for audio/video summary.
 	 */
-	private Color darkerBackground;
+	Color darkerBackground;
 	/**
 	 * Profile viewer.
 	 */
@@ -75,7 +75,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Observer on the profile list.
 	 */
-	private ProfileListObserver observer = new ProfileListObserver() {
+	ProfileListObserver observer = new ProfileListObserver() {
 		public void profileListAsChanged(ProfileList list) {
 			SummaryOptionsComposite.this.profileListAsChanged();
 		}
@@ -104,7 +104,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			SummaryOptionsComposite.this.profileContextAsChanged();
 		}
@@ -194,23 +194,23 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 		profileListAsChanged();
 
 		// Observer the profile list
-		getViewSite().getProfileList().addProfileListObserver(observer);
+		getViewSite().getProfileList().addProfileListObserver(this.observer);
 
 		// Observer the profile context
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileList().remoceProfileListObserver(
-						observer);
+						SummaryOptionsComposite.this.observer);
 
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						SummaryOptionsComposite.this.profileContextListener);
 
-				darkerBackground.dispose();
-				boldFont.dispose();
+				SummaryOptionsComposite.this.darkerBackground.dispose();
+				SummaryOptionsComposite.this.boldFont.dispose();
 			}
 		});
 
@@ -219,7 +219,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Notify this class that profile context as changed
 	 */
-	private void profileContextAsChanged() {
+	void profileContextAsChanged() {
 
 		if (!this.getVisible())
 			return;
@@ -235,7 +235,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 
 		VideoScalingOptions scalingOptions = encodingOptions.getScaleOptions();
 		if (scalingOptions != null) {
-			videoDescription += "\r\n"
+			videoDescription += "\r\n" //$NON-NLS-1$
 					+ VideoInfoFormater
 							.formatVideoScalingOptions(scalingOptions);
 		}
@@ -252,7 +252,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 	 * This implementation update the profile view according to the profile
 	 * list.
 	 */
-	private void profileListAsChanged() {
+	void profileListAsChanged() {
 
 		ProfileList profileList = getViewSite().getProfileList();
 		Profile[] profiles = profileList.getProfiles();
@@ -268,7 +268,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Class when the user change the selected profile.
 	 */
-	private void selectionAsChanged() {
+	void selectionAsChanged() {
 
 		IStructuredSelection selection = (IStructuredSelection) profileViewer
 				.getSelection();
@@ -307,7 +307,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 	 * @param selection
 	 *            the selection element.
 	 */
-	private void updateViewer(ComboViewer viewer, Object[] objects,
+	void updateViewer(ComboViewer viewer, Object[] objects,
 			Object selection) {
 
 		// Update the list

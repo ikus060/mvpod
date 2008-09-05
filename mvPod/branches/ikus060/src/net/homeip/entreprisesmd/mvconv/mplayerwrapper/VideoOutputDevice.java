@@ -42,7 +42,7 @@ public class VideoOutputDevice {
 	 * @return the device description provide by mplayer.
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	/**
@@ -52,14 +52,14 @@ public class VideoOutputDevice {
 	 * @return the name of the device.
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return name;
+		return this.name;
 	}
 
 }

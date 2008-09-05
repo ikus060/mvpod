@@ -11,6 +11,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoInfo;
  * @author patapouf
  * 
  */
+@Deprecated
 public class ScaleFilter implements VideoFilter {
 
 	/**
@@ -29,10 +30,10 @@ public class ScaleFilter implements VideoFilter {
 	 */
 	public ScaleFilter(int width, int height) {
 		if (width <= 0) {
-			throw new IllegalArgumentException("Invalid width value " + width);
+			throw new IllegalArgumentException("Invalid width value " + width); //$NON-NLS-1$
 		}
 		if (height <= 0) {
-			throw new IllegalArgumentException("Invalid height value " + height);
+			throw new IllegalArgumentException("Invalid height value " + height); //$NON-NLS-1$
 		}
 		this.width = width;
 		this.height = height;
@@ -44,7 +45,7 @@ public class ScaleFilter implements VideoFilter {
 	 * @return the height
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -68,10 +69,10 @@ public class ScaleFilter implements VideoFilter {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
-		String value = String.format("scale=%d:%d", width, height);
+		String value = String.format("scale=%d:%d", this.width, this.height); //$NON-NLS-1$
 
 		String[] args = new String[2];
-		args[0] = "-vf-add";
+		args[0] = "-vf-add"; //$NON-NLS-1$
 		args[1] = value;
 		return args;
 	}

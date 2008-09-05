@@ -77,22 +77,22 @@ public class InputVideoFile extends InputVideo {
 
 			InputVideoFile inputVideo = (InputVideoFile) obj;
 
-			if (!inputVideoFile.equals(inputVideo.inputVideoFile)) {
+			if (!this.inputVideoFile.equals(inputVideo.inputVideoFile)) {
 				return false;
 			}
-			if (audioTrack != null && !audioTrack.equals(inputVideo.audioTrack)) {
+			if (this.audioTrack != null && !this.audioTrack.equals(inputVideo.audioTrack)) {
 				return false;
 			}
 			if (inputVideo.audioTrack != null
-					&& !inputVideo.audioTrack.equals(audioTrack)) {
+					&& !inputVideo.audioTrack.equals(this.audioTrack)) {
 				return false;
 			}
-			if (subtitleTrack != null
-					&& !subtitleTrack.equals(inputVideo.subtitleTrack)) {
+			if (this.subtitleTrack != null
+					&& !this.subtitleTrack.equals(inputVideo.subtitleTrack)) {
 				return false;
 			}
 			if (inputVideo.subtitleTrack != null
-					&& !inputVideo.subtitleTrack.equals(subtitleTrack)) {
+					&& !inputVideo.subtitleTrack.equals(this.subtitleTrack)) {
 				return false;
 			}
 			return true;
@@ -106,7 +106,7 @@ public class InputVideoFile extends InputVideo {
 	 * @return the audio track identifier or null.
 	 */
 	public String getAudioTrack() {
-		return audioTrack;
+		return this.audioTrack;
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class InputVideoFile extends InputVideo {
 	 * @return the input file.
 	 */
 	public File getFile() {
-		return inputVideoFile;
+		return this.inputVideoFile;
 	}
 
 	/**
@@ -124,14 +124,14 @@ public class InputVideoFile extends InputVideo {
 	 * @return the selected track identifier or null.
 	 */
 	public String getSubtitleTrack() {
-		return subtitleTrack;
+		return this.subtitleTrack;
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return inputVideoFile.hashCode();
+		return this.inputVideoFile.hashCode();
 	}
 
 	/**
@@ -143,21 +143,21 @@ public class InputVideoFile extends InputVideo {
 
 		String path;
 		try {
-			path = inputVideoFile.getCanonicalPath();
+			path = this.inputVideoFile.getCanonicalPath();
 		} catch (IOException e) {
-			path = inputVideoFile.getAbsolutePath();
+			path = this.inputVideoFile.getAbsolutePath();
 		}
 
 		List<String> argsList = new LinkedList<String>();
 		argsList.add(path);
 
-		if (audioTrack != null) {
-			argsList.add("-aid");
-			argsList.add(audioTrack);
+		if (this.audioTrack != null) {
+			argsList.add("-aid"); //$NON-NLS-1$
+			argsList.add(this.audioTrack);
 		}
-		if (subtitleTrack != null) {
-			argsList.add("-sid");
-			argsList.add(subtitleTrack);
+		if (this.subtitleTrack != null) {
+			argsList.add("-sid"); //$NON-NLS-1$
+			argsList.add(this.subtitleTrack);
 		}
 
 		String[] defaultArgs = super.toCommandList();

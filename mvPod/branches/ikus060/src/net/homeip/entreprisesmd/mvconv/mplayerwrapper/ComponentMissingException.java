@@ -25,7 +25,7 @@ public class ComponentMissingException extends MPlayerException {
 	 *            the name of the missing component.
 	 */
 	public ComponentMissingException(String name) {
-		super("Component missing " + name);
+		super("Component missing " + name); //$NON-NLS-1$
 		this.componentName = name;
 	}
 	
@@ -38,7 +38,7 @@ public class ComponentMissingException extends MPlayerException {
 	 *            the exception that cause this error.
 	 */
 	public ComponentMissingException(String name, Exception cause) {
-		super("Component missing " + name, cause);
+		super("Component missing " + name, cause); //$NON-NLS-1$
 	}
 
 	/**
@@ -47,6 +47,6 @@ public class ComponentMissingException extends MPlayerException {
 	 * @return the component name.
 	 */
 	public String getComponentName() {
-		return componentName;
+		return this.componentName;
 	}
 }

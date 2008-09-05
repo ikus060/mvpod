@@ -51,23 +51,23 @@ public class StreamReader {
 	/**
 	 * The stream reader.
 	 */
-	private BufferedReader reader;
+	BufferedReader reader;
 	/**
 	 * String buffer to stock lines.
 	 */
-	private StringBuffer buffer;
+	StringBuffer buffer;
 	/**
 	 * Thread that read (if threaded).
 	 */
-	private Thread thread;
+	Thread thread;
 	/**
 	 * Stream parser or null.
 	 */
-	private StreamParser parser;
+	StreamParser parser;
 	/**
 	 * True to stop the reading process.
 	 */
-	private boolean stop = false;
+	boolean stop = false;
 
 	/**
 	 * Create a new stream reader without a parser.
@@ -94,8 +94,8 @@ public class StreamReader {
 	public StreamReader(InputStream input, StreamParser parser, boolean buffered) {
 		this.reader = new BufferedReader(new InputStreamReader(input));
 		this.parser = parser;
-		if(buffered){
-			 buffer = new StringBuffer();
+		if (buffered) {
+			this.buffer = new StringBuffer();
 		}
 	}
 
@@ -110,25 +110,24 @@ public class StreamReader {
 		try {
 
 			String inputLine;
-			while (!stop && (inputLine = reader.readLine()) != null) {
-				if (buffer != null) {
-					buffer.append(inputLine + "\r\n");
+			while (!this.stop && (inputLine = this.reader.readLine()) != null) {
+				if (this.buffer != null) {
+					this.buffer.append(inputLine + "\r\n"); //$NON-NLS-1$
 				}
-				if (parser != null) {
-					stop = stop || !parser.parseLine(inputLine);
+				if (this.parser != null) {
+					this.stop = this.stop || !this.parser.parseLine(inputLine);
 				}
 			}
-			reader.close();
+			this.reader.close();
 
 		} catch (IOException e) {
 			// Nothing to do ..
 			e.printStackTrace();
 		}
-		if (buffer != null) {
-			return buffer.toString();
-		} else {
-			return "NOT_ACTIVATED";
+		if (this.buffer != null) {
+			return this.buffer.toString();
 		}
+		return "NOT_ACTIVATED"; //$NON-NLS-1$
 	}
 
 	/**
@@ -139,28 +138,28 @@ public class StreamReader {
 	 */
 	public void readInThread() {
 
-		thread = new Thread(new Runnable() {
+		this.thread = new Thread(new Runnable() {
 			public void run() {
 
 				try {
 
-					String inputLine = "";
-					String lastLine = "";
-					while (!stop && (inputLine = reader.readLine()) != null) {
-						if (buffer != null && !lastLine.equals(inputLine)) {
-							buffer.append(inputLine + "\r\n");
+					String inputLine = ""; //$NON-NLS-1$
+					String lastLine = ""; //$NON-NLS-1$
+					while (!StreamReader.this.stop && (inputLine = StreamReader.this.reader.readLine()) != null) {
+						if (StreamReader.this.buffer != null && !lastLine.equals(inputLine)) {
+							StreamReader.this.buffer.append(inputLine + "\r\n"); //$NON-NLS-1$
 						}
 						lastLine = inputLine;
-						if (parser != null) {
-							stop = stop || !parser.parseLine(inputLine);
+						if (StreamReader.this.parser != null) {
+							StreamReader.this.stop = StreamReader.this.stop || !StreamReader.this.parser.parseLine(inputLine);
 						}
 					}
 
-					reader.close();
+					StreamReader.this.reader.close();
 
 				} catch (IOException e) {
 					// Nothing to do ..
-					if (!stop) {
+					if (!StreamReader.this.stop) {
 						e.printStackTrace();
 					}
 				}
@@ -168,7 +167,7 @@ public class StreamReader {
 		});
 
 		// Start the parsing
-		thread.start();
+		this.thread.start();
 	}
 
 	/**
@@ -177,12 +176,12 @@ public class StreamReader {
 	 */
 	public void stop() {
 
-		stop = true;
+		this.stop = true;
 
 		// Wait until the thread end
-		if (thread != null) {
+		if (this.thread != null) {
 			int count = 0;
-			while (thread != null && thread.isAlive() && count < SLEEP_COUNT) {
+			while (this.thread != null && this.thread.isAlive() && count < SLEEP_COUNT) {
 				try {
 					Thread.sleep(SLEEP_DELAY);
 				} catch (InterruptedException e) {
@@ -190,7 +189,7 @@ public class StreamReader {
 				}
 				count++;
 			}
-			thread = null;
+			this.thread = null;
 		}
 
 	}
@@ -200,21 +199,20 @@ public class StreamReader {
 	 */
 	public String toString() {
 
-		if (thread != null) {
-			while (thread.isAlive()) {
+		if (this.thread != null) {
+			while (this.thread.isAlive()) {
 				try {
 					Thread.sleep(SLEEP_DELAY);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			thread = null;
+			this.thread = null;
 		}
-		if (buffer != null) {
-			return buffer.toString();
-		} else {
-			return "NOT_ACTIVATED";
+		if (this.buffer != null) {
+			return this.buffer.toString();
 		}
+		return "NOT_ACTIVATED"; //$NON-NLS-1$
 
 	}
 

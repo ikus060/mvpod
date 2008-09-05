@@ -1,13 +1,7 @@
 package net.homeip.entreprisesmd.mvconv.gui;
 
 import net.homeip.entreprisesmd.mvconv.core.Localization;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.ComponentMissingException;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.DVDNotAvailableException;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.GrabXvPortException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerNotFoundException;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.PaletteException;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.XvPortNotAvailableException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -27,7 +21,7 @@ public final class ErrorMessage {
 	 * Private constructor.
 	 */
 	private ErrorMessage() {
-
+		// Private constructor to prevent creation of utility class
 	}
 
 	/**
@@ -119,11 +113,8 @@ public final class ErrorMessage {
 			msg.setText(title);
 			msg.setMessage(message);
 			return msg.open();
-		} else {
-			System.out.println(message);
-		}
+		} 
+		System.out.println(message);
 		return SWT.CANCEL;
-
 	}
-
 }

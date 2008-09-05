@@ -46,7 +46,7 @@ public class RemoveAllVideoAction extends Action {
 	/**
 	 * Update the status of this action depending if the list are empty.
 	 */
-	private void listHasChanged() {
+	void listHasChanged() {
 		boolean enabled = false;
 		if (videoList.getCount() > 0) {
 			enabled = true;

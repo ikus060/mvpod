@@ -80,7 +80,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 	/**
 	 * Listener to the profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -109,7 +109,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 	private LabelProvider labelProvider = new LabelProvider() {
 		public String getText(Object element) {
 			if (element instanceof VideoScalingOptions) {
-				return ((VideoScalingOptions) element).getWidth() + " x "
+				return ((VideoScalingOptions) element).getWidth() + " x " //$NON-NLS-1$
 						+ ((VideoScalingOptions) element).getHeight();
 			}
 			return element.toString();
@@ -142,7 +142,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return site;
+		return this.site;
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		for (int fontIndex = 0; fontIndex < boldedFontData.length; fontIndex++) {
 			boldedFontData[fontIndex].setStyle(SWT.BOLD);
 		}
-		boldFont = new Font(Display.getCurrent(), boldedFontData);
+		this.boldFont = new Font(Display.getCurrent(), boldedFontData);
 
 		// Set layout
 		this.setLayout(new GridLayout(1, false));
@@ -182,7 +182,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 
 		// Video options
 		Group videoGroup = new Group(this, SWT.NONE);
-		videoGroup.setFont(boldFont);
+		videoGroup.setFont(this.boldFont);
 		videoGroup.setText(Localization.getString(Localization.OPTIONS_VIDEO));
 		videoGroup.setLayout(new GridLayout(2, false));
 		videoGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -191,27 +191,27 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		label.setText(bitrateText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		videoBitrateEditor = new ScaleEditor(videoGroup, SWT.NONE);
-		videoBitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+		this.videoBitrateEditor = new ScaleEditor(videoGroup, SWT.NONE);
+		this.videoBitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false));
-		videoBitrateEditor.setFormatValue(bitrateValueFormat);
-		videoBitrateEditor.setIncrement(INCREMENT_VIDEO_BITRATE);
-		videoBitrateEditor.setPageIncrement(PAGE_INCREMENT_VIDEO_BITRATE);
-		videoBitrateEditor.addListener(SWT.Selection, bitrateListener);
+		this.videoBitrateEditor.setFormatValue(bitrateValueFormat);
+		this.videoBitrateEditor.setIncrement(INCREMENT_VIDEO_BITRATE);
+		this.videoBitrateEditor.setPageIncrement(PAGE_INCREMENT_VIDEO_BITRATE);
+		this.videoBitrateEditor.addListener(SWT.Selection, this.bitrateListener);
 
 		label = new Label(videoGroup, SWT.NONE);
 		label.setText(dimensionText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		videoDimentionViewer = new ComboViewer(videoGroup, SWT.READ_ONLY
+		this.videoDimentionViewer = new ComboViewer(videoGroup, SWT.READ_ONLY
 				| SWT.DROP_DOWN);
-		videoDimentionViewer
-				.addSelectionChangedListener(selectionListenerToVideoDimension);
-		videoDimentionViewer.setLabelProvider(labelProvider);
+		this.videoDimentionViewer
+				.addSelectionChangedListener(this.selectionListenerToVideoDimension);
+		this.videoDimentionViewer.setLabelProvider(this.labelProvider);
 
 		// Audio options
 		Group audioGroup = new Group(this, SWT.NONE);
-		audioGroup.setFont(boldFont);
+		audioGroup.setFont(this.boldFont);
 		audioGroup.setText(Localization.getString(Localization.OPTIONS_AUDIO));
 		audioGroup.setLayout(new GridLayout(2, false));
 		audioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -220,24 +220,24 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		label.setText(bitrateText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		audioBitrateEditor = new ScaleEditor(audioGroup, SWT.NONE);
-		audioBitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+		this.audioBitrateEditor = new ScaleEditor(audioGroup, SWT.NONE);
+		this.audioBitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false));
-		audioBitrateEditor.setFormatValue(bitrateValueFormat);
-		audioBitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
-		audioBitrateEditor.addListener(SWT.Selection, bitrateListener);
+		this.audioBitrateEditor.setFormatValue(bitrateValueFormat);
+		this.audioBitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
+		this.audioBitrateEditor.addListener(SWT.Selection, this.bitrateListener);
 
 		profileAsChanged();
 
 		// Attach listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						HardCodedProfileOptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -246,9 +246,9 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 	/**
 	 * Notify this view that user change the slected bitrate value.
 	 */
-	private void bitrateSelectionAsChanged() {
+	void bitrateSelectionAsChanged() {
 
-		Profile selectedProfile = site.getProfileContext().getSelectedProfile();
+		Profile selectedProfile = this.site.getProfileContext().getSelectedProfile();
 		if (!(selectedProfile instanceof HardCodedProfile)) {
 			// Must hide everything !
 			return;
@@ -256,8 +256,8 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		HardCodedProfile profile = (HardCodedProfile) selectedProfile;
 
 		// Check if value as changed
-		int audioBitrate = audioBitrateEditor.getSelection();
-		int videoBitrate = videoBitrateEditor.getSelection();
+		int audioBitrate = this.audioBitrateEditor.getSelection();
+		int videoBitrate = this.videoBitrateEditor.getSelection();
 		if (audioBitrate != profile.getAudioBitrate()
 				|| videoBitrate != profile.getVideoBitrate()) {
 
@@ -266,18 +266,16 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 			profile.setVideoBitrate(videoBitrate);
 
 			// To force update
-			site.getProfileContext().setSelectedProfile(profile);
-
+			this.site.getProfileContext().setSelectedProfile(profile);
 		}
-
 	}
 
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
-		Profile selectedProfile = site.getProfileContext().getSelectedProfile();
+		Profile selectedProfile = this.site.getProfileContext().getSelectedProfile();
 		if (!(selectedProfile instanceof HardCodedProfile)) {
 			// Must hide everything !
 			return;
@@ -286,35 +284,34 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		HardCodedProfile profile = (HardCodedProfile) selectedProfile;
 		EncodingOptions encodingOptions = profile.getEncodingOptions();
 
-		if (videoBitrateEditor.getMaximum() != profile.getMaximumVideoBitrate()) {
-			videoBitrateEditor.setRange(MINIMUM_VIDEO_BITRATE, profile
+		if (this.videoBitrateEditor.getMaximum() != profile.getMaximumVideoBitrate()) {
+			this.videoBitrateEditor.setRange(MINIMUM_VIDEO_BITRATE, profile
 					.getMaximumVideoBitrate());
 		}
-		if (videoBitrateEditor.getSelection() != profile.getVideoBitrate()) {
-			videoBitrateEditor.setSelection(profile.getVideoBitrate());
+		if (this.videoBitrateEditor.getSelection() != profile.getVideoBitrate()) {
+			this.videoBitrateEditor.setSelection(profile.getVideoBitrate());
 		}
 
-		if (audioBitrateEditor.getMaximum() != profile.getMaximumAudioBitrate()) {
-			audioBitrateEditor.setRange(MINIMUM_AUDIO_BITRATE, profile
+		if (this.audioBitrateEditor.getMaximum() != profile.getMaximumAudioBitrate()) {
+			this.audioBitrateEditor.setRange(MINIMUM_AUDIO_BITRATE, profile
 					.getMaximumAudioBitrate());
 		}
-		if (audioBitrateEditor.getSelection() != profile.getAudioBitrate()) {
-			audioBitrateEditor.setSelection(encodingOptions.getAudioOptions()
+		if (this.audioBitrateEditor.getSelection() != profile.getAudioBitrate()) {
+			this.audioBitrateEditor.setSelection(encodingOptions.getAudioOptions()
 					.getBitrate());
 		}
 
 		VideoScalingOptions[] videoScalings = profile
 				.getSupportedVideoScalings();
-		if (!videoScalings.equals(lastScalingOptions)) {
-			updateViewer(videoDimentionViewer, videoScalings, encodingOptions
+		if (!videoScalings.equals(this.lastScalingOptions)) {
+			updateViewer(this.videoDimentionViewer, videoScalings, encodingOptions
 					.getScaleOptions());
-			lastScalingOptions = videoScalings;
+			this.lastScalingOptions = videoScalings;
 		} else {
 			StructuredSelection structSelection = new StructuredSelection(
 					profile.getVideoScaling());
-			videoDimentionViewer.setSelection(structSelection);
+			this.videoDimentionViewer.setSelection(structSelection);
 		}
-
 	}
 
 	/**
@@ -328,7 +325,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 	 * @param selection
 	 *            the selection element.
 	 */
-	private void updateViewer(ComboViewer viewer, Object[] objects,
+	void updateViewer(ComboViewer viewer, Object[] objects,
 			Object selection) {
 
 		// Update the list
@@ -354,9 +351,9 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 	/**
 	 * Notify this class that user change the video dimention.
 	 */
-	private void videoDimentsionSelectionAsChanged() {
+	void videoDimentsionSelectionAsChanged() {
 
-		Profile selectedProfile = site.getProfileContext().getSelectedProfile();
+		Profile selectedProfile = this.site.getProfileContext().getSelectedProfile();
 		if (!(selectedProfile instanceof HardCodedProfile)) {
 			// Must hide everything !
 			return;
@@ -364,7 +361,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 		HardCodedProfile profile = (HardCodedProfile) selectedProfile;
 
 		// Try to get the selected dimention
-		Object selection = ((IStructuredSelection) videoDimentionViewer
+		Object selection = ((IStructuredSelection) this.videoDimentionViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof VideoScalingOptions)) {
 			return;
@@ -378,7 +375,7 @@ public class HardCodedProfileOptionsComposite extends Composite implements
 			profile.setVideoScaling(selectedDimention);
 
 			// To force update
-			site.getProfileContext().setSelectedProfile(profile);
+			this.site.getProfileContext().setSelectedProfile(profile);
 		}
 
 	}

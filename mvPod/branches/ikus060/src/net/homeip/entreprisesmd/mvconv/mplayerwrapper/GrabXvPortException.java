@@ -20,7 +20,7 @@ public class GrabXvPortException extends MPlayerException {
 	 */
 	public GrabXvPortException() {
 		super(
-				"Could not find free Xvideo port - maybe another process is already using it.");
+				"Could not find free Xvideo port - maybe another process is already using it."); //$NON-NLS-1$
 	}
 
 }

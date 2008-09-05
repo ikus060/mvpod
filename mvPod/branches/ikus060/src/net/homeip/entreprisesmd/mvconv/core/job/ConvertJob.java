@@ -30,7 +30,7 @@ public class ConvertJob extends AbstractJob {
 	/**
 	 * Failure description.
 	 */
-	private String failedDescription = "";
+	private String failedDescription = ""; //$NON-NLS-1$
 	/**
 	 * Job description.
 	 */
@@ -82,29 +82,29 @@ public class ConvertJob extends AbstractJob {
 	 * @see net.homeip.entreprisesmd.mvconv.core.Job#cancel()
 	 */
 	public void cancel() {
-		canceled = true;
-		encodingJob.cancel();
+		this.canceled = true;
+		this.encodingJob.cancel();
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.Job#getDescription()
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.Job#getFailedDescription()
 	 */
 	public String getFailedDescription() {
-		return failedDescription;
+		return this.failedDescription;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.AbstractJob#getPercentCompleted()
 	 */
 	public int getPercentCompleted() {
-		return encodingJob.getPercentCompleted();
+		return this.encodingJob.getPercentCompleted();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class ConvertJob extends AbstractJob {
 	 */
 	public String getProgressDescription() {
 
-		int timeRemain = encodingJob.getTimeRemaining();
+		int timeRemain = this.encodingJob.getTimeRemaining();
 
 		String remain;
 		if (timeRemain > 0) {
@@ -123,19 +123,19 @@ public class ConvertJob extends AbstractJob {
 		}
 
 		String desc = Localization.getString(
-				Localization.CONVERTJOB_PROGRESS_DESCRIPTION, encodingJob
+				Localization.CONVERTJOB_PROGRESS_DESCRIPTION, this.encodingJob
 						.getFrameRate(), remain);
 
 		return desc;
 	}
-	
+
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.job.Job#isCanceled()
 	 */
-	public boolean isCanceled(){
-		return canceled;
+	public boolean isCanceled() {
+		return this.canceled;
 	}
-	
+
 	/**
 	 * This implementation open the video file in default video player of the
 	 * operating system.
@@ -144,7 +144,7 @@ public class ConvertJob extends AbstractJob {
 	 */
 	public void open() {
 
-		Program.launch(outputFile.getAbsolutePath());
+		Program.launch(this.outputFile.getAbsolutePath());
 
 	}
 
@@ -154,25 +154,23 @@ public class ConvertJob extends AbstractJob {
 	public void run() throws JobFailureException {
 
 		boolean failed = false;
-		encodingJob.addProgressObserver(observer);
+		this.encodingJob.addProgressObserver(this.observer);
 
 		try {
 
-			encodingJob.start();
+			this.encodingJob.start();
 
 		} catch (MPlayerException e) {
 			e.printStackTrace();
-			failedDescription = Localization.getString(
+			this.failedDescription = Localization.getString(
 					Localization.CONVERTJOB_FAILED_DESCRIPTION, e.getMessage());
 			failed = true;
 		}
 
-		encodingJob.addProgressObserver(observer);
+		this.encodingJob.addProgressObserver(this.observer);
 
 		if (failed) {
-			throw new JobFailureException(failedDescription);
+			throw new JobFailureException(this.failedDescription);
 		}
-
 	}
-
 }

@@ -37,8 +37,6 @@ public class CloseWindowAction extends Action {
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	public void run() {
-		
-		shellProvider.getShell().close();
-		
+		this.shellProvider.getShell().close();
 	}
 }

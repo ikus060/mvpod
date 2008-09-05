@@ -26,7 +26,7 @@ public class VideoOutputFileProvider implements IVideoOutputFileProvider {
 	/**
 	 * Default extention return when there is not profile selected.
 	 */
-	private static final String DEFAULT_EXTENTION = ".avi";
+	private static final String DEFAULT_EXTENTION = ".avi"; //$NON-NLS-1$
 
 	/**
 	 * Profile context to determine the file extention.
@@ -73,7 +73,7 @@ public class VideoOutputFileProvider implements IVideoOutputFileProvider {
 	 * @param extentions
 	 *            list of extentions.
 	 */
-	private void changeFileExtention(String[] extentions) {
+	void changeFileExtention(String[] extentions) {
 
 		if (extentions.length <= 0) {
 			return;
@@ -111,7 +111,7 @@ public class VideoOutputFileProvider implements IVideoOutputFileProvider {
 	 * 
 	 * @return the extention by considering the muxer
 	 */
-	private String getPrimaryExtention() {
+	String getPrimaryExtention() {
 		return lastPrimaryExtention;
 	}
 
@@ -128,16 +128,16 @@ public class VideoOutputFileProvider implements IVideoOutputFileProvider {
 
 			String path = ((InputVideoFile) inputVideo).getFile()
 					.getAbsolutePath();
-			int pos = path.lastIndexOf(".");
+			int pos = path.lastIndexOf("."); //$NON-NLS-1$
 			path = path.substring(0, pos);
-			path += ".Output" + getPrimaryExtention();
+			path += ".Output" + getPrimaryExtention(); //$NON-NLS-1$
 
 			return new File(path);
 
 		} else if (inputVideo instanceof InputVideoDVD) {
 
-			String path = System.getProperty("user.home");
-			path += File.separator + "DVD" + getPrimaryExtention();
+			String path = System.getProperty("user.home"); //$NON-NLS-1$
+			path += File.separator + "DVD" + getPrimaryExtention(); //$NON-NLS-1$
 
 			return new File(path);
 		}
@@ -152,9 +152,9 @@ public class VideoOutputFileProvider implements IVideoOutputFileProvider {
 	 *            the file name.
 	 * @return the file extention or null if there file doesn't have one.
 	 */
-	private String parseFileExtention(String filename) {
+	String parseFileExtention(String filename) {
 
-		int pos = filename.lastIndexOf(".");
+		int pos = filename.lastIndexOf("."); //$NON-NLS-1$
 		if (pos > 0) {
 			return filename.substring(pos);
 		}
@@ -167,7 +167,7 @@ public class VideoOutputFileProvider implements IVideoOutputFileProvider {
 	 * @param context
 	 *            the profile context
 	 */
-	private void profileContextAsChanged() {
+	void profileContextAsChanged() {
 
 		if (profileContext.getSelectedProfile() == null) {
 			return;

@@ -21,6 +21,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerWrapper;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.window.IShellProvider;
 
@@ -35,32 +36,32 @@ public class ConvertAllVideoAction extends Action {
 	/**
 	 * The video list.
 	 */
-	private VideoList videoList;
+	VideoList videoList;
 
 	/**
 	 * profile context.
 	 */
-	private ProfileContext profileContext;
+	ProfileContext profileContext;
 
 	/**
 	 * Job queue.
 	 */
-	private JobQueue jobQueue;
+	JobQueue jobQueue;
 
 	/**
 	 * Mplayer wrapper.
 	 */
-	private MPlayerProvider mplayerProvider;
+	MPlayerProvider mplayerProvider;
 
 	/**
 	 * Shell provider.
 	 */
-	private IShellProvider shellProvider;
+	IShellProvider shellProvider;
 
 	/**
 	 * Observer on the video list.
 	 */
-	private VideoListObserver observer = new VideoListObserver() {
+	VideoListObserver observer = new VideoListObserver() {
 		public void listHasChanged(VideoList list) {
 			ConvertAllVideoAction.this.listHasChanged();
 		}
@@ -98,7 +99,7 @@ public class ConvertAllVideoAction extends Action {
 		this.mplayerProvider = mplayerProvider;
 		this.jobQueue = jobQueue;
 
-		videoList.addInputVideoListObserver(observer);
+		videoList.addInputVideoListObserver(this.observer);
 
 		listHasChanged();
 	}
@@ -108,7 +109,7 @@ public class ConvertAllVideoAction extends Action {
 	 * 
 	 * @return
 	 */
-	private Job createJobForVideo(MPlayerWrapper mplayer, Video video, EncodingOptions options) {
+	Job createJobForVideo(MPlayerWrapper mplayer, Video video, EncodingOptions options) {
 
 		// Create an encoding job
 		InputVideo inputVideo = video.getInputVideo();
@@ -119,7 +120,7 @@ public class ConvertAllVideoAction extends Action {
 			encodingJob = mplayer.encode(inputVideo, outputFile, options);
 		} catch (MPlayerException e) {
 			e.printStackTrace();
-			ErrorMessage.showMPlayerException(shellProvider.getShell(), e,
+			ErrorMessage.showMPlayerException(this.shellProvider.getShell(), e,
 					Localization.ACTION_CONVERT_FAILED);
 			return null;
 		}
@@ -132,9 +133,9 @@ public class ConvertAllVideoAction extends Action {
 	/**
 	 * Update the status of this action depending if the list are empty.
 	 */
-	private void listHasChanged() {
+	void listHasChanged() {
 		boolean enabled = false;
-		if (videoList.getCount() > 0) {
+		if (this.videoList.getCount() > 0) {
 			enabled = true;
 		}
 		this.setEnabled(enabled);
@@ -147,21 +148,21 @@ public class ConvertAllVideoAction extends Action {
 	public void run() {
 
 		// Check if mplayer exist
-		MPlayerWrapper mplayer = mplayerProvider.getWrapper();
+		MPlayerWrapper mplayer = this.mplayerProvider.getWrapper();
 		if (mplayer == null) {
-			ErrorMessage.showLocalizedError(shellProvider.getShell(),
+			ErrorMessage.showLocalizedError(this.shellProvider.getShell(),
 					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
 		
 		// Retreive the video list
-		Video[] videos = videoList.getVideos();
+		Video[] videos = this.videoList.getVideos();
 
 		// Check if we overwrite output file
 		int index = 0;
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 		boolean prompt = !store.getString(Main.PREF_REPLACE_FILE).equals(
-				ReplaceFileMessageDialog.ALWAYS);
+				MessageDialogWithToggle.ALWAYS);
 		while (index < videos.length && prompt) {
 
 			if (videos[index].getOutputFile().exists()) {
@@ -169,7 +170,7 @@ public class ConvertAllVideoAction extends Action {
 				File outputFile = videos[index].getOutputFile();
 
 				ReplaceFileMessageDialog dlg = new ReplaceFileMessageDialog(
-						shellProvider.getShell(), outputFile.getName(), false);
+						this.shellProvider.getShell(), outputFile.getName(), false);
 				dlg.setPrefKey(Main.PREF_REPLACE_FILE);
 				dlg.setPrefStore(Main.instance().getPreferenceStore());
 
@@ -179,7 +180,7 @@ public class ConvertAllVideoAction extends Action {
 				}
 
 				prompt = !store.getString(Main.PREF_REPLACE_FILE).equals(
-						ReplaceFileMessageDialog.ALWAYS);
+						MessageDialogWithToggle.ALWAYS);
 
 			}
 
@@ -187,7 +188,7 @@ public class ConvertAllVideoAction extends Action {
 		}
 
 		// Start to create the convert job
-		EncodingOptions options = profileContext.getSelectedProfile()
+		EncodingOptions options = this.profileContext.getSelectedProfile()
 				.getEncodingOptions();
 
 		for (index = 0; index < videos.length; index++) {
@@ -199,9 +200,9 @@ public class ConvertAllVideoAction extends Action {
 			}
 
 			// Remove the vide from the list
-			videoList.removeVideo(videos[index]);
+			this.videoList.removeVideo(videos[index]);
 			// Append the job to the jobqueue
-			jobQueue.append(job);
+			this.jobQueue.append(job);
 
 		}
 

@@ -15,23 +15,23 @@ public class ErrorParser implements StreamParser {
 	/**
 	 * Regular expression to match if there is a DVDNotAvailable exception.
 	 */
-	private static final String DVD_NOT_AVAILABLE = "^Couldn't open DVD device: (.*)$";
+	private static final String DVD_NOT_AVAILABLE = "^Couldn't open DVD device: (.*)$"; //$NON-NLS-1$
 	/**
 	 * Regular expression to match GrabXVPort exception.
 	 */
-	private static final String GRAB_XV_PORT_FAILED = "Could not find free Xvideo port";
+	private static final String GRAB_XV_PORT_FAILED = "Could not find free Xvideo port"; //$NON-NLS-1$
 	/**
 	 * Regular expression to seek failed.
 	 */
-	private static final String SEEK_FAILED = "Seek failed";
+	private static final String SEEK_FAILED = "Seek failed"; //$NON-NLS-1$
 	/**
 	 * Regular expression to read header.
 	 */
-	private static final String READING_HEADER_FAILED = "Main header checksum mismatch";
+	private static final String READING_HEADER_FAILED = "Main header checksum mismatch"; //$NON-NLS-1$
 	/**
 	 * Regular expression when palette are invalid.
 	 */
-	private static final String PALETTE_INVALID = "QT palette: skipped entry \\(out of count\\):";
+	private static final String PALETTE_INVALID = "QT palette: skipped entry \\(out of count\\):"; //$NON-NLS-1$
 	/**
 	 * Maximum number of palette error before throwing an exception.
 	 */
@@ -39,12 +39,12 @@ public class ErrorParser implements StreamParser {
 	/**
 	 * Regular expression to match if MP4Box decide to rename the file.
 	 */
-	private static final String MP4BOX_ERROR_RENAMING_FILE = "^Error renaming file (.*)$";
+	private static final String MP4BOX_ERROR_RENAMING_FILE = "^Error renaming file (.*)$"; //$NON-NLS-1$
 
 	/**
 	 * Regular expression when Xvideo port are not available.
 	 */
-	private static final String XVIDEO_PORT_NOTE_AVAILABLE = "It seems there is no Xvideo support for your video card available.";
+	private static final String XVIDEO_PORT_NOTE_AVAILABLE = "It seems there is no Xvideo support for your video card available."; //$NON-NLS-1$
 
 	/**
 	 * Regular expression to read header.
@@ -64,26 +64,18 @@ public class ErrorParser implements StreamParser {
 	private int paletteCount;
 
 	/**
-	 * Create a new error parser.
-	 * 
-	 */
-	public ErrorParser() {
-
-	}
-
-	/**
 	 * Notify this class that exception have been found.
 	 * <p>
 	 * Sub class may implement this method to do some supprementary instruction
 	 * when an exception are found.
 	 * </p>
 	 * 
-	 * @param exception
+	 * @param exceptionFound
 	 *            the exception found.
 	 * @return True to continue the parsing process.
 	 */
-	public boolean exceptionFound(MPlayerException exception) {
-		this.exception = exception;
+	public boolean exceptionFound(MPlayerException exceptionFound) {
+		this.exception = exceptionFound;
 		return false;
 	}
 
@@ -94,7 +86,7 @@ public class ErrorParser implements StreamParser {
 
 		System.out.println(line);
 
-		if (exception != null) {
+		if (this.exception != null) {
 			return true;
 		}
 
@@ -125,8 +117,8 @@ public class ErrorParser implements StreamParser {
 		matcher = Pattern.compile(PALETTE_INVALID, Pattern.MULTILINE).matcher(
 				line);
 		if (matcher.find()) {
-			paletteCount++;
-			if (paletteCount >= PALETTE_COUNT_MAX) {
+			this.paletteCount++;
+			if (this.paletteCount >= PALETTE_COUNT_MAX) {
 				return exceptionFound(new SeekException());
 			}
 		}
@@ -156,8 +148,8 @@ public class ErrorParser implements StreamParser {
 	 *             if the parse detec any error.
 	 */
 	public void throwException() throws MPlayerException {
-		if (exception != null) {
-			throw exception;
+		if (this.exception != null) {
+			throw this.exception;
 		}
 	}
 

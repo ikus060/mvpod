@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  */
 public class AddDVDFromDeviceAction extends Action {
-	
+
 	/**
 	 * Operation to add files.
 	 */
@@ -32,7 +32,7 @@ public class AddDVDFromDeviceAction extends Action {
 		/**
 		 * DVD device.
 		 */
-		private String device;
+		String device;
 
 		/**
 		 * Create a new operation.
@@ -47,41 +47,42 @@ public class AddDVDFromDeviceAction extends Action {
 		}
 
 		public void cancel() {
+			// Cannot cancel this opperation
 		}
 
 		public void start() {
-			Display.getDefault().asyncExec(new Runnable(){
+			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
-					Video video = createInputOutputVideo(device);
+					Video video = createInputOutputVideo(AddDVDOperation.this.device);
 
 					if (video != null) {
-						videoList.addInputVideo(video);
+						AddDVDFromDeviceAction.this.videoList
+								.addInputVideo(video);
 					}
 				}
 			});
 		}
-	};
-	
+	}
+
 	/**
 	 * The video list.
 	 */
-	private VideoList videoList;
+	VideoList videoList;
 
 	/**
 	 * Shell provider.
 	 */
-	private IShellProvider shellProvider;
+	IShellProvider shellProvider;
 
 	/**
 	 * The output file provider.
 	 */
-	private IVideoOutputFileProvider fileProvider;
-	
+	IVideoOutputFileProvider fileProvider;
+
 	/**
 	 * MPlayer provider.
 	 */
-	private MPlayerProvider mplayerProvider;
-	
+	MPlayerProvider mplayerProvider;
 
 	/**
 	 * Create a new <code>AddVideoFileAction</code>.
@@ -95,10 +96,11 @@ public class AddDVDFromDeviceAction extends Action {
 	 *            file name of the video.
 	 */
 	public AddDVDFromDeviceAction(IShellProvider shellProvider,
-			VideoList videoList, IVideoOutputFileProvider fileProvider, MPlayerProvider mplayerProvider) {
+			VideoList videoList, IVideoOutputFileProvider fileProvider,
+			MPlayerProvider mplayerProvider) {
 
 		super(Localization.getString(Localization.ACTION_ADD_DVD_FROM_DEVICE));
-		
+
 		setImageDescriptor(IconLoader.loadIcon(IconLoader.ICON_DVD_DEVICE_22));
 
 		if (shellProvider == null) {
@@ -123,22 +125,23 @@ public class AddDVDFromDeviceAction extends Action {
 	 *            the dvd device
 	 * @return an input/output video from the filename
 	 */
-	private Video createInputOutputVideo(String device) {
+	Video createInputOutputVideo(String device) {
 		InputVideoDVD inputVideoDvd = null;
 		try {
 
 			inputVideoDvd = InputVideoDVD.fromDVDDevice(device);
 
 		} catch (FileNotFoundException e) {
-			ErrorMessage.showLocalizedError(shellProvider.getShell(),
+			ErrorMessage.showLocalizedError(this.shellProvider.getShell(),
 					Localization.MPLAYER_DVDDEVICE_NOT_AVAILABLE, device);
 			return null;
 		} catch (DVDNotAvailableException e) {
-			ErrorMessage.showMPlayerException(shellProvider.getShell(), e, null);
+			ErrorMessage.showMPlayerException(this.shellProvider.getShell(), e,
+					null);
 			return null;
 		}
 
-		File output = fileProvider.getFile(inputVideoDvd);
+		File output = this.fileProvider.getFile(inputVideoDvd);
 
 		return new Video(inputVideoDvd, output);
 	}
@@ -148,30 +151,32 @@ public class AddDVDFromDeviceAction extends Action {
 	 */
 	public void run() {
 
-		//Check if Mplayer exist
-		if (mplayerProvider.getWrapper() == null) {
-			ErrorMessage.showLocalizedError(shellProvider.getShell(),
+		// Check if Mplayer exist
+		if (this.mplayerProvider.getWrapper() == null) {
+			ErrorMessage.showLocalizedError(this.shellProvider.getShell(),
 					Localization.MPLAYER_NOT_FOUND);
 			return;
 		}
-		
+
 		String[] devices = InputVideoDVD.getAvailablesDVDDevice();
 
-		DVDDeviceDialog dlg = new DVDDeviceDialog(shellProvider.getShell());
+		DVDDeviceDialog dlg = new DVDDeviceDialog(this.shellProvider.getShell());
 		dlg.setDeviceList(devices);
 		dlg.open();
 
 		String device = dlg.getDevice();
 
 		if (device != null) {
-		
+
 			Operation operation = new AddDVDOperation(device);
-			String progressMessage = Localization.getString(Localization.ACTION_ADD_DVD_FROM_DEVICE_PROGRESS_MESSAGE);
-			ProgressDialog progressDlg = new ProgressDialog(shellProvider.getShell());
+			String progressMessage = Localization
+					.getString(Localization.ACTION_ADD_DVD_FROM_DEVICE_PROGRESS_MESSAGE);
+			ProgressDialog progressDlg = new ProgressDialog(this.shellProvider
+					.getShell());
 			progressDlg.setOperation(operation);
 			progressDlg.setProgressMessage(progressMessage);
 			progressDlg.open();
-			
+
 		}
 	}
 }

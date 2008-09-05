@@ -78,7 +78,7 @@ public abstract class VideoEncodingOptions {
 	 *         -1 if this options are disable.
 	 */
 	public double getMaxOutputFrameRate() {
-		return maxFrameRate;
+		return this.maxFrameRate;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public abstract class VideoEncodingOptions {
 	 *         this options are disable
 	 */
 	public double getOutputFrameRate() {
-		return frameRate;
+		return this.frameRate;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public abstract class VideoEncodingOptions {
 	 * @return the number of pass
 	 */
 	public int getPass() {
-		return pass;
+		return this.pass;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public abstract class VideoEncodingOptions {
 	 * @return the video format.
 	 */
 	public VideoFormat getVideoFormat() {
-		return videoFormat;
+		return this.videoFormat;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public abstract class VideoEncodingOptions {
 	 */
 	public void setMaxOutputFrameRate(double frameRate) {
 		if (frameRate <= 0) {
-			throw new IllegalArgumentException("Invalid frame rate "
+			throw new IllegalArgumentException("Invalid frame rate " //$NON-NLS-1$
 					+ frameRate);
 		}
 		this.maxFrameRate = frameRate;
@@ -142,7 +142,7 @@ public abstract class VideoEncodingOptions {
 	 */
 	public void setOutputFrameRate(double frameRate) {
 		if (frameRate <= 0 && frameRate!=-1.0) {
-			throw new IllegalArgumentException("Invalid frame rate "
+			throw new IllegalArgumentException("Invalid frame rate " //$NON-NLS-1$
 					+ frameRate);
 		}
 		this.frameRate = frameRate;
@@ -156,7 +156,7 @@ public abstract class VideoEncodingOptions {
 	 */
 	public void setPass(int pass) {
 		if (pass < 1 && pass > 2) {
-			throw new IllegalArgumentException("Invalid pass value " + pass);
+			throw new IllegalArgumentException("Invalid pass value " + pass); //$NON-NLS-1$
 		}
 		this.pass = pass;
 	}
@@ -182,26 +182,26 @@ public abstract class VideoEncodingOptions {
 	 * 
 	 * @param inputVideoInfo
 	 *            detail information about input video
-	 * @param pass
+	 * @param passCount
 	 *            the pass count
 	 * @return the argument list
 	 */
-	public String[] toCommandList(VideoInfo inputVideoInfo, int pass) {
+	public String[] toCommandList(VideoInfo inputVideoInfo, int passCount) {
 
-		if (frameRate != -1) {
+		if (this.frameRate != -1) {
 
 			String[] args = new String[2];
-			args[0] = "-ofps";
-			args[1] = Double.toString(frameRate);
+			args[0] = "-ofps"; //$NON-NLS-1$
+			args[1] = Double.toString(this.frameRate);
 			return args;
 
-		} else if (maxFrameRate != -1) {
+		} else if (this.maxFrameRate != -1) {
 
 			if (inputVideoInfo.getFrameRate() == -1
-					|| inputVideoInfo.getFrameRate() > maxFrameRate) {
+					|| inputVideoInfo.getFrameRate() > this.maxFrameRate) {
 				String[] args = new String[2];
-				args[0] = "-ofps";
-				args[1] = Double.toString(maxFrameRate);
+				args[0] = "-ofps"; //$NON-NLS-1$
+				args[1] = Double.toString(this.maxFrameRate);
 				return args;
 			}
 		}

@@ -40,7 +40,7 @@ public class SubtitleStream {
 	 * @return the language as define in the ISO 639-1 or ISO 639-2.
 	 */
 	public String getLanguage() {
-		return langage;
+		return this.langage;
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class SubtitleStream {
 	 * @return the subtitle identifier.
 	 */
 	public String getSubtitleID() {
-		return subtitleID;
+		return this.subtitleID;
 	}
 
 }

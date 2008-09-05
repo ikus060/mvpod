@@ -105,19 +105,19 @@ public class VideoScalingOptions {
 
 		int mask = METHOD_CROP | METHOD_FILL | METHOD_SCALE | METHOD_FIT
 				| MULTIPLE_16;
-		style = style & mask;
+		int scaleOptions = style & mask; 
 		this.method = METHOD_FIT;
-		if ((style & METHOD_CROP) != 0) {
+		if ((scaleOptions & METHOD_CROP) != 0) {
 			this.method = METHOD_CROP;
-		} else if ((style & METHOD_FILL) != 0) {
+		} else if ((scaleOptions & METHOD_FILL) != 0) {
 			this.method = METHOD_FILL;
-		} else if ((style & METHOD_FIT) != 0) {
+		} else if ((scaleOptions & METHOD_FIT) != 0) {
 			this.method = METHOD_FIT;
-		} else if ((style & METHOD_SCALE) != 0) {
+		} else if ((scaleOptions & METHOD_SCALE) != 0) {
 			this.method = METHOD_SCALE;
 		}
 
-		if ((style & MULTIPLE_16) != 0) {
+		if ((scaleOptions & MULTIPLE_16) != 0) {
 			this.mutiple = 16;
 		}
 
@@ -133,8 +133,8 @@ public class VideoScalingOptions {
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof VideoScalingOptions) {
-			return ((VideoScalingOptions) obj).dimension.equals(dimension)
-					&& ((VideoScalingOptions) obj).method == method;
+			return ((VideoScalingOptions) obj).dimension.equals(this.dimension)
+					&& ((VideoScalingOptions) obj).method == this.method;
 		}
 		return false;
 	}
@@ -145,7 +145,7 @@ public class VideoScalingOptions {
 	 * @return the height.
 	 */
 	public int getHeight() {
-		return dimension.getHeight();
+		return this.dimension.getHeight();
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class VideoScalingOptions {
 	 * @return the method.
 	 */
 	public int getScalingMethod() {
-		return method;
+		return this.method;
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class VideoScalingOptions {
 	 * @return the dimension.
 	 */
 	public VideoDimension getVideoDimension() {
-		return dimension;
+		return this.dimension;
 	}
 
 	/**
@@ -172,14 +172,14 @@ public class VideoScalingOptions {
 	 * @return the width.
 	 */
 	public int getWidth() {
-		return dimension.getWidth();
+		return this.dimension.getWidth();
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return dimension.hashCode();
+		return this.dimension.hashCode();
 	}
 
 	/**
@@ -190,17 +190,10 @@ public class VideoScalingOptions {
 	 * @return the rounded value.
 	 */
 	private int round(int value, int multiple) {
-
 		if (value % multiple <= (value + multiple) % multiple) {
-
 			return value - value % multiple;
-
-		} else {
-
-			return (value + multiple) - (value + multiple) % multiple;
-
 		}
-
+		return (value + multiple) - (value + multiple) % multiple;
 	}
 
 	/**
@@ -221,11 +214,11 @@ public class VideoScalingOptions {
 		int inputWidth = inputVideoInfo.getVideoDimention().getWidth();
 		int inputHeight = inputVideoInfo.getVideoDimention().getHeight();
 
-		int width = dimension.getWidth();
-		int height = dimension.getHeight();
+		int width = this.dimension.getWidth();
+		int height = this.dimension.getHeight();
 
-		String value = "";
-		if (method == METHOD_CROP) {
+		String value = ""; //$NON-NLS-1$
+		if (this.method == METHOD_CROP) {
 
 			int scaledWidth = width;
 			int scaledHeight = inputHeight * width / inputWidth;
@@ -235,10 +228,10 @@ public class VideoScalingOptions {
 				scaledWidth = scaledWidth - (scaledWidth % 2);
 				scaledHeight = height;
 			}
-			value = "scale=" + scaledWidth + ":" + scaledHeight + ",crop="
-					+ round(width, mutiple) + ":" + round(height, mutiple);
+			value = "scale=" + scaledWidth + ":" + scaledHeight + ",crop=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ round(width, this.mutiple) + ":" + round(height, this.mutiple); //$NON-NLS-1$
 
-		} else if (method == METHOD_FILL) {
+		} else if (this.method == METHOD_FILL) {
 
 			int scaledWidth = width;
 			int scaledHeight = inputHeight * width / inputWidth;
@@ -248,18 +241,18 @@ public class VideoScalingOptions {
 				scaledWidth = scaledWidth - (scaledWidth % 2);
 				scaledHeight = height;
 			}
-			value = "scale=" + scaledWidth + ":" + scaledHeight + ",expand="
-					+ round(width, mutiple) + ":" + round(height, mutiple);
+			value = "scale=" + scaledWidth + ":" + scaledHeight + ",expand=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ round(width, this.mutiple) + ":" + round(height, this.mutiple); //$NON-NLS-1$
 
-		} else if (method == METHOD_SCALE) {
+		} else if (this.method == METHOD_SCALE) {
 
-			if (mutiple == 16) {
-				value = "scale=" + round(width, mutiple) + ":"
-						+ round(height, mutiple) + ",crop="
-						+ round(width, mutiple) + ":" + round(height, mutiple);
+			if (this.mutiple == 16) {
+				value = "scale=" + round(width, this.mutiple) + ":" //$NON-NLS-1$ //$NON-NLS-2$
+						+ round(height, this.mutiple) + ",crop=" //$NON-NLS-1$
+						+ round(width, this.mutiple) + ":" + round(height, this.mutiple); //$NON-NLS-1$
 			} else {
-				value = "scale=" + width + ":" + height + ",crop=" + width
-						+ ":" + height;
+				value = "scale=" + width + ":" + height + ",crop=" + width //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						+ ":" + height; //$NON-NLS-1$
 			}
 
 		} else /* if(method == METHOD_FIT) */{
@@ -273,16 +266,16 @@ public class VideoScalingOptions {
 				scaledHeight = height;
 			}
 
-			if (mutiple == 16) {
-				value = "scale=" + round(scaledWidth, mutiple) + ":-10";
+			if (this.mutiple == 16) {
+				value = "scale=" + round(scaledWidth, this.mutiple) + ":-10"; //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
-				value = "scale=" + scaledWidth + ":-2";
+				value = "scale=" + scaledWidth + ":-2"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 		}
 
 		String[] args = new String[2];
-		args[0] = "-vf-add";
+		args[0] = "-vf-add"; //$NON-NLS-1$
 		args[1] = value;
 		return args;
 

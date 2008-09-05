@@ -69,7 +69,7 @@ public abstract class AudioEncodingOptions {
 	 * @return the audio format.
 	 */
 	public AudioFormat getAudioFormat() {
-		return audioFormat;
+		return this.audioFormat;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public abstract class AudioEncodingOptions {
 	 *         this options are disable.
 	 */
 	public int getOutputSampleRate() {
-		return sampleRate;
+		return this.sampleRate;
 	}
 
 	/**
@@ -131,7 +131,7 @@ public abstract class AudioEncodingOptions {
 	public void setOutputSampleRate(int sampleRate) {
 		if (sampleRate < SAMPLE_RATE_MIN_VALUE
 				|| sampleRate > SAMPLE_RATE_MAX_VALUE) {
-			throw new IllegalArgumentException("Invalid sample rate "
+			throw new IllegalArgumentException("Invalid sample rate " //$NON-NLS-1$
 					+ sampleRate);
 		}
 		this.sampleRate = sampleRate;
@@ -148,15 +148,13 @@ public abstract class AudioEncodingOptions {
 	 */
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
-		if (sampleRate != -1) {
+		if (this.sampleRate != -1) {
 			String[] args = new String[2];
-			args[0] = "-srate";
-			args[1] = Integer.toString(sampleRate);
+			args[0] = "-srate"; //$NON-NLS-1$
+			args[1] = Integer.toString(this.sampleRate);
 			return args;
-		} else {
-			return new String[0];
 		}
-
+		return new String[0];
 	}
 
 }

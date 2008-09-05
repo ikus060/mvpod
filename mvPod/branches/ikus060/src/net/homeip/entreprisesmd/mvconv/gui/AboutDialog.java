@@ -85,7 +85,7 @@ public class AboutDialog extends Dialog {
 			appNameFontData[fontIndex].setStyle(SWT.BOLD);
 			appNameFontData[0].setHeight(appNameFontData[0].getHeight() + 7);
 		}
-		appNameFont = new Font(Display.getCurrent(), appNameFontData);
+		this.appNameFont = new Font(Display.getCurrent(), appNameFontData);
 
 		Composite comp = new Composite(parent, SWT.NONE) {
 			public Point computeSize(int wHint, int hHint, boolean changed) {
@@ -110,12 +110,12 @@ public class AboutDialog extends Dialog {
 
 		// App name and version
 		String appName = Localization.getString(Localization.APPLICATION_NAME)
-				+ " " + Localization.getLocalizedVersion(Localization.VERSION_TEXT);
+				+ " " + Localization.getLocalizedVersion(Localization.VERSION_TEXT); //$NON-NLS-1$
 
 		Text appNameText = new Text(comp, SWT.CENTER | SWT.READ_ONLY
 				| SWT.MULTI | SWT.WRAP);
 		appNameText.setText(appName);
-		appNameText.setFont(appNameFont);
+		appNameText.setFont(this.appNameFont);
 		appNameText.setLayoutData(gridData);
 		appNameText.setBackground(this.getShell().getBackground());
 
@@ -151,7 +151,7 @@ public class AboutDialog extends Dialog {
 				.getString(Localization.APPLICATION_WEBSITE);
 
 		Link appWebSite = new Link(comp, SWT.NONE);
-		appWebSite.setText("<a>" + webSiteAdress + "</a>");
+		appWebSite.setText("<a>" + webSiteAdress + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$
 		appWebSite
 				.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false));
 		appWebSite.addSelectionListener(new SelectionAdapter() {

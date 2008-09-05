@@ -106,7 +106,7 @@ public class Video {
 			throw new NullPointerException();
 		}
 		if (!inputVideo.getClass().equals(inputVideo.getClass())) {
-			throw new IllegalArgumentException("InputVideo of difference type");
+			throw new IllegalArgumentException("InputVideo of difference type"); //$NON-NLS-1$
 		}
 		this.inputVideo = inputVideo;
 		notifyObservers();

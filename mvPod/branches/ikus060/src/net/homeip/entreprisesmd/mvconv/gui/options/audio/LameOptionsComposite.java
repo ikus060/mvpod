@@ -110,7 +110,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Channel viewer.
 	 */
-	private ComboViewer channelViewer;
+	ComboViewer channelViewer;
 	/**
 	 * Fast encoding button
 	 */
@@ -118,7 +118,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Listener to profile context.
 	 */
-	private IProfileContextListener profileContextListener = new IProfileContextListener() {
+	IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -155,7 +155,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Type viewer.
 	 */
-	private ComboViewer typeViewer;
+	ComboViewer typeViewer;
 	/**
 	 * Variable method label.
 	 */
@@ -186,18 +186,18 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Variable method viewer.
 	 */
-	private ComboViewer variableMethodViewer;
+	ComboViewer variableMethodViewer;
 	/**
 	 * Sample rate combo viewer.
 	 */
-	private ComboViewer sampleRateViewer;
+	ComboViewer sampleRateViewer;
 	/**
 	 * Sample rate label provider.
 	 */
 	private LabelProvider sampleRateViewerLabelProvider = new LabelProvider() {
 		public String getText(Object element) {
 			if (element instanceof Integer) {
-				return element.toString() + " Hz";
+				return element.toString() + " Hz"; //$NON-NLS-1$
 			}
 			return element.toString();
 		}
@@ -208,13 +208,13 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
 
-			if (event.getSource() == channelViewer) {
+			if (event.getSource() == LameOptionsComposite.this.channelViewer) {
 				channelSelectionAsChanged();
-			} else if (event.getSource() == typeViewer) {
+			} else if (event.getSource() == LameOptionsComposite.this.typeViewer) {
 				typeSelectionAsChanged();
-			} else if (event.getSource() == variableMethodViewer) {
+			} else if (event.getSource() == LameOptionsComposite.this.variableMethodViewer) {
 				variableMethodAsChanged();
-			} else if (event.getSource() == sampleRateViewer) {
+			} else if (event.getSource() == LameOptionsComposite.this.sampleRateViewer) {
 				sampleRateAsChanged();
 			}
 
@@ -244,7 +244,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this view that user change the slected bitrate value.
 	 */
-	private void bitrateSelectionAsChanged() {
+	void bitrateSelectionAsChanged() {
 
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
@@ -253,7 +253,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 		}
 
 		// Check if value as changed
-		int audioBitrate = bitrateEditor.getSelection();
+		int audioBitrate = this.bitrateEditor.getSelection();
 		EncodingOptions options = profile.getEncodingOptions();
 		AudioEncodingOptions audioOptions = options.getAudioOptions();
 
@@ -278,7 +278,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	 *            the heigth value.
 	 * @return the new GridData.
 	 */
-	private Object changeHeightLayout(Object object, int height) {
+	Object changeHeightLayout(Object object, int height) {
 		if (!(object instanceof GridData)) {
 			return object;
 		}
@@ -290,7 +290,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this class that user change the channel mode.
 	 */
-	private void channelSelectionAsChanged() {
+	void channelSelectionAsChanged() {
 
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
@@ -323,8 +323,8 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	 * 
 	 * @return the selected channel.
 	 */
-	private Integer getChannelSelection() {
-		Object selection = ((IStructuredSelection) channelViewer.getSelection())
+	Integer getChannelSelection() {
+		Object selection = ((IStructuredSelection) this.channelViewer.getSelection())
 				.getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return null;
@@ -337,8 +337,8 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	 * 
 	 * @return the selected sample rate.
 	 */
-	private Integer getSampleRateSelection() {
-		Object selection = ((IStructuredSelection) sampleRateViewer
+	Integer getSampleRateSelection() {
+		Object selection = ((IStructuredSelection) this.sampleRateViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return null;
@@ -351,8 +351,8 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	 * 
 	 * @return the select type.
 	 */
-	private Integer getTypeSelection() {
-		Object selection = ((IStructuredSelection) typeViewer.getSelection())
+	Integer getTypeSelection() {
+		Object selection = ((IStructuredSelection) this.typeViewer.getSelection())
 				.getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return null;
@@ -365,8 +365,8 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	 * 
 	 * @return the selected variable method.
 	 */
-	private Integer getVariableMethodSelection() {
-		Object selection = ((IStructuredSelection) variableMethodViewer
+	Integer getVariableMethodSelection() {
+		Object selection = ((IStructuredSelection) this.variableMethodViewer
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Integer)) {
 			return null;
@@ -421,111 +421,111 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 		comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,4,1));
 		
 		// Bitrate
-		bitrateLabel = new Label(comp, SWT.NONE);
-		bitrateLabel.setText(bitrateText);
-		bitrateLabel.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
+		this.bitrateLabel = new Label(comp, SWT.NONE);
+		this.bitrateLabel.setText(bitrateText);
+		this.bitrateLabel.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		bitrateEditor = new ScaleEditor(comp, SWT.NONE);
-		bitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+		this.bitrateEditor = new ScaleEditor(comp, SWT.NONE);
+		this.bitrateEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 3, 1));
-		bitrateEditor.setFormatValue(bitrateValueFormat);
-		bitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
-		bitrateEditor.setPageIncrement(PAGE_INCREMENT_AUDIO_BITRATE);
-		bitrateEditor.setRange(LameEncodingOptions.BITRATE_MIN_VALUE,
+		this.bitrateEditor.setFormatValue(bitrateValueFormat);
+		this.bitrateEditor.setIncrement(INCREMENT_AUDIO_BITRATE);
+		this.bitrateEditor.setPageIncrement(PAGE_INCREMENT_AUDIO_BITRATE);
+		this.bitrateEditor.setRange(LameEncodingOptions.BITRATE_MIN_VALUE,
 				LameEncodingOptions.BITRATE_MAX_VALUE);
-		bitrateEditor.addSelectionListener(selectionListener);
+		this.bitrateEditor.addSelectionListener(this.selectionListener);
 
 		// Quality viewer
-		qualityLabel = new Label(comp, SWT.NONE);
-		qualityLabel.setText(qualityText);
-		qualityLabel.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
+		this.qualityLabel = new Label(comp, SWT.NONE);
+		this.qualityLabel.setText(qualityText);
+		this.qualityLabel.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		qualityEditor = new ScaleEditor(comp, SWT.NONE);
-		qualityEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+		this.qualityEditor = new ScaleEditor(comp, SWT.NONE);
+		this.qualityEditor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 3, 1));
-		qualityEditor.setRange(LameEncodingOptions.QUALITY_MIN_VALUE,
+		this.qualityEditor.setRange(LameEncodingOptions.QUALITY_MIN_VALUE,
 				LameEncodingOptions.QUALITY_MAX_VALUE);
-		qualityEditor.addSelectionListener(selectionListener);
+		this.qualityEditor.addSelectionListener(this.selectionListener);
 
 		// Type
 		Label label = new Label(this, SWT.NONE);
 		label.setText(typeText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		typeViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
-		typeViewer.getCombo().setLayoutData(
+		this.typeViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
+		this.typeViewer.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false));
-		typeViewer.setLabelProvider(typeLabelProvider);
-		typeViewer.addSelectionChangedListener(selectionChangeListener);
-		typeViewer.add(LameEncodingOptions.TYPE_AVERAGE_BITRATE);
-		typeViewer.add(LameEncodingOptions.TYPE_CONSTANT_BITRATE);
-		typeViewer.add(LameEncodingOptions.TYPE_VARIABLE_BITRATE);
+		this.typeViewer.setLabelProvider(this.typeLabelProvider);
+		this.typeViewer.addSelectionChangedListener(this.selectionChangeListener);
+		this.typeViewer.add(LameEncodingOptions.TYPE_AVERAGE_BITRATE);
+		this.typeViewer.add(LameEncodingOptions.TYPE_CONSTANT_BITRATE);
+		this.typeViewer.add(LameEncodingOptions.TYPE_VARIABLE_BITRATE);
 
 		// Variable method bitrate
-		variableMethodLabel = new Label(this, SWT.NONE);
-		variableMethodLabel.setText(variableMethodText);
+		this.variableMethodLabel = new Label(this, SWT.NONE);
+		this.variableMethodLabel.setText(variableMethodText);
 
-		variableMethodViewer = new ComboViewer(this, SWT.READ_ONLY
+		this.variableMethodViewer = new ComboViewer(this, SWT.READ_ONLY
 				| SWT.DROP_DOWN);
-		variableMethodViewer.getCombo().setLayoutData(
+		this.variableMethodViewer.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false));
-		variableMethodViewer.setLabelProvider(variableMethodLabelProvider);
-		variableMethodViewer
-				.addSelectionChangedListener(selectionChangeListener);
-		variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_ABR);
-		variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_CBR);
-		variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_MT);
-		variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_MTRH);
-		variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_RH);
+		this.variableMethodViewer.setLabelProvider(this.variableMethodLabelProvider);
+		this.variableMethodViewer
+				.addSelectionChangedListener(this.selectionChangeListener);
+		this.variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_ABR);
+		this.variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_CBR);
+		this.variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_MT);
+		this.variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_MTRH);
+		this.variableMethodViewer.add(LameEncodingOptions.VARIABLE_METHOD_RH);
 
 		// Sample rate
 		label = new Label(this, SWT.NONE);
 		label.setText(sampleRateText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		sampleRateViewer = new ComboViewer(this, SWT.DROP_DOWN | SWT.READ_ONLY);
-		sampleRateViewer.getCombo().setLayoutData(
+		this.sampleRateViewer = new ComboViewer(this, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.sampleRateViewer.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false));
-		sampleRateViewer.setLabelProvider(sampleRateViewerLabelProvider);
-		sampleRateViewer.add(48000);
-		sampleRateViewer.add(44100);
-		sampleRateViewer.addSelectionChangedListener(selectionChangeListener);
+		this.sampleRateViewer.setLabelProvider(this.sampleRateViewerLabelProvider);
+		this.sampleRateViewer.add(48000);
+		this.sampleRateViewer.add(44100);
+		this.sampleRateViewer.addSelectionChangedListener(this.selectionChangeListener);
 
 		// Channel mode
 		label = new Label(this, SWT.NONE);
 		label.setText(channelText);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		channelViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
-		channelViewer.getCombo().setLayoutData(
+		this.channelViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
+		this.channelViewer.getCombo().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false));
-		channelViewer.setLabelProvider(channelLabelProvider);
-		channelViewer.addSelectionChangedListener(selectionChangeListener);
-		channelViewer.add(LameEncodingOptions.MODE_AUTO);
-		channelViewer.add(LameEncodingOptions.MODE_STEREO);
-		channelViewer.add(LameEncodingOptions.MODE_JOIN_STEREO);
-		channelViewer.add(LameEncodingOptions.MODE_DUAL_CHANNEL);
-		channelViewer.add(LameEncodingOptions.MODE_MONO);
+		this.channelViewer.setLabelProvider(this.channelLabelProvider);
+		this.channelViewer.addSelectionChangedListener(this.selectionChangeListener);
+		this.channelViewer.add(LameEncodingOptions.MODE_AUTO);
+		this.channelViewer.add(LameEncodingOptions.MODE_STEREO);
+		this.channelViewer.add(LameEncodingOptions.MODE_JOIN_STEREO);
+		this.channelViewer.add(LameEncodingOptions.MODE_DUAL_CHANNEL);
+		this.channelViewer.add(LameEncodingOptions.MODE_MONO);
 
 		// Fast encoding
 		String fastEncodingText = Localization
 				.getString(Localization.OPTIONS_LAME_FAST);
-		fastEncodingButton = new Button(this, SWT.CHECK);
-		fastEncodingButton.setText(fastEncodingText);
-		fastEncodingButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+		this.fastEncodingButton = new Button(this, SWT.CHECK);
+		this.fastEncodingButton.setText(fastEncodingText);
+		this.fastEncodingButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				false, false, 2, 1));
 		// Force update
 		profileAsChanged();
 
 		// Add listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				profileContextListener);
+				this.profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						profileContextListener);
+						LameOptionsComposite.this.profileContextListener);
 			}
 		});
 
@@ -534,7 +534,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
 		// Get the Lame encoding options
 		Profile selectedProfile = getViewSite().getProfileContext()
@@ -550,15 +550,15 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 		LameEncodingOptions lameOptions = (LameEncodingOptions) audioOptions;
 
 		// Change bitrate editor
-		if (lameOptions.getBitrate() != bitrateEditor.getSelection()) {
-			bitrateEditor.setSelection(lameOptions.getBitrate());
+		if (lameOptions.getBitrate() != this.bitrateEditor.getSelection()) {
+			this.bitrateEditor.setSelection(lameOptions.getBitrate());
 		}
 
 		// Type viewer
 		Integer typeSelected = getTypeSelection();
 		if (typeSelected == null
 				|| typeSelected != lameOptions.getEncodingType()) {
-			typeViewer.setSelection(new StructuredSelection(lameOptions
+			this.typeViewer.setSelection(new StructuredSelection(lameOptions
 					.getEncodingType()));
 		}
 
@@ -566,7 +566,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 		Integer channelSelected = getChannelSelection();
 		if (channelSelected == null
 				|| channelSelected != lameOptions.getChannelMode()) {
-			channelViewer.setSelection(new StructuredSelection(lameOptions
+			this.channelViewer.setSelection(new StructuredSelection(lameOptions
 					.getChannelMode()));
 		}
 
@@ -574,7 +574,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 		Integer variableMethodSelected = getVariableMethodSelection();
 		if (variableMethodSelected == null
 				|| variableMethodSelected != lameOptions.getVariableMethod()) {
-			variableMethodViewer.setSelection(new StructuredSelection(
+			this.variableMethodViewer.setSelection(new StructuredSelection(
 					lameOptions.getVariableMethod()));
 		}
 
@@ -582,7 +582,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 		Integer sampleRateSelected = getSampleRateSelection();
 		if (sampleRateSelected == null
 				|| sampleRateSelected != lameOptions.getOutputSampleRate()) {
-			sampleRateViewer.setSelection(new StructuredSelection(lameOptions
+			this.sampleRateViewer.setSelection(new StructuredSelection(lameOptions
 					.getOutputSampleRate()));
 		}
 
@@ -592,45 +592,45 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 				|| newType == LameEncodingOptions.TYPE_CONSTANT_BITRATE;
 		boolean variableType = newType == LameEncodingOptions.TYPE_VARIABLE_BITRATE;
 
-		bitrateLabel.setVisible(bitrateType);
-		bitrateEditor.setVisible(bitrateType);
+		this.bitrateLabel.setVisible(bitrateType);
+		this.bitrateEditor.setVisible(bitrateType);
 		if (bitrateType) {
-			bitrateLabel.setLayoutData(changeHeightLayout(bitrateLabel
+			this.bitrateLabel.setLayoutData(changeHeightLayout(this.bitrateLabel
 					.getLayoutData(), SWT.DEFAULT));
-			bitrateEditor.setLayoutData(changeHeightLayout(bitrateEditor
+			this.bitrateEditor.setLayoutData(changeHeightLayout(this.bitrateEditor
 					.getLayoutData(), SWT.DEFAULT));
 		} else {
-			bitrateLabel.setLayoutData(changeHeightLayout(bitrateLabel
+			this.bitrateLabel.setLayoutData(changeHeightLayout(this.bitrateLabel
 					.getLayoutData(), 0));
-			bitrateEditor.setLayoutData(changeHeightLayout(bitrateEditor
+			this.bitrateEditor.setLayoutData(changeHeightLayout(this.bitrateEditor
 					.getLayoutData(), 0));
 		}
 
-		qualityLabel.setVisible(variableType);
-		qualityEditor.setVisible(variableType);
+		this.qualityLabel.setVisible(variableType);
+		this.qualityEditor.setVisible(variableType);
 		if (variableType) {
-			qualityLabel.setLayoutData(changeHeightLayout(qualityLabel
+			this.qualityLabel.setLayoutData(changeHeightLayout(this.qualityLabel
 					.getLayoutData(), SWT.DEFAULT));
-			qualityEditor.setLayoutData(changeHeightLayout(qualityEditor
+			this.qualityEditor.setLayoutData(changeHeightLayout(this.qualityEditor
 					.getLayoutData(), SWT.DEFAULT));
 		} else {
-			qualityLabel.setLayoutData(changeHeightLayout(qualityLabel
+			this.qualityLabel.setLayoutData(changeHeightLayout(this.qualityLabel
 					.getLayoutData(), 0));
-			qualityEditor.setLayoutData(changeHeightLayout(qualityEditor
+			this.qualityEditor.setLayoutData(changeHeightLayout(this.qualityEditor
 					.getLayoutData(), 0));
 		}
 
-		fastEncodingButton.setVisible(variableType);
-		variableMethodLabel.setVisible(variableType);
-		variableMethodViewer.getCombo().setVisible(variableType);
+		this.fastEncodingButton.setVisible(variableType);
+		this.variableMethodLabel.setVisible(variableType);
+		this.variableMethodViewer.getCombo().setVisible(variableType);
 
-		bitrateLabel.getParent().layout();
+		this.bitrateLabel.getParent().layout();
 	}
 
 	/**
 	 * Notify this class that user change the sample rate.
 	 */
-	private void sampleRateAsChanged() {
+	void sampleRateAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -659,7 +659,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this class that user change the type.
 	 */
-	private void typeSelectionAsChanged() {
+	void typeSelectionAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
@@ -689,7 +689,7 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	/**
 	 * Notify this class that user change the variable method
 	 */
-	private void variableMethodAsChanged() {
+	void variableMethodAsChanged() {
 		Profile profile = getViewSite().getProfileContext()
 				.getSelectedProfile();
 		if (profile instanceof HardCodedProfile) {
