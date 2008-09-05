@@ -76,7 +76,7 @@ public class MP4EncodingJob implements EncodingJob {
 			throw new NullPointerException();
 		}
 		if (!(new File(mp4box)).exists()) {
-			throw new FileNotFoundException(mp4box + " not found");
+			throw new FileNotFoundException(mp4box + " not found"); //$NON-NLS-1$
 		}
 
 		this.encodingJob = encodingJob;
@@ -90,15 +90,15 @@ public class MP4EncodingJob implements EncodingJob {
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingJob#addProgressObserver(net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingProgressObserver)
 	 */
 	public void addProgressObserver(EncodingProgressObserver observer) {
-		encodingJob.addProgressObserver(observer);
+		this.encodingJob.addProgressObserver(observer);
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingJob#cancel()
 	 */
 	public void cancel() {
-		canceled = true;
-		encodingJob.cancel();
+		this.canceled = true;
+		this.encodingJob.cancel();
 	}
 
 	/**
@@ -112,8 +112,8 @@ public class MP4EncodingJob implements EncodingJob {
 	 */
 	private File extractAudio(File inputFile) throws MPlayerException {
 
-		if (info.getAudioStreams().size() <= 0) {
-			throw new MPlayerException("Invalid input file " + inputFile);
+		if (this.info.getAudioStreams().size() <= 0) {
+			throw new MPlayerException("Invalid input file " + inputFile); //$NON-NLS-1$
 		}
 
 		/*
@@ -126,8 +126,8 @@ public class MP4EncodingJob implements EncodingJob {
 		try {
 
 			String[] args = new String[3];
-			args[0] = "-aviraw";
-			args[1] = "audio";
+			args[0] = "-aviraw"; //$NON-NLS-1$
+			args[1] = "audio"; //$NON-NLS-1$
 			args[2] = inputFile.getCanonicalPath();
 			Process proc = mp4box(args);
 
@@ -141,9 +141,9 @@ public class MP4EncodingJob implements EncodingJob {
 			exitCode = proc.waitFor();
 
 		} catch (IOException ioe) {
-			throw new MPlayerException("Can't run MP4Box process", ioe);
+			throw new MPlayerException("Can't run MP4Box process", ioe); //$NON-NLS-1$
 		} catch (InterruptedException ie) {
-			throw new MPlayerException("MP4Box process are interrupted", ie);
+			throw new MPlayerException("MP4Box process are interrupted", ie); //$NON-NLS-1$
 		}
 
 		if (exitCode > 0) {
@@ -156,14 +156,14 @@ public class MP4EncodingJob implements EncodingJob {
 		 */
 		File file = getAudioFile(inputFile);
 		if (!file.exists()) {
-			throw new MPlayerException("Audio file " + file.getAbsolutePath()
-					+ " not found");
+			throw new MPlayerException("Audio file " + file.getAbsolutePath() //$NON-NLS-1$
+					+ " not found"); //$NON-NLS-1$
 		}
 
 		/*
 		 * Rename files as appropriate
 		 */
-		AudioFormat audioFormat = info.getAudioStreams().get(0)
+		AudioFormat audioFormat = this.info.getAudioStreams().get(0)
 				.getAudioFormat();
 		String[] fileExtentions = audioFormat.getFileExtentions();
 		if (fileExtentions.length > 0) {
@@ -194,8 +194,8 @@ public class MP4EncodingJob implements EncodingJob {
 		try {
 
 			String[] args = new String[3];
-			args[0] = "-aviraw";
-			args[1] = "video";
+			args[0] = "-aviraw"; //$NON-NLS-1$
+			args[1] = "video"; //$NON-NLS-1$
 			args[2] = inputFile.getCanonicalPath();
 
 			Process proc = mp4box(args);
@@ -210,9 +210,9 @@ public class MP4EncodingJob implements EncodingJob {
 			exitCode = proc.waitFor();
 
 		} catch (IOException ioe) {
-			throw new MPlayerException("Can't run MP4Box process", ioe);
+			throw new MPlayerException("Can't run MP4Box process", ioe); //$NON-NLS-1$
 		} catch (InterruptedException ie) {
-			throw new MPlayerException("MP4Box process are interrupted", ie);
+			throw new MPlayerException("MP4Box process are interrupted", ie); //$NON-NLS-1$
 		}
 
 		if (exitCode > 0) {
@@ -225,8 +225,8 @@ public class MP4EncodingJob implements EncodingJob {
 		 */
 		File file = getVideoFile(inputFile);
 		if (!file.exists()) {
-			throw new MPlayerException("Video file " + file.getAbsolutePath()
-					+ " not found");
+			throw new MPlayerException("Video file " + file.getAbsolutePath() //$NON-NLS-1$
+					+ " not found"); //$NON-NLS-1$
 		}
 
 		return file;
@@ -244,11 +244,11 @@ public class MP4EncodingJob implements EncodingJob {
 	private File getAudioFile(File inputFile) {
 
 		String path = inputFile.getAbsolutePath();
-		if (path.lastIndexOf(".") > 0) {
-			path = path.substring(0, path.lastIndexOf("."));
+		if (path.lastIndexOf(".") > 0) { //$NON-NLS-1$
+			path = path.substring(0, path.lastIndexOf(".")); //$NON-NLS-1$
 		}
 
-		path += "_audio.raw";
+		path += "_audio.raw"; //$NON-NLS-1$
 
 		return new File(path);
 	}
@@ -257,28 +257,28 @@ public class MP4EncodingJob implements EncodingJob {
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingJob#getFrameRate()
 	 */
 	public double getFrameRate() {
-		return encodingJob.getFrameRate();
+		return this.encodingJob.getFrameRate();
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingJob#getLength()
 	 */
 	public int getLength() {
-		return encodingJob.getLength();
+		return this.encodingJob.getLength();
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingJob#getPercentCompleted()
 	 */
 	public int getPercentCompleted() {
-		return encodingJob.getPercentCompleted();
+		return this.encodingJob.getPercentCompleted();
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingJob#getTimeRemaining()
 	 */
 	public int getTimeRemaining() {
-		return encodingJob.getTimeRemaining();
+		return this.encodingJob.getTimeRemaining();
 	}
 
 	/**
@@ -291,19 +291,19 @@ public class MP4EncodingJob implements EncodingJob {
 	private File getVideoFile(File inputFile) {
 
 		String path = inputFile.getAbsolutePath();
-		if (path.lastIndexOf(".") > 0) {
-			path = path.substring(0, path.lastIndexOf("."));
+		if (path.lastIndexOf(".") > 0) { //$NON-NLS-1$
+			path = path.substring(0, path.lastIndexOf(".")); //$NON-NLS-1$
 		}
 
-		VideoFormat format = info.getVideoFormat();
+		VideoFormat format = this.info.getVideoFormat();
 
 		if (format.equals(VideoFormat.FORMAT_H264)
 				|| format.equals(VideoFormat.FORMAT_H264_AVC)) {
-			path += "_video.h264";
+			path += "_video.h264"; //$NON-NLS-1$
 		} else if (format.equals(VideoFormat.FORMAT_MPEG_XVID)) {
-			path += "_video.cmp";
+			path += "_video.cmp"; //$NON-NLS-1$
 		} else {
-			path += "_video.raw";
+			path += "_video.raw"; //$NON-NLS-1$
 		}
 
 		return new File(path);
@@ -331,12 +331,12 @@ public class MP4EncodingJob implements EncodingJob {
 		int exitCode = 1;
 		try {
 			String[] args = new String[5];
-			args[0] = outputFile.getCanonicalPath();
-			args[1] = "-add";
+			args[0] = this.outputFile.getCanonicalPath();
+			args[1] = "-add"; //$NON-NLS-1$
 			args[2] = audioFile.getCanonicalPath();
-			args[3] = "-add";
-			args[4] = videoFile.getCanonicalPath() + ":fps="
-			+ info.getFrameRate();
+			args[3] = "-add"; //$NON-NLS-1$
+			args[4] = videoFile.getCanonicalPath() + ":fps=" //$NON-NLS-1$
+			+ this.info.getFrameRate();
 
 			Process proc = mp4box(args);
 
@@ -350,9 +350,9 @@ public class MP4EncodingJob implements EncodingJob {
 			exitCode = proc.waitFor();
 
 		} catch (IOException ioe) {
-			throw new MPlayerException("Can't run MP4Box process", ioe);
+			throw new MPlayerException("Can't run MP4Box process", ioe); //$NON-NLS-1$
 		} catch (InterruptedException ie) {
-			throw new MPlayerException("MP4Box process are interrupted", ie);
+			throw new MPlayerException("MP4Box process are interrupted", ie); //$NON-NLS-1$
 		}
 
 		if (exitCode > 0) {
@@ -373,15 +373,15 @@ public class MP4EncodingJob implements EncodingJob {
 	 */
 	private Process mp4box(final String[] arguments) throws IOException {
 		String[] cmds = new String[arguments.length + 1];
-		cmds[0] = mp4box;
+		cmds[0] = this.mp4box;
 		System.arraycopy(arguments, 0, cmds, 1, arguments.length);
 
-		String commandStr = mp4box + " ";
+		String commandStr = this.mp4box + " "; //$NON-NLS-1$
 		for (int i = 0; i < arguments.length; i++) {
-			commandStr += arguments[i] + " ";
+			commandStr += arguments[i] + " "; //$NON-NLS-1$
 		}
 
-		System.out.println("mp4muxer>> " + commandStr);
+		System.out.println("mp4muxer>> " + commandStr); //$NON-NLS-1$
 
 		return Runtime.getRuntime().exec(cmds);
 	}
@@ -390,7 +390,7 @@ public class MP4EncodingJob implements EncodingJob {
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingJob#removeProgressObserver(net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingProgressObserver)
 	 */
 	public void removeProgressObserver(EncodingProgressObserver observer) {
-		encodingJob.removeProgressObserver(observer);
+		this.encodingJob.removeProgressObserver(observer);
 	}
 
 	/**
@@ -399,31 +399,31 @@ public class MP4EncodingJob implements EncodingJob {
 	public void start() throws MPlayerException {
 
 		// Do the encoding job with mencoder
-		encodingJob.start();
-		if (canceled)
+		this.encodingJob.start();
+		if (this.canceled)
 			return;
 
 		// Check if mencoder produce the video
-		if (!outputFile.exists()) {
-			throw new MPlayerException("Output file "
-					+ outputFile.getAbsolutePath() + " not found");
+		if (!this.outputFile.exists()) {
+			throw new MPlayerException("Output file " //$NON-NLS-1$
+					+ this.outputFile.getAbsolutePath() + " not found"); //$NON-NLS-1$
 		}
 
 		// Rename the video
-		File tempAviFile = new File(outputFile.getParentFile(), outputFile
+		File tempAviFile = new File(this.outputFile.getParentFile(), this.outputFile
 				.getName()
-				+ "_" + System.currentTimeMillis() + "temp.avi");
-		if (!outputFile.renameTo(tempAviFile)) {
-			throw new MPlayerException("Can't rename " + outputFile.getName()
-					+ " to " + tempAviFile.getName());
+				+ "_" + System.currentTimeMillis() + "temp.avi"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!this.outputFile.renameTo(tempAviFile)) {
+			throw new MPlayerException("Can't rename " + this.outputFile.getName() //$NON-NLS-1$
+					+ " to " + tempAviFile.getName()); //$NON-NLS-1$
 		}
 
 		// Retreive information on input video
 		try {
-			info = mplayer.getVideoInfo(new InputVideoFile(tempAviFile));
+			this.info = this.mplayer.getVideoInfo(new InputVideoFile(tempAviFile));
 		} catch (FileNotFoundException e) {
-			throw new MPlayerException("Temp file "
-					+ tempAviFile.getAbsolutePath() + " not found");
+			throw new MPlayerException("Temp file " //$NON-NLS-1$
+					+ tempAviFile.getAbsolutePath() + " not found"); //$NON-NLS-1$
 		}
 
 		// Extract video and audio

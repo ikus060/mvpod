@@ -27,7 +27,7 @@ public class VideoDimension {
 	 */
 	public VideoDimension(int width, int height) {
 		if(width < 0 || height < 0)
-			 throw new IllegalArgumentException("Invalid dimension " + width + " x " + height);
+			 throw new IllegalArgumentException("Invalid dimension " + width + " x " + height); //$NON-NLS-1$ //$NON-NLS-2$
 		this.width = width;
 		this.height = height;
 	}
@@ -37,7 +37,7 @@ public class VideoDimension {
 	 */
 	public boolean equals(Object obj) {
 		if(obj instanceof VideoDimension) {
-			return ((VideoDimension)obj).width == width && ((VideoDimension)obj).height == height;
+			return ((VideoDimension)obj).width == this.width && ((VideoDimension)obj).height == this.height;
 		}
 		return false;
 	}
@@ -48,7 +48,7 @@ public class VideoDimension {
 	 * @return the height.
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -57,20 +57,20 @@ public class VideoDimension {
 	 * @return the width.
 	 */
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return width + height;
+		return this.width + this.height;
 	}
 	
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return width + "x" + height;
+		return this.width + "x" + this.height; //$NON-NLS-1$
 	}
 }

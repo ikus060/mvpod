@@ -14,7 +14,9 @@ public final class ApplicationFinder {
 	 * Private constructor.
 	 */
 	private ApplicationFinder() {
-
+		/*
+		 * Private constructore use to prevent creation of utility class.
+		 */
 	}
 
 	/**
@@ -34,30 +36,32 @@ public final class ApplicationFinder {
 	 * 
 	 * @param app
 	 *            the application file name.
-	 * @param paths
+	 * @param pathsList
 	 *            list of path to look.
 	 * @return the directory that contain the application or null if the
 	 *         application are not found.
 	 */
-	public static File getApplicationPath(String app, File[] paths) {
+	public static File getApplicationPath(String app, File[] pathsList) {
 
-		if (System.getProperty("os.name").indexOf("Windows") >= 0) {
+		File[] paths = pathsList;
+		if (System.getProperty("os.name").indexOf("Windows") >= 0) { //$NON-NLS-1$ //$NON-NLS-2$
 			// TODO : Cross Platform : Must find mplayer path
 			// File directory = new File(path);
 			// paths.add(directory);
-		} else {
 			
-			File[] newPaths = new File[paths.length+2];
+		} else {
+
+			File[] newPaths = new File[paths.length + 2];
 			System.arraycopy(paths, 0, newPaths, 0, paths.length);
-			newPaths[paths.length] = new File("/usr/bin");
-			newPaths[paths.length+1] = new File("/usr/local/bin");
+			newPaths[paths.length] = new File("/usr/bin"); //$NON-NLS-1$
+			newPaths[paths.length + 1] = new File("/usr/local/bin"); //$NON-NLS-1$
 			paths = newPaths;
 		}
 
 		File currentDirectory = null;
 		int index = 0;
 		boolean found = false;
-		while (index<paths.length && !found) {
+		while (index < paths.length && !found) {
 			currentDirectory = paths[index];
 			String[] files = currentDirectory.list();
 
@@ -66,7 +70,7 @@ public final class ApplicationFinder {
 					found = true;
 				}
 			}
-			
+
 			index++;
 		}
 

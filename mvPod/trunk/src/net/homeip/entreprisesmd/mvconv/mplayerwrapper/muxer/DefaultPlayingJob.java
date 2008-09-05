@@ -49,12 +49,13 @@ public class DefaultPlayingJob implements PlayingJob {
 	 * 
 	 * @param mplayer
 	 *            the mplayer instance that might be use to execute the job
-	 * @param command
+	 * @param encodingCommand
 	 *            the command to execute
 	 */
-	public DefaultPlayingJob(MPlayerWrapper mplayer, EncodingCommand command) {
+	public DefaultPlayingJob(MPlayerWrapper mplayer,
+			EncodingCommand encodingCommand) {
 		this.mplayer = mplayer;
-		this.command = command;
+		this.command = encodingCommand;
 	}
 
 	/**
@@ -62,20 +63,20 @@ public class DefaultPlayingJob implements PlayingJob {
 	 */
 	public void cancel() {
 		// Terminate process
-		if (proc != null) {
+		if (this.proc != null) {
 
-			canceled = true;
+			this.canceled = true;
 
-			if (inputStream != null) {
-				inputStream.stop();
-				inputStream = null;
+			if (this.inputStream != null) {
+				this.inputStream.stop();
+				this.inputStream = null;
 			}
-			if (errorStream != null) {
-				errorStream.stop();
-				errorStream = null;
+			if (this.errorStream != null) {
+				this.errorStream.stop();
+				this.errorStream = null;
 			}
 
-			proc.destroy();
+			this.proc.destroy();
 		}
 	}
 
@@ -83,18 +84,18 @@ public class DefaultPlayingJob implements PlayingJob {
 	 * Execute the given command in a progress and handle any error that can
 	 * occur whiting this process.
 	 * 
-	 * @param command
+	 * @param encodingCommand
 	 *            the command to execute
 	 * @throws MPlayerException
 	 *             when any error occur
 	 */
-	private void executeCommand(EncodingCommand command)
+	private void executeCommand(EncodingCommand encodingCommand)
 			throws MPlayerException {
 
 		try {
-			proc = mplayer.mplayer(command.toStringArray());
+			this.proc = this.mplayer.mplayer(encodingCommand.toStringArray());
 		} catch (IOException ioe) {
-			throw new MPlayerException("Can't run mencoder process", ioe);
+			throw new MPlayerException("Can't run mencoder process", ioe); //$NON-NLS-1$
 		}
 
 		ErrorParser errorParser = new ErrorParser() {
@@ -104,27 +105,27 @@ public class DefaultPlayingJob implements PlayingJob {
 				return false;
 			}
 		};
-		inputStream = new StreamReader(proc.getInputStream(), errorParser,
+		this.inputStream = new StreamReader(this.proc.getInputStream(), errorParser,
 				false);
-		errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
-		inputStream.readInThread();
-		errorStream.readInThread();
+		this.errorStream = new StreamReader(this.proc.getErrorStream(), errorParser, true);
+		this.inputStream.readInThread();
+		this.errorStream.readInThread();
 
 		int exitCode = 1;
 		try {
-			exitCode = proc.waitFor();
+			exitCode = this.proc.waitFor();
 		} catch (InterruptedException ie) {
-			inputStream = null;
-			errorStream = null;
-			throw new MPlayerException("mencoder process are interrupted", ie);
+			this.inputStream = null;
+			this.errorStream = null;
+			throw new MPlayerException("mencoder process are interrupted", ie); //$NON-NLS-1$
 		}
 
 		errorParser.throwException();
 
-		if (!canceled) {
-			String error = errorStream.toString();
-			inputStream = null;
-			errorStream = null;
+		if (!this.canceled) {
+			String error = this.errorStream.toString();
+			this.inputStream = null;
+			this.errorStream = null;
 
 			// Check if there any revealant error
 			errorParser.throwException();
@@ -145,7 +146,7 @@ public class DefaultPlayingJob implements PlayingJob {
 	 *             if any error occur
 	 */
 	public void start() throws MPlayerException {
-		executeCommand(command);
+		executeCommand(this.command);
 	}
 
 }

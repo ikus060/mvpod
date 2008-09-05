@@ -27,7 +27,7 @@ public abstract class AudioOptionsInterface extends Composite {
 	/**
 	 * View site.
 	 */
-	private IViewSite site;
+	private IViewSite viewSite;
 
 	/**
 	 * Return the view site.
@@ -35,7 +35,7 @@ public abstract class AudioOptionsInterface extends Composite {
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return site;
+		return this.viewSite;
 	}
 
 	/**
@@ -46,7 +46,7 @@ public abstract class AudioOptionsInterface extends Composite {
 	 */
 	public void init(IViewSite site) {
 
-		this.site = site;
+		this.viewSite = site;
 
 	}
 

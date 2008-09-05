@@ -22,13 +22,6 @@ public class VideoList {
 	private List<VideoListObserver> observerList = new LinkedList<VideoListObserver>();
 
 	/**
-	 * Create a new empty Video List.
-	 */
-	public VideoList() {
-
-	}
-
-	/**
 	 * Add a new InputVideo to the list.
 	 * 
 	 * @param video

@@ -94,7 +94,7 @@ public class EncodingCommand {
 
 		// Add ouput video information
 		if (outputVideo != null) {
-			this.arguments.add("-o");
+			this.arguments.add("-o"); //$NON-NLS-1$
 			try {
 				this.arguments.add(outputVideo.getCanonicalPath());
 			} catch (IOException e) {
@@ -120,7 +120,7 @@ public class EncodingCommand {
 	public void add(String[] args) {
 
 		for (int argIndex = 0; argIndex < args.length; argIndex++) {
-			arguments.add(args[argIndex]);
+			this.arguments.add(args[argIndex]);
 		}
 
 	}
@@ -129,10 +129,10 @@ public class EncodingCommand {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		String string = "";
+		String string = ""; //$NON-NLS-1$
 
-		for (int i = 0; i < arguments.size(); i++) {
-			string += (String) arguments.get(i) + " ";
+		for (int i = 0; i < this.arguments.size(); i++) {
+			string += this.arguments.get(i) + " "; //$NON-NLS-1$
 		}
 
 		return string;
@@ -144,7 +144,7 @@ public class EncodingCommand {
 	 * @return an array with argument
 	 */
 	public String[] toStringArray() {
-		return (String[]) arguments.toArray(new String[] {});
+		return this.arguments.toArray(new String[] {});
 	}
 
 }

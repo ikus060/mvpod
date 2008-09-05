@@ -284,7 +284,7 @@ public class InputVideoDVDComposite extends AbstractInputVideoComposite {
 		if (audioSelection != null) {
 			description = VideoInfoFormater.formatAudioStream(audioSelection);
 		} else {
-			description = "";
+			description = ""; //$NON-NLS-1$
 		}
 		audioDescription.setText(description);
 	}

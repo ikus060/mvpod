@@ -25,22 +25,22 @@ public class MP4BoxMuxer implements Muxer {
 	/**
 	 * MP4Box component name.
 	 */
-	private static final String MP4BOX_COMPONENT_NAME = "MP4Box";
+	private static final String MP4BOX_COMPONENT_NAME = "MP4Box"; //$NON-NLS-1$
 
 	/**
 	 * MP4Box file name for windows.
 	 */
-	private static final String MP4BOX_BIN_WINDOWS = "MP4Box.exe";
+	private static final String MP4BOX_BIN_WINDOWS = "MP4Box.exe"; //$NON-NLS-1$
 	/**
 	 * MP4Box file name for other OS.
 	 */
-	private static final String MP4BOX_BIN_OTHER = "MP4Box";
+	private static final String MP4BOX_BIN_OTHER = "MP4Box"; //$NON-NLS-1$
 
 	/**
 	 * Define the MP$Box application file name.
 	 */
-	public static final String MP4BOX_BIN = System.getProperty("os.name")
-			.indexOf("Windows") >= 0 ? MP4BOX_BIN_WINDOWS : MP4BOX_BIN_OTHER;
+	public static final String MP4BOX_BIN = System.getProperty("os.name") //$NON-NLS-1$
+			.indexOf("Windows") >= 0 ? MP4BOX_BIN_WINDOWS : MP4BOX_BIN_OTHER; //$NON-NLS-1$
 	/**
 	 * List of path to search MP4Box.
 	 */
@@ -75,7 +75,7 @@ public class MP4BoxMuxer implements Muxer {
 	private String findMP4Box() throws ComponentMissingException {
 
 		File mp4boxFile = ApplicationFinder.getApplicationPath(MP4BOX_BIN,
-				paths);
+				this.paths);
 		if (mp4boxFile == null) {
 			throw new ComponentMissingException(MP4BOX_COMPONENT_NAME);
 		}

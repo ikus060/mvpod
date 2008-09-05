@@ -17,18 +17,18 @@ public class MPlayerWrapper {
 	/**
 	 * Key value for user home directory.
 	 */
-	public static final String USER_HOME = "user.home";
+	public static final String USER_HOME = "user.home"; //$NON-NLS-1$
 
 	/**
 	 * mencoder filename.
 	 */
-	public static final String MENCODER_BIN = System.getProperty("os.name")
-			.indexOf("Windows") >= 0 ? "mencoder.exe" : "mencoder";
+	public static final String MENCODER_BIN = System.getProperty("os.name") //$NON-NLS-1$
+			.indexOf("Windows") >= 0 ? "mencoder.exe" : "mencoder"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	/**
 	 * mplayer filename.
 	 */
-	public static final String MPLAYER_BIN = System.getProperty("os.name")
-			.indexOf("Windows") >= 0 ? "mplayer.exe" : "mplayer";
+	public static final String MPLAYER_BIN = System.getProperty("os.name") //$NON-NLS-1$
+			.indexOf("Windows") >= 0 ? "mplayer.exe" : "mplayer"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	/**
 	 * Fullpath to mendoder.
@@ -71,11 +71,11 @@ public class MPlayerWrapper {
 		}
 
 		try {
-			mplayerPath = mplayerFile.getCanonicalPath();
-			mencoderPath = mencoderFile.getCanonicalPath();
+			this.mplayerPath = mplayerFile.getCanonicalPath();
+			this.mencoderPath = mencoderFile.getCanonicalPath();
 		} catch (IOException e) {
-			mplayerPath = mplayerFile.getAbsolutePath();
-			mencoderPath = mencoderFile.getAbsolutePath();
+			this.mplayerPath = mplayerFile.getAbsolutePath();
+			this.mencoderPath = mencoderFile.getAbsolutePath();
 		}
 
 	}
@@ -108,7 +108,7 @@ public class MPlayerWrapper {
 	public Configuration getUserConfiguration() {
 
 		String home = System.getProperty(USER_HOME);
-		File configFile = new File(home, ".mplayer/config");
+		File configFile = new File(home, ".mplayer/config"); //$NON-NLS-1$
 
 		return new Configuration(configFile, this);
 
@@ -120,7 +120,7 @@ public class MPlayerWrapper {
 	 * @return mencoder filepath.
 	 */
 	protected String getMencoder() {
-		return mencoderPath + File.separator + MENCODER_BIN;
+		return this.mencoderPath + File.separator + MENCODER_BIN;
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class MPlayerWrapper {
 	 * @return mplayer filepath.
 	 */
 	protected String getMplayer() {
-		return mplayerPath + File.separator + MPLAYER_BIN;
+		return this.mplayerPath + File.separator + MPLAYER_BIN;
 	}
 
 	/**
@@ -144,8 +144,8 @@ public class MPlayerWrapper {
 	public VideoInfo getVideoInfo(InputVideo inputVideo)
 			throws MPlayerException {
 
-		String[] options = new String[] { "-v", "-msglevel", "identify=9",
-				"-vo", "null", "-ao", "null", "-frames", "0" };
+		String[] options = new String[] { "-v", "-msglevel", "identify=9", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"-vo", "null", "-ao", "null", "-frames", "0" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 		String[] inputVideoArgs = inputVideo.toCommandList();
 
@@ -162,7 +162,7 @@ public class MPlayerWrapper {
 		try {
 			newProcess = mplayer(command);
 		} catch (IOException e) {
-			throw new MPlayerException("Can't run mplayer process", e);
+			throw new MPlayerException("Can't run mplayer process", e); //$NON-NLS-1$
 		}
 
 		final Process proc = newProcess;
@@ -186,7 +186,7 @@ public class MPlayerWrapper {
 		try {
 			proc.waitFor();
 		} catch (InterruptedException e) {
-			throw new MPlayerException("Error running process", e);
+			throw new MPlayerException("Error running process", e); //$NON-NLS-1$
 		}
 
 		// Check relevant error
@@ -214,12 +214,12 @@ public class MPlayerWrapper {
 		cmds[0] = getMencoder();
 		System.arraycopy(arguments, 0, cmds, 1, arguments.length);
 
-		String commandStr = getMencoder() + " ";
+		String commandStr = getMencoder() + " "; //$NON-NLS-1$
 		for (int i = 0; i < arguments.length; i++) {
-			commandStr += arguments[i] + " ";
+			commandStr += arguments[i] + " "; //$NON-NLS-1$
 		}
 
-		System.out.println("wrapper>> " + commandStr);
+		System.out.println("wrapper>> " + commandStr); //$NON-NLS-1$
 
 		return Runtime.getRuntime().exec(cmds);
 	}
@@ -238,12 +238,12 @@ public class MPlayerWrapper {
 		cmds[0] = getMplayer();
 		System.arraycopy(arguments, 0, cmds, 1, arguments.length);
 
-		String commandStr = getMplayer() + " ";
+		String commandStr = getMplayer() + " "; //$NON-NLS-1$
 		for (int i = 0; i < arguments.length; i++) {
-			commandStr += arguments[i] + " ";
+			commandStr += arguments[i] + " "; //$NON-NLS-1$
 		}
 
-		System.out.println("wrapper>> " + commandStr);
+		System.out.println("wrapper>> " + commandStr); //$NON-NLS-1$
 
 		return Runtime.getRuntime().exec(cmds);
 	}
@@ -281,11 +281,12 @@ public class MPlayerWrapper {
 	 * @throws MPlayerException
 	 *             if any error occur withing the job creation.
 	 */
+	@Deprecated
 	public EncodingJob split(InputVideo inputVideo, File outpuFile,
 			double start, double end) throws MPlayerException {
 
 		if (start < 0 && end < 0) {
-			throw new IllegalArgumentException("Invalid start/end lenght");
+			throw new IllegalArgumentException("Invalid start/end lenght"); //$NON-NLS-1$
 		}
 
 		VideoInfo info = this.getVideoInfo(inputVideo);
@@ -293,24 +294,24 @@ public class MPlayerWrapper {
 		double totalLenght = info.getLength();
 
 		if (start >= totalLenght) {
-			throw new IllegalArgumentException("Invalid start lenght");
+			throw new IllegalArgumentException("Invalid start lenght"); //$NON-NLS-1$
 		}
 		if (end >= totalLenght) {
-			throw new IllegalArgumentException("Invalid start lenght");
+			throw new IllegalArgumentException("Invalid start lenght"); //$NON-NLS-1$
 		}
 
 		String[] arguments;
 		if (start < 0 && end > 0) {
-			arguments = new String[] { "-ovc", "copy", "-oac", "copy",
-					"-endpos", Double.toString(end) };
+			arguments = new String[] { "-ovc", "copy", "-oac", "copy", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"-endpos", Double.toString(end) }; //$NON-NLS-1$
 		} else if (start >= 0 && end < 0) {
-			arguments = new String[] { "-ovc", "copy", "-oac", "copy", "-ss",
+			arguments = new String[] { "-ovc", "copy", "-oac", "copy", "-ss", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 					Double.toString(start) };
 		} else if (start >= 0 && end > 0) {
-			arguments = new String[] { "-ovc", "copy", "-oac", "copy", "-ss",
-					Double.toString(start), "-endpos", Double.toString(end) };
+			arguments = new String[] { "-ovc", "copy", "-oac", "copy", "-ss", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					Double.toString(start), "-endpos", Double.toString(end) }; //$NON-NLS-1$
 		} else {
-			throw new IllegalArgumentException("Invalid start/end lenght");
+			throw new IllegalArgumentException("Invalid start/end lenght"); //$NON-NLS-1$
 		}
 
 		EncodingCommand command = new EncodingCommand(inputVideo, outpuFile,

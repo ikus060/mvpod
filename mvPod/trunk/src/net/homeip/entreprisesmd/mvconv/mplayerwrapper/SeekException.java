@@ -18,7 +18,7 @@ public class SeekException extends MPlayerException {
 	 */
 	public SeekException() {
 		super(
-				"Could not find free Xvideo port - maybe another process is already using it.");
+				"Could not find free Xvideo port - maybe another process is already using it."); //$NON-NLS-1$
 	}
 
 }

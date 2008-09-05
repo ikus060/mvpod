@@ -20,7 +20,7 @@ public final class InputVideoCompositeFactory {
 	 * Private constructor.
 	 */
 	private InputVideoCompositeFactory() {
-
+		// Private constructor to prevent creation of utility class
 	}
 
 	/**

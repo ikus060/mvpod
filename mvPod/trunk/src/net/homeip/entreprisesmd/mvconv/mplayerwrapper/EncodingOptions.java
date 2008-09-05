@@ -68,7 +68,7 @@ public class EncodingOptions extends GenericOptions {
 	 * @return the audio options
 	 */
 	public AudioEncodingOptions getAudioOptions() {
-		return audioOptions;
+		return this.audioOptions;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class EncodingOptions extends GenericOptions {
 	 * @return the audio options
 	 */
 	public VideoEncodingOptions getVideoOptions() {
-		return videoOptions;
+		return this.videoOptions;
 	}
 
 	/**

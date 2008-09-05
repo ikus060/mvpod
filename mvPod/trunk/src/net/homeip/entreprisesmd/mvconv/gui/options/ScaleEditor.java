@@ -61,7 +61,7 @@ public class ScaleEditor extends Composite {
 	/**
 	 * Expression to format the display value.
 	 */
-	private String formatExpression = "%d";
+	private String formatExpression = "%d"; //$NON-NLS-1$
 
 	/**
 	 * Selection listener to dispatch event.
@@ -246,7 +246,7 @@ public class ScaleEditor extends Composite {
 	public void setIncrement(int value) {
 
 		if (value <= 0) {
-			throw new IllegalArgumentException("Invalid increment value "
+			throw new IllegalArgumentException("Invalid increment value " //$NON-NLS-1$
 					+ value);
 		}
 
@@ -266,7 +266,7 @@ public class ScaleEditor extends Composite {
 	public void setPageIncrement(int value) {
 
 		if (value <= 0) {
-			throw new IllegalArgumentException("Invalid page increment value "
+			throw new IllegalArgumentException("Invalid page increment value " //$NON-NLS-1$
 					+ value);
 		}
 
@@ -283,8 +283,8 @@ public class ScaleEditor extends Composite {
 	 */
 	public void setRange(int min, int max) {
 		if (max <= min) {
-			throw new IllegalArgumentException("Invalid min/max value, min "
-					+ min + ", max " + max);
+			throw new IllegalArgumentException("Invalid min/max value, min " //$NON-NLS-1$
+					+ min + ", max " + max); //$NON-NLS-1$
 		}
 
 		this.minimumValue = min;
@@ -306,7 +306,7 @@ public class ScaleEditor extends Composite {
 
 		if (value % incrementValue != 0) {
 			throw new IllegalArgumentException(
-					"Invalid selection value. Not a multiple of increment");
+					"Invalid selection value. Not a multiple of increment"); //$NON-NLS-1$
 		}
 
 		scale.setSelection(value);
@@ -316,7 +316,7 @@ public class ScaleEditor extends Composite {
 	/**
 	 * Update the display value
 	 */
-	private void updateLayoutValue() {
+	void updateLayoutValue() {
 
 		String formatedString = String.format(formatExpression, scale
 				.getMaximum());
@@ -331,7 +331,7 @@ public class ScaleEditor extends Composite {
 	/**
 	 * Update the increment setup.
 	 */
-	private void updateIncrementSetup() {
+	void updateIncrementSetup() {
 
 		scale.setMinimum(minimumValue);
 		scale.setMaximum(maximumValue);
@@ -350,7 +350,7 @@ public class ScaleEditor extends Composite {
 	/**
 	 * Update the display value
 	 */
-	private void updateValue() {
+	void updateValue() {
 
 		String formatedString = String.format(formatExpression, this
 				.getSelection());

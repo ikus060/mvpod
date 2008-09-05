@@ -67,27 +67,27 @@ public class DefaultEncodingJob implements EncodingJob {
 	/**
 	 * The last notification time.
 	 */
-	private long lastUpdateTime = 0;
+	long lastUpdateTime = 0;
 	/**
 	 * The total length of the video.
 	 */
-	private int length;
+	int length;
 	/**
 	 * The percent completed.
 	 */
-	private int percent;
+	int percent;
 	/**
 	 * Time remaining in second. (in sec)
 	 */
-	private int timeRemaining;
+	int timeRemaining;
 	/**
 	 * Maximum time remaining. (in sec)
 	 */
-	private int maximumTimeRemaining = 60;
+	int maximumTimeRemaining = 60;
 	/**
 	 * The frame rate treat.
 	 */
-	private double frameRate;
+	double frameRate;
 	/**
 	 * The standard input stream reader.
 	 */
@@ -112,43 +112,49 @@ public class DefaultEncodingJob implements EncodingJob {
 		public boolean parseLine(String line) {
 
 			Matcher matcher;
-			if (line.indexOf("Video stream:") > -1) {
-				matcher = Pattern.compile("[0-9.]* secs").matcher(line);
+			if (line.indexOf("Video stream:") > -1) { //$NON-NLS-1$
+				matcher = Pattern.compile("[0-9.]* secs").matcher(line); //$NON-NLS-1$
 				matcher.find();
-				length = (int) Double.parseDouble(matcher.group().substring(0,
+				DefaultEncodingJob.this.length = (int) Double.parseDouble(matcher.group().substring(0,
 						matcher.group().indexOf(' ')));
 			}
 
-			if (System.currentTimeMillis() - lastUpdateTime > UPDATE_DELAY) {
+			if (System.currentTimeMillis()
+					- DefaultEncodingJob.this.lastUpdateTime > UPDATE_DELAY) {
 				// Percent
-				matcher = Pattern.compile("([0-9]*)%").matcher(line);
+				matcher = Pattern.compile("([0-9]*)%").matcher(line); //$NON-NLS-1$
 				if (matcher.find()) {
-					percent = Integer.parseInt(matcher.group(1));
+					DefaultEncodingJob.this.percent = Integer.parseInt(matcher.group(1));
 				}
 
 				// Time remaining
-				matcher = Pattern.compile("([0-9]*)min").matcher(line);
-				if (matcher.find()) {				
-					timeRemaining = Integer.parseInt(matcher.group(1))
+				matcher = Pattern.compile("([0-9]*)min").matcher(line); //$NON-NLS-1$
+				if (matcher.find()) {
+					DefaultEncodingJob.this.timeRemaining = Integer.parseInt(matcher.group(1))
 							* MIN_TO_SEC_FACTOR;
-					maximumTimeRemaining = Math.max(maximumTimeRemaining, timeRemaining);
+					DefaultEncodingJob.this.maximumTimeRemaining = Math.max(
+							DefaultEncodingJob.this.maximumTimeRemaining,
+							DefaultEncodingJob.this.timeRemaining);
 				}
 
 				// Frame per seconde
-				matcher = Pattern.compile("([0-9.]*)fps").matcher(line);
+				matcher = Pattern.compile("([0-9.]*)fps").matcher(line); //$NON-NLS-1$
 				if (matcher.find()) {
-					try{
-						frameRate = Double.parseDouble(matcher.group(1));	
-					}catch(NumberFormatException e){
-						
+					try {
+						DefaultEncodingJob.this.frameRate = Double.parseDouble(matcher.group(1));
+					} catch (NumberFormatException e) {
+						/*
+						 * mplayer return alot of garbage so in case of error
+						 * don't fail.
+						 */
 					}
-					
+
 				}
 
 				// Notify observer
 				notifyObservers();
 
-				lastUpdateTime = System.currentTimeMillis();
+				DefaultEncodingJob.this.lastUpdateTime = System.currentTimeMillis();
 			}
 
 			return true;
@@ -165,11 +171,11 @@ public class DefaultEncodingJob implements EncodingJob {
 	 *            the command to execute.
 	 */
 	public DefaultEncodingJob(MPlayerWrapper mplayer, EncodingCommand command) {
-		
-		if(mplayer==null || command==null) {
+
+		if (mplayer == null || command == null) {
 			throw new NullPointerException();
 		}
-		
+
 		this.mplayer = mplayer;
 		this.command1 = command;
 		this.command2 = null;
@@ -187,10 +193,11 @@ public class DefaultEncodingJob implements EncodingJob {
 	 */
 	public DefaultEncodingJob(MPlayerWrapper mplayer, EncodingCommand command1,
 			EncodingCommand command2, File passFile) {
-		if(mplayer==null || command1==null || command2==null || passFile==null) {
+		if (mplayer == null || command1 == null || command2 == null
+				|| passFile == null) {
 			throw new NullPointerException();
 		}
-		
+
 		this.mplayer = mplayer;
 		this.command1 = command1;
 		this.command2 = command2;
@@ -204,7 +211,7 @@ public class DefaultEncodingJob implements EncodingJob {
 	 *            the observer to add.
 	 */
 	public void addProgressObserver(EncodingProgressObserver observer) {
-		observers.add(observer);
+		this.observers.add(observer);
 	}
 
 	/**
@@ -212,18 +219,18 @@ public class DefaultEncodingJob implements EncodingJob {
 	 */
 	public void cancel() {
 		// Terminate process
-		if (proc != null) {
+		if (this.proc != null) {
 
-			canceled = true;
-			
-			if (inputStream != null) {
-				inputStream.stop();
+			this.canceled = true;
+
+			if (this.inputStream != null) {
+				this.inputStream.stop();
 			}
-			if (errorStream != null) {
-				errorStream.stop();
+			if (this.errorStream != null) {
+				this.errorStream.stop();
 			}
 
-			proc.destroy();
+			this.proc.destroy();
 		}
 	}
 
@@ -240,41 +247,41 @@ public class DefaultEncodingJob implements EncodingJob {
 			throws MPlayerException {
 
 		try {
-			proc = mplayer.mencode(command.toStringArray());
+			this.proc = this.mplayer.mencode(command.toStringArray());
 		} catch (IOException ioe) {
-			throw new MPlayerException("Can't run mencoder process", ioe);
+			throw new MPlayerException("Can't run mencoder process", ioe); //$NON-NLS-1$
 		}
 
-		ErrorParser errorParser = new ErrorParser(){
+		ErrorParser errorParser = new ErrorParser() {
 			public boolean exceptionFound(MPlayerException exception) {
 				super.exceptionFound(exception);
 				cancel();
 				return false;
 			}
 		};
-		inputStream = new StreamReader(proc.getInputStream(), parser, false);
-		errorStream = new StreamReader(proc.getErrorStream(), errorParser, true);
-		inputStream.readInThread();
-		errorStream.readInThread();
+		this.inputStream = new StreamReader(this.proc.getInputStream(), this.parser, false);
+		this.errorStream = new StreamReader(this.proc.getErrorStream(), errorParser, true);
+		this.inputStream.readInThread();
+		this.errorStream.readInThread();
 
 		int exitCode = 1;
 		try {
-			exitCode = proc.waitFor();
+			exitCode = this.proc.waitFor();
 		} catch (InterruptedException ie) {
-			inputStream = null;
-			errorStream = null;
-			throw new MPlayerException("mencoder process are interrupted", ie);
+			this.inputStream = null;
+			this.errorStream = null;
+			throw new MPlayerException("mencoder process are interrupted", ie); //$NON-NLS-1$
 		}
 
-		String error = errorStream.toString();
-		inputStream = null;
-		errorStream = null;
+		String error = this.errorStream.toString();
+		this.inputStream = null;
+		this.errorStream = null;
 
 		// Check if there any revelant error
 		errorParser.throwException();
 
 		// Check the return value
-		if (exitCode > 0 && !canceled) {
+		if (exitCode > 0 && !this.canceled) {
 			throw new MPlayerException(error);
 		}
 
@@ -286,7 +293,7 @@ public class DefaultEncodingJob implements EncodingJob {
 	 * @return the frame rate.
 	 */
 	public double getFrameRate() {
-		return frameRate;
+		return this.frameRate;
 	}
 
 	/**
@@ -295,7 +302,7 @@ public class DefaultEncodingJob implements EncodingJob {
 	 * @return the length value.
 	 */
 	public int getLength() {
-		return length;
+		return this.length;
 	}
 
 	/**
@@ -304,20 +311,16 @@ public class DefaultEncodingJob implements EncodingJob {
 	 * @return the percent completed.
 	 */
 	public int getPercentCompleted() {
-		
-		// Handle the case when there is tow command to execute
-		if(command2!=null) {
-			
-			if(command1Completed) {
-				return percent/2 + 50;
-			} else {
-				return percent/2;
-			}
-			
-		} else {
-			return percent;
-		}
 
+		// Handle the case when there is tow command to execute
+		if (this.command2 != null) {
+
+			if (this.command1Completed) {
+				return this.percent / 2 + 50;
+			}
+			return this.percent / 2;
+		}
+		return this.percent;
 	}
 
 	/**
@@ -326,29 +329,26 @@ public class DefaultEncodingJob implements EncodingJob {
 	 * @return the average number of second remaining.
 	 */
 	public int getTimeRemaining() {
-		
+
 		// Handle the case when there is tow command to execute
-		if(command2!=null) {
-			
-			if(command1Completed) {
-				return timeRemaining;
-			} else {
-				return maximumTimeRemaining*2 - timeRemaining;
+		if (this.command2 != null) {
+
+			if (this.command1Completed) {
+				return this.timeRemaining;
 			}
-			
-		} else {
-			return timeRemaining;
+			return this.maximumTimeRemaining * 2 - this.timeRemaining;
 		}
-		
+		return this.timeRemaining;
+
 	}
 
 	/**
 	 * Use to notify observer that progress information are changed.
 	 */
-	private void notifyObservers() {
+	void notifyObservers() {
 
-		for (int i = 0; i < observers.size(); i++) {
-			observers.get(i).progressHasChanged(this);
+		for (int i = 0; i < this.observers.size(); i++) {
+			this.observers.get(i).progressHasChanged(this);
 		}
 
 	}
@@ -361,21 +361,21 @@ public class DefaultEncodingJob implements EncodingJob {
 	 *             is any error occur
 	 */
 	public void start() throws MPlayerException {
-		
-		executeCommand(command1);
-		if(canceled)
+
+		executeCommand(this.command1);
+		if (this.canceled)
 			return;
-		
+
 		// re-init process value
-		percent=0;
-		timeRemaining = maximumTimeRemaining;
-		command1Completed = true;
-		
-		if (command2 != null) {
-			executeCommand(command2);
-			
+		this.percent = 0;
+		this.timeRemaining = this.maximumTimeRemaining;
+		this.command1Completed = true;
+
+		if (this.command2 != null) {
+			executeCommand(this.command2);
+
 			// Remove pass file
-			passFile.delete();
+			this.passFile.delete();
 		}
 
 	}
@@ -387,7 +387,7 @@ public class DefaultEncodingJob implements EncodingJob {
 	 *            the observer to remove.
 	 */
 	public void removeProgressObserver(EncodingProgressObserver observer) {
-		observers.remove(observer);
+		this.observers.remove(observer);
 	}
 
 }

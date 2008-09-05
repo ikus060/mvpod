@@ -120,7 +120,7 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Notify this class that user select a new audio codec.
 	 */
-	private void codecSelectionChanged() {
+	void codecSelectionChanged() {
 
 		VideoOptionsMapper mapperSelected = getVideoOptionsMapperSelection();
 		VideoEncodingOptions videoOptions = mapperSelected.getEncodingOptions();
@@ -237,7 +237,7 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	private void profileAsChanged() {
+	void profileAsChanged() {
 
 		// Get audio options from curent profile context
 		Profile selectedProfile = site.getProfileContext().getSelectedProfile();

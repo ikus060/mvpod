@@ -16,13 +16,6 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoInfo;
 public class HarddupFilter implements VideoFilter {
 
 	/**
-	 * Create a new hardup filter.
-	 */
-	public HarddupFilter() {
-
-	}
-
-	/**
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.videofilter.VideoFilter#getPriority()
 	 */
 	public int getPriority() {
@@ -35,8 +28,8 @@ public class HarddupFilter implements VideoFilter {
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
 		String[] args = new String[2];
-		args[0] = "-vf-add";
-		args[1] = "harddup";
+		args[0] = "-vf-add"; //$NON-NLS-1$
+		args[1] = "harddup"; //$NON-NLS-1$
 		return args;
 
 	}

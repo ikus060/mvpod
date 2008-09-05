@@ -56,25 +56,25 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 
 		if (maxAudioBitrate < 0) {
 			throw new IllegalArgumentException(
-					"Invalid maximum audio bitrate value " + maxAudioBitrate);
+					"Invalid maximum audio bitrate value " + maxAudioBitrate); //$NON-NLS-1$
 		}
 		if (maxVideoBitrate < 0) {
 			throw new IllegalArgumentException(
-					"Invalid maximum video bitrate value " + maxVideoBitrate);
+					"Invalid maximum video bitrate value " + maxVideoBitrate); //$NON-NLS-1$
 		}
 		if (supportedVideoScalings == null) {
 			throw new NullPointerException();
 		}
 		if (supportedVideoScalings.length <= 0) {
-			throw new IllegalArgumentException("Empty supported dimention list");
+			throw new IllegalArgumentException("Empty supported dimention list"); //$NON-NLS-1$
 		}
-		if (audioBitrate < 0 || audioBitrate > maxAudioBitrate) {
+		if (this.audioBitrate < 0 || this.audioBitrate > maxAudioBitrate) {
 			throw new IllegalArgumentException(
-					"Invalid default audio bitrate value " + audioBitrate);
+					"Invalid default audio bitrate value " + this.audioBitrate); //$NON-NLS-1$
 		}
-		if (videoBitrate < 0 || videoBitrate > maxVideoBitrate) {
+		if (this.videoBitrate < 0 || this.videoBitrate > maxVideoBitrate) {
 			throw new IllegalArgumentException(
-					"Invalid default video bitrate value " + videoBitrate);
+					"Invalid default video bitrate value " + this.videoBitrate); //$NON-NLS-1$
 		}
 		if (defaultScaling == null) {
 			throw new NullPointerException();
@@ -92,50 +92,50 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#getAudioBitrate()
 	 */
 	public int getAudioBitrate() {
-		return audioBitrate;
+		return this.audioBitrate;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#getMaximumAudioBitrate()
 	 */
 	public int getMaximumAudioBitrate() {
-		return maxAudioBitrate;
+		return this.maxAudioBitrate;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#getMaximumVideoBitrate()
 	 */
 	public int getMaximumVideoBitrate() {
-		return maxVideoBitrate;
+		return this.maxVideoBitrate;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#getSupportedVideoDimensions()
 	 */
 	public VideoScalingOptions[] getSupportedVideoScalings() {
-		return supportedVideoScalings.clone();
+		return this.supportedVideoScalings.clone();
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#getVideoBitrate()
 	 */
 	public int getVideoBitrate() {
-		return videoBitrate;
+		return this.videoBitrate;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#getVideoScaling()
 	 */
 	public VideoScalingOptions getVideoScaling() {
-		return videoScaling;
+		return this.videoScaling;
 	}
 
 	/**
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#setAudioBitrate(int)
 	 */
 	public void setAudioBitrate(int bitrate) {
-		if (bitrate <= 0 || bitrate > maxAudioBitrate) {
-			throw new IllegalArgumentException("Invalid audio bitrate value "
+		if (bitrate <= 0 || bitrate > this.maxAudioBitrate) {
+			throw new IllegalArgumentException("Invalid audio bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.audioBitrate = bitrate;
@@ -145,8 +145,8 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.HardCodedProfile#setVideoBitrate(int)
 	 */
 	public void setVideoBitrate(int bitrate) {
-		if (bitrate <= 0 || bitrate > maxVideoBitrate) {
-			throw new IllegalArgumentException("Invalid video bitrate value "
+		if (bitrate <= 0 || bitrate > this.maxVideoBitrate) {
+			throw new IllegalArgumentException("Invalid video bitrate value " //$NON-NLS-1$
 					+ bitrate);
 		}
 		this.videoBitrate = bitrate;
@@ -161,13 +161,13 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 		}
 
 		int index = 0;
-		while (index < supportedVideoScalings.length
-				&& !supportedVideoScalings[index].equals(dimension)) {
+		while (index < this.supportedVideoScalings.length
+				&& !this.supportedVideoScalings[index].equals(dimension)) {
 			index++;
 		}
-		if (index >= supportedVideoScalings.length) {
+		if (index >= this.supportedVideoScalings.length) {
 			throw new IllegalArgumentException(
-					"Invalid video scaling options, given options are not supported");
+					"Invalid video scaling options, given options are not supported"); //$NON-NLS-1$
 		}
 
 		this.videoScaling = dimension;

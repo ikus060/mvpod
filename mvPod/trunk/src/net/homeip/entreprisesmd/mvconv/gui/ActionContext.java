@@ -36,7 +36,7 @@ public class ActionContext {
 	 *            the listener.
 	 */
 	public void addActionContextListener(IActionContextListener listener) {
-		listenerList.add(listener);
+		this.listenerList.add(listener);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class ActionContext {
 	 * @return the selection of null.
 	 */
 	public ISelection getSelection() {
-		return selection;
+		return this.selection;
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class ActionContext {
 	 * @return the subject.
 	 */
 	public Object getSubject() {
-		return subject;
+		return this.subject;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class ActionContext {
 	 *            the listener to remove.
 	 */
 	public void removeActionContextListener(IActionContextListener listener) {
-		listenerList.remove(listener);
+		this.listenerList.remove(listener);
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class ActionContext {
 		this.subject = subject;
 		this.selection = selection;
 
-		IActionContextListener[] listeners = new IActionContextListener[listenerList.size()];
-		listeners = listenerList.toArray(listeners);
+		IActionContextListener[] listeners = new IActionContextListener[this.listenerList.size()];
+		listeners = this.listenerList.toArray(listeners);
 		for(int index=0;index<listeners.length;index++) {
 			listeners[index].contextChanged(this);
 		}

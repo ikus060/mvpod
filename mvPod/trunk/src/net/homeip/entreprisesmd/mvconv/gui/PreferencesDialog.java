@@ -308,7 +308,7 @@ public class PreferencesDialog extends Dialog {
 	 * Notify his user that user want to browse a new directory emplacement for
 	 * MP4Box tool.
 	 */
-	private void handleMP4BoxBrowse() {
+	void handleMP4BoxBrowse() {
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 
 		String mplayerDirectory = store.getString(Main.PREF_MP4BOX_DIRECTORY);
@@ -332,7 +332,7 @@ public class PreferencesDialog extends Dialog {
 	 * Notify his user that user want to browse a new directory emplacement for
 	 * Mplayer tool.
 	 */
-	private void handleMPlayerBrowse() {
+	void handleMPlayerBrowse() {
 
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 
@@ -377,7 +377,7 @@ public class PreferencesDialog extends Dialog {
 	/**
 	 * Notify this class that property has change.
 	 */
-	private void propertyChange() {
+	void propertyChange() {
 
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 
@@ -395,7 +395,7 @@ public class PreferencesDialog extends Dialog {
 	 * Notify this class that user change the selection of replace existing file
 	 * options.
 	 */
-	private void replaceSelectionAsChanged() {
+	void replaceSelectionAsChanged() {
 
 		boolean selection = replaceButton.getSelection();
 
@@ -407,7 +407,7 @@ public class PreferencesDialog extends Dialog {
 	/**
 	 * Notify this class that user change the selected video output device.
 	 */
-	private void videoOutputDeviceSelectionAsChanged() {
+	void videoOutputDeviceSelectionAsChanged() {
 
 		IStructuredSelection selection = (IStructuredSelection) videoOutputDeviceComboViewer
 				.getSelection();

@@ -11,13 +11,6 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoInfo;
 public class PullupFilter implements VideoFilter {
 
 	/**
-	 * Create a new pullup filter.
-	 */
-	public PullupFilter() {
-
-	}
-
-	/**
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.videofilter.VideoFilter#getPriority()
 	 */
 	public int getPriority() {
@@ -30,8 +23,8 @@ public class PullupFilter implements VideoFilter {
 	public String[] toCommandList(VideoInfo inputVideoInfo) {
 
 		String[] args = new String[2];
-		args[0] = "-vf-add";
-		args[1] = "pullup,softskip";
+		args[0] = "-vf-add"; //$NON-NLS-1$
+		args[1] = "pullup,softskip"; //$NON-NLS-1$
 		return args;
 
 	}
