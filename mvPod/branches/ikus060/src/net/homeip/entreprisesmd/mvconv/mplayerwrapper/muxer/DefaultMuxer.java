@@ -35,7 +35,8 @@ public class DefaultMuxer implements Muxer {
 	/**
 	 * The property key to retrieve the os value.
 	 */
-	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
+	private static final String OS_NAME = System.getProperty("os.name"); //$NON-NLS-1$
+
 	/**
 	 * Linux OS name.
 	 */
@@ -53,8 +54,7 @@ public class DefaultMuxer implements Muxer {
 	 */
 	private static String NO_OUPUTFILE = "/dev/null"; //$NON-NLS-1$
 	static{
-		String os = System.getProperty(OS_NAME);
-		if (os.equals(OS_NAME_LINUX)) {
+		if (OS_NAME.equals(OS_NAME_LINUX)) {
 			NO_OUPUTFILE = NO_OUPUTFILE_LINUX;
 		}else{
 			NO_OUPUTFILE = NO_OUPUTFILE_WIN;

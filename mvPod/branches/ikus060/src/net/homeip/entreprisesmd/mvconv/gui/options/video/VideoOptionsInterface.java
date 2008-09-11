@@ -5,7 +5,8 @@ import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This class are use to display video options to user.
+ * This class are use to display video options to user. This class are intended
+ * to be sub-class.
  * 
  * @author patapouf
  * 

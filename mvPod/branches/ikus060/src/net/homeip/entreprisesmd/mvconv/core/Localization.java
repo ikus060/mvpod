@@ -7,6 +7,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.AudioFormat;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.ComponentMissingException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.DVDNotAvailableException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.GrabXvPortException;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.InvalidScalingException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerNotFoundException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.PaletteException;
@@ -42,6 +43,7 @@ public final class Localization {
 	public static final String MPLAYER_PALETTE_ERROR = "MPLAYER_PALETTE_ERROR"; //$NON-NLS-1$
 	public static final String MPLAYER_COMPONENT_MISSING = "MPLAYER_COMPONENT_MISSING"; //$NON-NLS-1$
 	public static final String MPLAYER_XVIDEO_NOT_AVAILABLE = "MPLAYER_XVIDEO_NOT_AVAILABLE"; //$NON-NLS-1$
+	public static final String MPLAYER_INVALID_SCALING = "MPLAYER_INVALID_SCALING";
 
 	public static final String DURATION_HOURS = "DURATION_HOURS"; //$NON-NLS-1$
 	public static final String DURATION_MINUTES = "DURATION_MINUTES"; //$NON-NLS-1$
@@ -186,6 +188,7 @@ public final class Localization {
 	public static final String OPTIONS_PROFILE = "OPTIONS_PROFILE"; //$NON-NLS-1$
 	public static final String OPTIONS_VIDEO = "OPTIONS_VIDEO"; //$NON-NLS-1$
 	public static final String OPTIONS_AUDIO = "OPTIONS_AUDIO"; //$NON-NLS-1$
+	public static final String OPTIONS_MUXER = "OPTIONS_MUXER";
 	public static final String OPTIONS_BITRATE = "OPTIONS_BITRATE"; //$NON-NLS-1$
 	public static final String OPTIONS_CHANNEL = "OPTIONS_CHANNEL"; //$NON-NLS-1$
 	public static final String OPTIONS_BITRATE_FORMAT_VALUE = "OPTIONS_BITRATE_FORMAT_VALUE"; //$NON-NLS-1$
@@ -194,6 +197,7 @@ public final class Localization {
 	public static final String OPTIONS_TYPE = "OPTIONS_TYPE"; //$NON-NLS-1$
 	public static final String OPTIONS_AUDIO_CODEC = "OPTIONS_AUDIO_CODEC"; //$NON-NLS-1$
 	public static final String OPTIONS_VIDEO_CODEC = "OPTIONS_VIDEO_CODEC"; //$NON-NLS-1$
+	public static final String OPTIONS_MUXER_FORMAT = "OPTIONS_MUXER_FORMAT";
 	public static final String OPTIONS_VARIABLE_METHOD = "OPTIONS_VARIABLE_METHOD"; //$NON-NLS-1$
 	public static final String OPTIONS_VARIABLE_QUALITY = "OPTIONS_VARIABLE_QUALITY"; //$NON-NLS-1$
 	public static final String OPTIONS_SAMPLE_RATE = "OPTIONS_SAMPLE_RATE"; //$NON-NLS-1$
@@ -270,6 +274,9 @@ public final class Localization {
 	public static final String OPTIONS_XVID_CARTOON = "OPTIONS_XVID_CARTOON"; //$NON-NLS-1$
 	public static final String OPTIONS_XVID_QUARTER_PIXEL = "OPTIONS_XVID_QUARTER_PIXEL"; //$NON-NLS-1$
 
+	public static final String OPTIONS_MP4_NOTICE = "OPTIONS_MP4_NOTICE";
+	public static final String OPTIONS_AVI_NOTICE = "OPTIONS_AVI_NOTICE";
+	
 	private static final String LOCALE_BUNDLE_NAME = "locale"; //$NON-NLS-1$
 	private static final String FORMAT_BUNDLE_NAME = "format"; //$NON-NLS-1$
 	private static final String LANGUAGE_BUNDLE_NAME = "language"; //$NON-NLS-1$
@@ -402,6 +409,10 @@ public final class Localization {
 		} else if (exception instanceof XvPortNotAvailableException) {
 
 			key = Localization.MPLAYER_XVIDEO_NOT_AVAILABLE;
+		} else if (exception instanceof InvalidScalingException) {
+			return getString(Localization.MPLAYER_INVALID_SCALING,
+					((InvalidScalingException) exception).getFromDimension(),
+					((InvalidScalingException) exception).getToDimension());
 		}
 		return getString(key);
 	}

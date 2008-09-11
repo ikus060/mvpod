@@ -2,6 +2,7 @@ package net.homeip.entreprisesmd.mvconv.gui.options.audio;
 
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.AudioFormat;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.AudioEncodingOptions;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.VideoEncodingOptions;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -13,6 +14,16 @@ import org.eclipse.swt.widgets.Composite;
  * 
  */
 public interface AudioOptionsMapper {
+
+	/**
+	 * Create the new audio options interface.
+	 * 
+	 * @param parent
+	 *            the parent of this interface.
+	 * @param style
+	 *            the style.
+	 */
+	AudioOptionsInterface createInterface(Composite parent, int style);
 
 	/**
 	 * Return the associated audio format.
@@ -27,15 +38,23 @@ public interface AudioOptionsMapper {
 	 * @return the encoding options.
 	 */
 	AudioEncodingOptions getEncodingOptions();
+	
+	/**
+	 * Return True if the given audio encoding options match with this Mapper.
+	 * 
+	 * @param options
+	 *            the encoding options to verify.
+	 * @return True if the given audio encoding options match with this Mapper.
+	 */
+	boolean match(AudioEncodingOptions options);
 
 	/**
-	 * Create the new audio options interface.
+	 * Redefine the default encoding options to remember the last configuration
+	 * of this Mapper.
 	 * 
-	 * @param parent
-	 *            the parent of this interface.
-	 * @param style
-	 *            the style.
+	 * @param options
+	 *            the new audio encoding options.
 	 */
-	AudioOptionsInterface createInterface(Composite parent, int style);
+	void setDefaultEncodingOptions(AudioEncodingOptions options);
 
 }

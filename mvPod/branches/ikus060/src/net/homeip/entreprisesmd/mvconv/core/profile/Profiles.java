@@ -58,7 +58,14 @@ public class Profiles {
 	public static Profile createCustomProfile(){
 		return new Profile() {
 
+			EncodingOptions options;
+			
 			public EncodingOptions getEncodingOptions() {
+				
+				if(options!=null)
+					return options;
+				
+				//TODO : Load this info from previous data
 				LameEncodingOptions audioOptions = new LameEncodingOptions(128,
 						LameEncodingOptions.TYPE_CONSTANT_BITRATE);
 				audioOptions.setChannelMode(LameEncodingOptions.MODE_JOIN_STEREO);
@@ -68,12 +75,13 @@ public class Profiles {
 				videoOptions.setMaxBFrame(0);
 				videoOptions.setOutputFrameRate(10);
 
-				EncodingOptions options = new EncodingOptions(videoOptions,
+				options = new EncodingOptions(videoOptions,
 						audioOptions);
 				options.addVideoFilter(new InverseTelecineFilter(10));
 				options.addVideoFilter(new HarddupFilter());
 
 				options.setScaleOptions(new VideoScalingOptions(220, 176));
+				
 				return options;
 			}
 

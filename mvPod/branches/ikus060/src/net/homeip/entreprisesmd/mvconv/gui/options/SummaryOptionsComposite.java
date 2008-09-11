@@ -203,7 +203,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				getViewSite().getProfileList().remoceProfileListObserver(
+				getViewSite().getProfileList().removeProfileListObserver(
 						SummaryOptionsComposite.this.observer);
 
 				getViewSite().getProfileContext().removeProfileContextListener(

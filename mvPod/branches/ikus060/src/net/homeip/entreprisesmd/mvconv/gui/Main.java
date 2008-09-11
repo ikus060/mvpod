@@ -63,7 +63,8 @@ public final class Main {
 	/**
 	 * Key value for OS name property.
 	 */
-	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
+	private static final String OS_NAME = System.getProperty("os.name");//$NON-NLS-1$
+
 	/**
 	 * Linux OS value.
 	 */
@@ -313,18 +314,17 @@ public final class Main {
 		}
 
 		// Set default value
-		String os = System.getProperty(OS_NAME);
 		preferenceStore.setDefault(PREF_AUTO_CLEAR_JOBS, false);
 		preferenceStore.setDefault(PREF_REPLACE_FILE, false);
 
-		if (os.equals(OS_NAME_LINUX)) {
+		if (OS_NAME.equals(OS_NAME_LINUX)) {
 			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
 					.getProperty(USER_HOME));
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "/usr/bin"); //$NON-NLS-1$
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "/usr/bin"); //$NON-NLS-1$
 			
 			
-		} else if (os.equals(OS_NAME_WINDOWS)) {
+		} else if (OS_NAME.equals(OS_NAME_WINDOWS)) {
 			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System.getenv(USER_PROFILE));			
 			
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "."); //$NON-NLS-1$
