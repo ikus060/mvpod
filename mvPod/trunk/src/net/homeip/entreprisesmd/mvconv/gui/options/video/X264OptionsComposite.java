@@ -58,20 +58,35 @@ public class X264OptionsComposite extends VideoOptionsInterface {
 	 */
 	public static VideoOptionsMapper getMapper() {
 		return new VideoOptionsMapper() {
+			X264EncodingOptions encodingOptions;
+
 			public VideoOptionsInterface createInterface(Composite parent,
 					int style) {
 				return new X264OptionsComposite(parent, style);
 			}
 
 			public VideoEncodingOptions getEncodingOptions() {
-				X264EncodingOptions encodingOptions = new X264EncodingOptions(
-						BITRATE_DEFAULT);
-				encodingOptions.enableThreads(true);
+				if (encodingOptions == null) {
+					encodingOptions = new X264EncodingOptions(BITRATE_DEFAULT);
+					encodingOptions.enableThreads(true);
+				}
 				return encodingOptions;
 			}
 
 			public VideoFormat getVideoFormat() {
 				return VideoFormat.FORMAT_H264_AVC;
+			}
+
+			public boolean match(VideoEncodingOptions options) {
+				if(options instanceof X264EncodingOptions)
+					return true;
+				return false;
+			}
+
+			public void setDefaultEncodingOptions(VideoEncodingOptions options) {
+				if(options instanceof X264EncodingOptions) {
+					encodingOptions = (X264EncodingOptions)options;
+				}
 			}
 		};
 	}

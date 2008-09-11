@@ -48,13 +48,13 @@ public class IPodXVidProfile extends AbstractHardCodedProfile {
 	 */
 	private static final VideoScalingOptions VIDEO_DIMENSION_320X240 = new VideoScalingOptions(
 			320, 240);
-	
+
 	/**
 	 * 480 x 320 dimension.
 	 */
 	private static final VideoScalingOptions VIDEO_DIMENSION_480X320 = new VideoScalingOptions(
 			480, 320);
-	
+
 	/**
 	 * 640 x 480 dimension.
 	 */
@@ -64,7 +64,8 @@ public class IPodXVidProfile extends AbstractHardCodedProfile {
 	 * List of supported dimensions.
 	 */
 	private static final VideoScalingOptions[] VIDEO_DIMENSIONS = new VideoScalingOptions[] {
-			VIDEO_DIMENSION_320X240, VIDEO_DIMENSION_480X320, VIDEO_DIMENSION_640X480 };
+			VIDEO_DIMENSION_320X240, VIDEO_DIMENSION_480X320,
+			VIDEO_DIMENSION_640X480 };
 	/**
 	 * Maximum video frame rate.
 	 */
@@ -91,29 +92,31 @@ public class IPodXVidProfile extends AbstractHardCodedProfile {
 	 * @see net.homeip.entreprisesmd.mvconv.core.profile.Profile#getEncodingOptions()
 	 */
 	public EncodingOptions getEncodingOptions() {
-		
-		FAACEncodingOptions audioOptions = new FAACEncodingOptions(getAudioBitrate());
+
+		FAACEncodingOptions audioOptions = new FAACEncodingOptions(
+				getAudioBitrate());
 		audioOptions.setMPEGVersion(FAACEncodingOptions.MPEG_VERSION_4);
 		audioOptions.setObjectType(FAACEncodingOptions.OBJECT_TYPE_LOW);
 		audioOptions.setOutputSampleRate(AUDIO_SAMPLE_RATE);
 
-		XVideoEncodingOptions videoOptions = new XVideoEncodingOptions(getVideoBitrate());
+		XVideoEncodingOptions videoOptions = new XVideoEncodingOptions(
+				getVideoBitrate());
 
 		videoOptions.setMaxOutputFrameRate(VIDEO_FRAMERATE_MAX);
 		videoOptions.enableTrellis(true);
-		videoOptions.setPass(1);
+		videoOptions.setPass(twoPassEnabled() ? 2 : 1);
 		videoOptions.setMaxBFrame(0);
-		
+
 		EncodingOptions options = new EncodingOptions(videoOptions,
 				audioOptions);
 
 		options.setScaleOptions(getVideoScaling());
-		//options.addVideoFilter(new PullupFilter());
+		// options.addVideoFilter(new PullupFilter());
 		options.addVideoFilter(new HarddupFilter());
 
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 		File path = new File(store.getString(Main.PREF_MP4BOX_DIRECTORY));
-		options.setMuxer(new MP4BoxMuxer(new File[]{path}));
+		options.setMuxer(new MP4BoxMuxer(new File[] { path }));
 
 		return options;
 	}

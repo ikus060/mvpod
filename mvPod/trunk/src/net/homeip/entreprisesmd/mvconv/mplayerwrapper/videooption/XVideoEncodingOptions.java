@@ -188,14 +188,14 @@ public class XVideoEncodingOptions extends VideoEncodingOptions {
 
 		String value = ""; //$NON-NLS-1$
 
-		if (super.getPass() > 1) {
-			value += ":pass=" + pass; //$NON-NLS-1$
-		}
-
 		value += "bitrate=" + this.bitrate; //$NON-NLS-1$
 
 		value += ":max_bframes=" + this.maxBFrame; //$NON-NLS-1$
 
+		if (super.getPass() > 1) {
+			value += ":pass=" + pass; //$NON-NLS-1$
+		}
+		
 		if(this.enableCartoon){
 			value += ":cartoon"; //$NON-NLS-1$
 		}

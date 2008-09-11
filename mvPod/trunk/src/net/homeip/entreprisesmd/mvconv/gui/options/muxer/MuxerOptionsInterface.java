@@ -1,18 +1,17 @@
-package net.homeip.entreprisesmd.mvconv.gui.options.audio;
+package net.homeip.entreprisesmd.mvconv.gui.options.muxer;
 
 import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
 
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This class are use to display audio options to user. This class are intended
+ * This class are use to display Muxer options to user. This class are intended
  * to be sub-class.
  * 
  * @author patapouf
  * 
  */
-public abstract class AudioOptionsInterface extends Composite {
-
+public abstract class MuxerOptionsInterface extends Composite {
 	/**
 	 * Create a new interface.
 	 * 
@@ -21,14 +20,14 @@ public abstract class AudioOptionsInterface extends Composite {
 	 * @param style
 	 *            the style.
 	 */
-	public AudioOptionsInterface(Composite parent, int style) {
+	public MuxerOptionsInterface(Composite parent, int style) {
 		super(parent, style);
 	}
 
 	/**
 	 * View site.
 	 */
-	private IViewSite viewSite;
+	private IViewSite site;
 
 	/**
 	 * Return the view site.
@@ -36,7 +35,7 @@ public abstract class AudioOptionsInterface extends Composite {
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return this.viewSite;
+		return site;
 	}
 
 	/**
@@ -47,8 +46,7 @@ public abstract class AudioOptionsInterface extends Composite {
 	 */
 	public void init(IViewSite site) {
 
-		this.viewSite = site;
+		this.site = site;
 
 	}
-
 }

@@ -45,17 +45,34 @@ public class XVideoOptionsComposite extends VideoOptionsInterface {
 	 */
 	public static VideoOptionsMapper getMapper() {
 		return new VideoOptionsMapper() {
+			XVideoEncodingOptions encodingOptions;
+
 			public VideoOptionsInterface createInterface(Composite parent,
 					int style) {
 				return new XVideoOptionsComposite(parent, style);
 			}
 
 			public VideoEncodingOptions getEncodingOptions() {
-				return new XVideoEncodingOptions(BITRATE_DEFAULT);
+				if (encodingOptions == null) {
+					encodingOptions = new XVideoEncodingOptions(BITRATE_DEFAULT);
+				}
+				return encodingOptions;
 			}
 
 			public VideoFormat getVideoFormat() {
 				return VideoFormat.FORMAT_MPEG_XVID;
+			}
+
+			public boolean match(VideoEncodingOptions options) {
+				if (options instanceof XVideoEncodingOptions)
+					return true;
+				return false;
+			}
+
+			public void setDefaultEncodingOptions(VideoEncodingOptions options) {
+				if (options instanceof XVideoEncodingOptions) {
+					encodingOptions = (XVideoEncodingOptions) options;
+				}
 			}
 		};
 	}

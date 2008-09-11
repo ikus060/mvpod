@@ -30,7 +30,7 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * The property key to retrieve the os value.
 	 */
-	private static final String PROPERTY_OS = "os.name"; //$NON-NLS-1$
+	private static final String OS_NAME = System.getProperty("os.name"); //$NON-NLS-1$
 
 	private static final int HARD_CODED = 0;
 	private static final int CUSTOM = 1;
@@ -70,6 +70,11 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 	 * Interface to edit video option of user profile.
 	 */
 	private VideoCodecOptionsComposite videoCodecOptionsComposite;
+	
+	/**
+	 * Interface to change the Muxer (Video format container).
+	 */
+	private MuxerOptionsComposite muxerOptionsComposite;
 
 	/**
 	 * Listener to profile context.
@@ -150,12 +155,15 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 		this.videoCodecOptionsComposite = new VideoCodecOptionsComposite(this.tabFolder,
 				SWT.NONE);
 		this.videoCodecOptionsComposite.init(getViewSite());
+		
+		muxerOptionsComposite = new MuxerOptionsComposite(tabFolder, SWT.NONE);
+		muxerOptionsComposite.init(getViewSite());
 
 
 		// Under linux, we change the color of tabFolder to get a better effect
-		String os = System.getProperty(PROPERTY_OS);
-		if (os.equals("Linux")) { //$NON-NLS-1$
-			this.tabFolder.setSelectionBackground(Display.getDefault()
+
+		if (OS_NAME.equals("Linux")) { //$NON-NLS-1$
+			tabFolder.setSelectionBackground(Display.getDefault()
 					.getSystemColor(SWT.COLOR_LIST_SELECTION));
 			this.tabFolder.setSelectionForeground(Display.getDefault()
 					.getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
@@ -223,25 +231,25 @@ public class EncodingOptionsComposite extends Composite implements IViewPart {
 			item.setText(Localization
 					.getString(Localization.AUDIO_OPTIONS_TITLE));
 			item.setControl(this.audioOptionsComposite);
-
-			// TODO : Add options for muxer
+			
+			// Add muxer options tab
+			item = new CTabItem(tabFolder, SWT.NONE);
+			item.setText(Localization
+					.getString(Localization.OPTIONS_MUXER));
+			item.setControl(muxerOptionsComposite);
 
 			this.lastProfileType = CUSTOM;
 		}
-
 	}
 
 	/**
 	 * Remove all tab item except summary tab.
 	 */
 	private void removeOlderTabItem() {
-
 		CTabItem[] items = this.tabFolder.getItems();
 
 		for (int index = items.length - 1; index >= 1; index--) {
 			items[index].dispose();
 		}
-
 	}
-
 }

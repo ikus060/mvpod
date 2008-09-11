@@ -60,6 +60,9 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 	 */
 	public static AudioOptionsMapper getMapper() {
 		return new AudioOptionsMapper() {
+
+			LameEncodingOptions encodingOptions;
+
 			public AudioOptionsInterface createInterface(Composite parent,
 					int style) {
 				return new LameOptionsComposite(parent, style);
@@ -70,8 +73,23 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 			}
 
 			public AudioEncodingOptions getEncodingOptions() {
-				return new LameEncodingOptions(BITRATE_DEFAULT,
-						LameEncodingOptions.TYPE_AVERAGE_BITRATE);
+				if (encodingOptions == null) {
+					encodingOptions = new LameEncodingOptions(BITRATE_DEFAULT,
+							LameEncodingOptions.TYPE_AVERAGE_BITRATE);
+				}
+				return encodingOptions;
+			}
+
+			public boolean match(AudioEncodingOptions options) {
+				if (options instanceof LameEncodingOptions)
+					return true;
+				return false;
+			}
+
+			public void setDefaultEncodingOptions(AudioEncodingOptions options) {
+				if (options instanceof LameEncodingOptions) {
+					encodingOptions = (LameEncodingOptions) options;
+				}
 			}
 		};
 	}
@@ -414,12 +432,12 @@ public class LameOptionsComposite extends AudioOptionsInterface {
 
 		Composite comp = new Composite(this, SWT.NONE);
 		GridLayout layout = new GridLayout(4, false);
-		layout.marginHeight=0;
-		layout.marginWidth=0;
-		layout.verticalSpacing=0;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		layout.verticalSpacing = 0;
 		comp.setLayout(layout);
-		comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,false,4,1));
-		
+		comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
+
 		// Bitrate
 		this.bitrateLabel = new Label(comp, SWT.NONE);
 		this.bitrateLabel.setText(bitrateText);

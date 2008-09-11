@@ -10,13 +10,13 @@ import java.io.File;
  */
 public final class ApplicationFinder {
 
+	private static final String OS_NAME = System.getProperty("os.name");
+	
 	/**
 	 * Private constructor.
 	 */
 	private ApplicationFinder() {
-		/*
-		 * Private constructore use to prevent creation of utility class.
-		 */
+		// Private constructor use to prevent creation of utility class.
 	}
 
 	/**
@@ -44,7 +44,7 @@ public final class ApplicationFinder {
 	public static File getApplicationPath(String app, File[] pathsList) {
 
 		File[] paths = pathsList;
-		if (System.getProperty("os.name").indexOf("Windows") >= 0) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (OS_NAME.indexOf("Windows") >= 0) { //$NON-NLS-1$
 			// TODO : Cross Platform : Must find mplayer path
 			// File directory = new File(path);
 			// paths.add(directory);

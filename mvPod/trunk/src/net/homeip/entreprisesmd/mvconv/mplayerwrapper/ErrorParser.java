@@ -47,6 +47,11 @@ public class ErrorParser implements StreamParser {
 	private static final String XVIDEO_PORT_NOTE_AVAILABLE = "It seems there is no Xvideo support for your video card available."; //$NON-NLS-1$
 
 	/**
+	 * Regular expression when scaling dimension are invalid.
+	 */
+	private static final String INVALID_SCALING_DIMENSION = "swScaler: (.*) -> (.*) is invalid scaling dimension";
+
+	/**
 	 * Regular expression to read header.
 	 */
 	// TODO : Move this error in VideoInfo with a method like
@@ -136,6 +141,12 @@ public class ErrorParser implements StreamParser {
 				.matcher(line);
 		if (matcher.find()) {
 			return exceptionFound(new XvPortNotAvailableException());
+		}
+
+		matcher = Pattern.compile(INVALID_SCALING_DIMENSION, Pattern.MULTILINE)
+				.matcher(line);
+		if (matcher.find()) {
+			return exceptionFound(new InvalidScalingException(matcher.group(1), matcher.group(2)));
 		}
 
 		return true;
