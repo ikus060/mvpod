@@ -2,7 +2,6 @@ package net.homeip.entreprisesmd.mvconv.gui.options.audio;
 
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.AudioFormat;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.AudioEncodingOptions;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.VideoEncodingOptions;
 
 import org.eclipse.swt.widgets.Composite;
 
