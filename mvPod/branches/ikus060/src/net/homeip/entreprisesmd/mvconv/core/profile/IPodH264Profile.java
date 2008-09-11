@@ -2,8 +2,6 @@ package net.homeip.entreprisesmd.mvconv.core.profile;
 
 import java.io.File;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-
 import net.homeip.entreprisesmd.mvconv.core.Localization;
 import net.homeip.entreprisesmd.mvconv.gui.Main;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
@@ -12,6 +10,8 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.FAACEncodingOp
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4BoxMuxer;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videofilter.HarddupFilter;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.X264EncodingOptions;
+
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * This profile are intended to produce video file that are compatible with iPod
@@ -59,24 +59,27 @@ public class IPodH264Profile extends AbstractHardCodedProfile {
 	 * 320 x 240 dimension.
 	 */
 	private static final VideoScalingOptions VIDEO_DIMENSION_320X240 = new VideoScalingOptions(
-			320, 240, VideoScalingOptions.MULTIPLE_16 | VideoScalingOptions.METHOD_FIT);
-	
+			320, 240, VideoScalingOptions.MULTIPLE_16
+					| VideoScalingOptions.METHOD_FIT);
+
 	/**
 	 * 480 x 320 dimension.
 	 */
 	private static final VideoScalingOptions VIDEO_DIMENSION_480X320 = new VideoScalingOptions(
 			480, 320);
-	
+
 	/**
 	 * 640 x 480 dimension.
 	 */
 	private static final VideoScalingOptions VIDEO_DIMENSION_640X480 = new VideoScalingOptions(
-			640, 480, VideoScalingOptions.MULTIPLE_16 | VideoScalingOptions.METHOD_FIT);
+			640, 480, VideoScalingOptions.MULTIPLE_16
+					| VideoScalingOptions.METHOD_FIT);
 	/**
 	 * List of supported dimensions.
 	 */
 	private static final VideoScalingOptions[] VIDEO_DIMENSIONS = new VideoScalingOptions[] {
-			VIDEO_DIMENSION_320X240, VIDEO_DIMENSION_480X320, VIDEO_DIMENSION_640X480 };
+			VIDEO_DIMENSION_320X240, VIDEO_DIMENSION_480X320,
+			VIDEO_DIMENSION_640X480 };
 	/**
 	 * Maximum video frame rate.
 	 */
@@ -127,18 +130,18 @@ public class IPodH264Profile extends AbstractHardCodedProfile {
 				.setMotionEstimation(X264EncodingOptions.MOTION_ESTIMATION_UNEVEN);
 		videoOptions
 				.setMotionPrediction(X264EncodingOptions.MOTION_PREDICTION_AUTO);
-		videoOptions.setPass(2);
+		videoOptions.setPass(this.twoPassEnabled() ? 2 : 1);
 
 		EncodingOptions options = new EncodingOptions(videoOptions,
 				audioOptions);
 
 		options.setScaleOptions(getVideoScaling());
-		//options.addVideoFilter(new PullupFilter());
+		// options.addVideoFilter(new PullupFilter());
 		options.addVideoFilter(new HarddupFilter());
 
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 		File path = new File(store.getString(Main.PREF_MP4BOX_DIRECTORY));
-		options.setMuxer(new MP4BoxMuxer(new File[]{path}));
+		options.setMuxer(new MP4BoxMuxer(new File[] { path }));
 
 		return options;
 	}
