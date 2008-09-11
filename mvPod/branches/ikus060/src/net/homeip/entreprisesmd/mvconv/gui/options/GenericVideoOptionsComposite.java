@@ -416,7 +416,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 
 		this.site = site;
 
-		this.setLayout(new GridLayout(4, false));
+		this.setLayout(new GridLayout(2, false));
 
 		// Prepare localized string
 		String bitrateText = Localization
@@ -470,7 +470,7 @@ public class GenericVideoOptionsComposite extends Composite implements
 		label.setText(videoDimension);
 		label.setLayoutData(new GridData(firstColumnWidth, SWT.DEFAULT));
 
-		Composite videoDimComp = new Composite(this, SWT.BORDER);
+		Composite videoDimComp = new Composite(this, SWT.NONE);
 		GridLayout layout = new GridLayout(3, false);
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
@@ -490,9 +490,6 @@ public class GenericVideoOptionsComposite extends Composite implements
 		this.heightText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		this.heightText.addVerifyListener(this.verifyListener);
 		this.heightText.addListener(SWT.FocusOut, this.listener);
-
-		label = new Label(this, SWT.NONE);
-		label = new Label(this, SWT.NONE);
 
 		// Video scaling methode
 		label = new Label(this, SWT.NONE);

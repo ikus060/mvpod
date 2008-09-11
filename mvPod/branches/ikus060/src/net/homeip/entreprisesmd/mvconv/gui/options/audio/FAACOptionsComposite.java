@@ -60,6 +60,9 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 	 */
 	public static AudioOptionsMapper getMapper() {
 		return new AudioOptionsMapper() {
+
+			FAACEncodingOptions encodingOptions;
+
 			public AudioOptionsInterface createInterface(Composite parent,
 					int style) {
 				return new FAACOptionsComposite(parent, style);
@@ -70,7 +73,22 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 			}
 
 			public AudioEncodingOptions getEncodingOptions() {
-				return new FAACEncodingOptions(BITRATE_DEFAULT);
+				if (encodingOptions==null) {
+					encodingOptions = new FAACEncodingOptions(BITRATE_DEFAULT);
+				}
+				return encodingOptions;
+			}
+
+			public boolean match(AudioEncodingOptions options) {
+				if (options instanceof FAACEncodingOptions)
+					return true;
+				return false;
+			}
+
+			public void setDefaultEncodingOptions(AudioEncodingOptions options) {
+				if (options instanceof FAACEncodingOptions) {
+					encodingOptions = (FAACEncodingOptions) options;
+				}
 			}
 		};
 	}
@@ -245,6 +263,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		}
 		return (Integer) selection;
 	}
+
 	/**
 	 * Return the selected sample rate.
 	 * 
@@ -258,6 +277,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		}
 		return (Integer) selection;
 	}
+
 	/**
 	 * Initialize this view with the given view site.
 	 * 
@@ -280,8 +300,8 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		String mpegVersionText = Localization
 				.getString(Localization.OPTIONS_FAAC_MPEG_VERSION);
 		String sampleRateText = Localization
-		.getString(Localization.OPTIONS_SAMPLE_RATE);
-		
+				.getString(Localization.OPTIONS_SAMPLE_RATE);
+
 		// Check the first column size.
 		GC gc = new GC(this);
 		Point bitrateTextSize = gc.textExtent(bitrateText);
@@ -320,7 +340,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		this.objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_LOW);
 		this.objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_SSR);
 		this.objectTypeViewer.add(FAACEncodingOptions.OBJECT_TYPE_LTP);
-	
+
 		// MPEG version
 		label = new Label(this, SWT.NONE);
 		label.setText(mpegVersionText);
@@ -346,7 +366,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		this.sampleRateViewer.add(48000);
 		this.sampleRateViewer.add(44100);
 		this.sampleRateViewer.addSelectionChangedListener(this.selectionChangeListener);
-		
+
 		// Force update
 		profileAsChanged();
 
@@ -363,6 +383,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 		});
 
 	}
+
 	/**
 	 * Notify this class that user change the sample rate.
 	 */
@@ -391,6 +412,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 
 		}
 	}
+
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
@@ -435,7 +457,7 @@ public class FAACOptionsComposite extends AudioOptionsInterface {
 			this.sampleRateViewer.setSelection(new StructuredSelection(faacOptions
 					.getOutputSampleRate()));
 		}
-		
+
 	}
 
 	/**

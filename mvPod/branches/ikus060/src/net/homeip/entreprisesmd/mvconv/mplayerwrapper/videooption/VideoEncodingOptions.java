@@ -126,7 +126,7 @@ public abstract class VideoEncodingOptions {
 	 *            the framerate
 	 */
 	public void setMaxOutputFrameRate(double frameRate) {
-		if (frameRate <= 0) {
+		if (frameRate <= 0 && frameRate!=-1.0) {
 			throw new IllegalArgumentException("Invalid frame rate " //$NON-NLS-1$
 					+ frameRate);
 		}

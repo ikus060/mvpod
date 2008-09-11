@@ -11,12 +11,13 @@ import net.homeip.entreprisesmd.mvconv.gui.IProfileContextListener;
 import net.homeip.entreprisesmd.mvconv.gui.IViewPart;
 import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
 import net.homeip.entreprisesmd.mvconv.gui.ProfileContext;
-import net.homeip.entreprisesmd.mvconv.gui.options.audio.AudioOptionsInterface;
-import net.homeip.entreprisesmd.mvconv.gui.options.audio.AudioOptionsMapper;
-import net.homeip.entreprisesmd.mvconv.gui.options.audio.FAACOptionsComposite;
-import net.homeip.entreprisesmd.mvconv.gui.options.audio.LameOptionsComposite;
+import net.homeip.entreprisesmd.mvconv.gui.options.muxer.AviOptionsComposite;
+import net.homeip.entreprisesmd.mvconv.gui.options.muxer.MP4OptionsComposite;
+import net.homeip.entreprisesmd.mvconv.gui.options.muxer.MuxerOptionsInterface;
+import net.homeip.entreprisesmd.mvconv.gui.options.muxer.MuxerOptionsMapper;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.AudioEncodingOptions;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoDemuxer;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.Muxer;
 
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -36,22 +37,22 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * This class display audio options to user and give him the chance to change
- * the audio codec.
+ * This class display muxer options to user and give him the chance to change
+ * the muxer (video container, e.g.: AVI, MP$, etc.).
  * 
  * @author patapouf
  * 
  */
-public class AudioOptionsComposite extends Composite implements IViewPart {
+public class MuxerOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * List of interface mapper.
 	 */
-	private List<AudioOptionsMapper> mappers = new ArrayList<AudioOptionsMapper>();
+	private List<MuxerOptionsMapper> mappers = new ArrayList<MuxerOptionsMapper>();
 
 	/**
 	 * Audio codec list.
 	 */
-	private ComboViewer audioCodecViewer;
+	private ComboViewer muxerViewer;
 	/**
 	 * Composite component where audio option interface will be create.
 	 */
@@ -62,9 +63,9 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 */
 	private LabelProvider labelProvider = new LabelProvider() {
 		public String getText(Object element) {
-			if (element instanceof AudioOptionsMapper) {
-				AudioOptionsMapper mapper = (AudioOptionsMapper) element;
-				return Localization.getLocalizedFormat(mapper.getAudioFormat());
+			if (element instanceof MuxerOptionsMapper) {
+				MuxerOptionsMapper mapper = (MuxerOptionsMapper) element;
+				return Localization.getLocalizedFormat(mapper.getVideoDemuxer());
 			}
 			return element.toString();
 		}
@@ -73,12 +74,12 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Last selected mapper.
 	 */
-	private AudioOptionsMapper lastMapper;
+	private MuxerOptionsMapper lastMapper;
 
 	/**
 	 * Listener to profile context.
 	 */
-	IProfileContextListener profileContextListener = new IProfileContextListener() {
+	private IProfileContextListener profileContextListener = new IProfileContextListener() {
 		public void profileContextAsChanged(ProfileContext context) {
 			profileAsChanged();
 		}
@@ -89,14 +90,14 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 */
 	private ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			audioCodecSelectionChanged();
+			muxerSelectionChanged();
 		}
 	};
 
 	/**
 	 * View site.
 	 */
-	private IViewSite viewSite;
+	private IViewSite site;
 
 	/**
 	 * Create a new composite interface to select audio options for audio
@@ -107,72 +108,66 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 * @param style
 	 *            the style
 	 */
-	public AudioOptionsComposite(Composite parent, int style) {
+	public MuxerOptionsComposite(Composite parent, int style) {
 		super(parent, style);
 
-		registerMapper(LameOptionsComposite.getMapper());
-		registerMapper(FAACOptionsComposite.getMapper());
+		registerMapper(AviOptionsComposite.getMapper());
+		registerMapper(MP4OptionsComposite.getMapper());
 
 	}
 
 	/**
 	 * Notify this class that user select a new audio codec.
 	 */
-	protected void audioCodecSelectionChanged() {
+	private void muxerSelectionChanged() {
 
-		// Get the new selected mapper
-		AudioOptionsMapper mapperSelected = getAudioOptionsMapperSelection();
-		AudioEncodingOptions audioOptions = mapperSelected.getEncodingOptions();
+		MuxerOptionsMapper mapperSelected = getAudioOptionsMapperSelection();
+		Muxer muxer = mapperSelected.getMuxer();
 
 		ProfileContext profileContext = getViewSite().getProfileContext();
 		Profile profile = profileContext.getSelectedProfile();
 		EncodingOptions options = profile.getEncodingOptions();
 
-		// Check if current Audio encoding options matches the new mapper
-		if (!mapperSelected.match(options.getAudioOptions())) {
-
-			// Change the audio options to matche the new selected mapper
-			options.setAudioOptions(audioOptions);
+		if (muxer != options.getMuxer()) {
+			options.setMuxer(muxer);
 			Profile newProfile = Profiles.createOnFlyProfile(options);
 			profileContext.setSelectedProfile(newProfile);
-
 		}
-
 	}
 
 	/**
-	 * Return the Mapper associate with the given audio encoding options.
+	 * Return the mapper associate with the given audio format.
 	 * 
-	 * @param options
-	 *            the audio encoding options.
-	 * @return the Mapper.
+	 * @param format
+	 *            the audio format.
+	 * @return the mapper.
 	 */
-	private AudioOptionsMapper findMapper(AudioEncodingOptions options) {
+	private MuxerOptionsMapper findMapper(VideoDemuxer format) {
 
 		int index = 0;
 		while (index < mappers.size()
-				&& !mappers.get(index).match(options)) {
+				&& !mappers.get(index).getVideoDemuxer().equals(format)) {
 			index++;
 		}
-		if (index < this.mappers.size()) {
-			return this.mappers.get(index);
+		if (index < mappers.size()) {
+			return mappers.get(index);
 		}
 		return null;
 
 	}
 
 	/**
-	 * Return the selected Mapper in the audioCodec viewer.
+	 * Return the selected mapper in the audioCodec viewer.
 	 * 
-	 * @return the selected Mapper.
+	 * @return the selected mapper.
 	 */
-	private AudioOptionsMapper getAudioOptionsMapperSelection() {
-		Object selection = ((IStructuredSelection) this.audioCodecViewer
-				.getSelection()).getFirstElement();
-		if (!(selection instanceof AudioOptionsMapper)) {
+	private MuxerOptionsMapper getAudioOptionsMapperSelection() {
+		Object selection = ((IStructuredSelection) muxerViewer.getSelection())
+				.getFirstElement();
+		if (!(selection instanceof MuxerOptionsMapper)) {
 			return null;
 		}
-		return (AudioOptionsMapper) selection;
+		return (MuxerOptionsMapper) selection;
 	}
 
 	/**
@@ -181,7 +176,7 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return this.viewSite;
+		return site;
 	}
 
 	/**
@@ -192,43 +187,43 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 */
 	public void init(IViewSite site) {
 
-		this.viewSite = site;
+		this.site = site;
 
 		GridLayout layout = new GridLayout(2, false);
 		this.setLayout(layout);
 
-		String audioCodecText = Localization
-				.getString(Localization.OPTIONS_AUDIO_CODEC);
+		String muxerText = Localization
+				.getString(Localization.OPTIONS_MUXER_FORMAT);
 
 		Label label = new Label(this, SWT.NONE);
-		label.setText(audioCodecText);
+		label.setText(muxerText);
 		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-		this.audioCodecViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
-		this.audioCodecViewer.setLabelProvider(this.labelProvider);
-		this.audioCodecViewer.addSelectionChangedListener(this.selectionListener);
-		this.audioCodecViewer.getCombo().setLayoutData(
+		muxerViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
+		muxerViewer.setLabelProvider(labelProvider);
+		muxerViewer.addSelectionChangedListener(selectionListener);
+		muxerViewer.getCombo().setLayoutData(
 				new GridData(SWT.LEFT, SWT.FILL, true, false));
-		for (int index = 0; index < this.mappers.size(); index++) {
-			this.audioCodecViewer.add(this.mappers.get(index));
+		for (int index = 0; index < mappers.size(); index++) {
+			muxerViewer.add(mappers.get(index));
 		}
 
 		// Composite component
-		this.comp = new Group(this, SWT.NONE);
-		this.comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		this.comp.setLayout(new FillLayout());
+		comp = new Group(this, SWT.NONE);
+		comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		comp.setLayout(new FillLayout());
 
 		profileAsChanged();
 
 		// Add listener
 		getViewSite().getProfileContext().addProfileContextListener(
-				this.profileContextListener);
+				profileContextListener);
 
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				getViewSite().getProfileContext().removeProfileContextListener(
-						AudioOptionsComposite.this.profileContextListener);
+						profileContextListener);
 			}
 		});
 
@@ -237,42 +232,40 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	/**
 	 * Update this view to reflect the profile modification.
 	 */
-	void profileAsChanged() {
+	private void profileAsChanged() {
 
 		// Get audio options from curent profile context
-		Profile selectedProfile = this.viewSite.getProfileContext().getSelectedProfile();
+		Profile selectedProfile = site.getProfileContext().getSelectedProfile();
 		if (selectedProfile instanceof HardCodedProfile) {
 			return;
 		}
-		AudioEncodingOptions audioOptions = selectedProfile
-				.getEncodingOptions().getAudioOptions();
+		Muxer muxer = selectedProfile.getEncodingOptions().getMuxer();
 
 		// Get associated mapper
-		AudioOptionsMapper mapper = findMapper(audioOptions);
-		mapper.setDefaultEncodingOptions(audioOptions);
-		
+		MuxerOptionsMapper mapper = findMapper(muxer.getVideoDemuxer());
+
 		// Set audio codec selection
-		AudioOptionsMapper mapperSelected = getAudioOptionsMapperSelection();
+		MuxerOptionsMapper mapperSelected = getAudioOptionsMapperSelection();
 		if (mapperSelected == null || !mapperSelected.equals(mapper)) {
-			this.audioCodecViewer.setSelection(new StructuredSelection(mapper));
+			muxerViewer.setSelection(new StructuredSelection(mapper));
 		}
 
-		if (mapper == this.lastMapper)
+		if (mapper == lastMapper)
 			return;
 
 		// Remove older component
-		Control[] childs = this.comp.getChildren();
+		Control[] childs = comp.getChildren();
 		for (int index = 0; index < childs.length; index++) {
 			childs[index].dispose();
 		}
 
 		// Create new component
-		AudioOptionsInterface optionsInterface = mapper.createInterface(this.comp,
+		MuxerOptionsInterface optionsInterface = mapper.createInterface(comp,
 				SWT.NONE);
 		optionsInterface.init(getViewSite());
-		this.comp.layout();
+		comp.layout();
 
-		this.lastMapper = mapper;
+		lastMapper = mapper;
 
 	}
 
@@ -282,9 +275,9 @@ public class AudioOptionsComposite extends Composite implements IViewPart {
 	 * @param mapper
 	 *            the mapper.
 	 */
-	private void registerMapper(AudioOptionsMapper mapper) {
+	private void registerMapper(MuxerOptionsMapper mapper) {
 
-		this.mappers.add(mapper);
+		mappers.add(mapper);
 
 	}
 
