@@ -200,7 +200,7 @@ public class StreamReader {
 	public String toString() {
 
 		if (this.thread != null) {
-			while (this.thread.isAlive()) {
+			while (this.thread!=null && thread.isAlive()) {
 				try {
 					Thread.sleep(SLEEP_DELAY);
 				} catch (InterruptedException e) {

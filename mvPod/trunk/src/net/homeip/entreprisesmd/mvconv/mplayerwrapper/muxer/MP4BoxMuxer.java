@@ -22,6 +22,8 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoDemuxer;
  * 
  */
 public class MP4BoxMuxer implements Muxer {
+
+	private static final String OS_NAME = System.getProperty("os.name");
 	/**
 	 * MP4Box component name.
 	 */
@@ -39,8 +41,9 @@ public class MP4BoxMuxer implements Muxer {
 	/**
 	 * Define the MP$Box application file name.
 	 */
-	public static final String MP4BOX_BIN = System.getProperty("os.name") //$NON-NLS-1$
-			.indexOf("Windows") >= 0 ? MP4BOX_BIN_WINDOWS : MP4BOX_BIN_OTHER; //$NON-NLS-1$
+	public static final String MP4BOX_BIN = OS_NAME.indexOf("Windows") >= 0 ? MP4BOX_BIN_WINDOWS //$NON-NLS-1$
+			: MP4BOX_BIN_OTHER;
+
 	/**
 	 * List of path to search MP4Box.
 	 */
@@ -91,7 +94,8 @@ public class MP4BoxMuxer implements Muxer {
 	 * This implementation return an new encoding job to create MP4 box.
 	 * 
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.Muxer#getEncodingJob(net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerWrapper,
-	 *      net.homeip.entreprisesmd.mvconv.mplayerwrapper.InputVideo, java.io.File,
+	 *      net.homeip.entreprisesmd.mvconv.mplayerwrapper.InputVideo,
+	 *      java.io.File,
 	 *      net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions)
 	 */
 	public EncodingJob getEncodingJob(MPlayerWrapper wrapper,

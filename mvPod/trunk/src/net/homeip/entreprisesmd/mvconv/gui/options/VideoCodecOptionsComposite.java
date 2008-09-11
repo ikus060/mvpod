@@ -16,7 +16,6 @@ import net.homeip.entreprisesmd.mvconv.gui.options.video.VideoOptionsMapper;
 import net.homeip.entreprisesmd.mvconv.gui.options.video.X264OptionsComposite;
 import net.homeip.entreprisesmd.mvconv.gui.options.video.XVideoOptionsComposite;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoFormat;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.VideoEncodingOptions;
 
 import org.eclipse.jface.viewers.ComboViewer;
@@ -35,7 +34,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-
 
 /**
  * This class display audio options to user and give him the chance to change
@@ -122,16 +120,25 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	 */
 	void codecSelectionChanged() {
 
+		//Get the new mapper selected
 		VideoOptionsMapper mapperSelected = getVideoOptionsMapperSelection();
 		VideoEncodingOptions videoOptions = mapperSelected.getEncodingOptions();
 
 		ProfileContext profileContext = getViewSite().getProfileContext();
 		Profile profile = profileContext.getSelectedProfile();
 		EncodingOptions options = profile.getEncodingOptions();
-		Class<? extends VideoEncodingOptions> clazz = options.getVideoOptions().getClass();
+		VideoEncodingOptions currentVideoOptions = options.getVideoOptions();
+		
+		//Check if the new Mapper match the current video encoding options
+		if (!mapperSelected.match(currentVideoOptions)) {
 
-		if (!clazz.isAssignableFrom(videoOptions.getClass())) {
-
+			// Update the video encoding options with generic value of previous options
+			videoOptions.setBitrate(currentVideoOptions.getBitrate());
+			videoOptions.setPass(currentVideoOptions.getPass());
+			videoOptions.setOutputFrameRate(currentVideoOptions.getOutputFrameRate());
+			videoOptions.setMaxOutputFrameRate(currentVideoOptions.getMaxOutputFrameRate());
+			
+			//Update the video encoding options with a new one
 			options.setVideoOptions(videoOptions);
 			Profile newProfile = Profiles.createOnFlyProfile(options);
 			profileContext.setSelectedProfile(newProfile);
@@ -141,17 +148,17 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	}
 
 	/**
-	 * Return the mapper associate with the given audio format.
+	 * Return the Mapper associate with the given audio encoding options.
 	 * 
-	 * @param format
-	 *            the audio format.
+	 * @param options
+	 *            the audio encoding options to match.
 	 * @return the mapper.
 	 */
-	private VideoOptionsMapper findMapper(VideoFormat format) {
+	private VideoOptionsMapper findMapper(VideoEncodingOptions options) {
 
 		int index = 0;
 		while (index < mappers.size()
-				&& !mappers.get(index).getVideoFormat().equals(format)) {
+				&& !mappers.get(index).match(options)) {
 			index++;
 		}
 		if (index < mappers.size()) {
@@ -167,8 +174,8 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	 * @return the selected mapper.
 	 */
 	private VideoOptionsMapper getVideoOptionsMapperSelection() {
-		Object selection = ((IStructuredSelection) codecViewer
-				.getSelection()).getFirstElement();
+		Object selection = ((IStructuredSelection) codecViewer.getSelection())
+				.getFirstElement();
 		if (!(selection instanceof VideoOptionsMapper)) {
 			return null;
 		}
@@ -197,13 +204,13 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 		GridLayout layout = new GridLayout(2, false);
 		this.setLayout(layout);
 
-		String audioCodecText = Localization.getString(Localization.OPTIONS_VIDEO_CODEC);
-		
+		String audioCodecText = Localization
+				.getString(Localization.OPTIONS_VIDEO_CODEC);
+
 		Label label = new Label(this, SWT.NONE);
 		label.setText(audioCodecText);
-		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true,false));
-		
-		
+		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+
 		codecViewer = new ComboViewer(this, SWT.READ_ONLY | SWT.DROP_DOWN);
 		codecViewer.setLabelProvider(labelProvider);
 		codecViewer.addSelectionChangedListener(selectionListener);
@@ -239,7 +246,7 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	 */
 	void profileAsChanged() {
 
-		// Get audio options from curent profile context
+		// Get video options from curent profile context
 		Profile selectedProfile = site.getProfileContext().getSelectedProfile();
 		if (selectedProfile instanceof HardCodedProfile) {
 			return;
@@ -248,9 +255,10 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 				.getEncodingOptions().getVideoOptions();
 
 		// Get associated mapper
-		VideoOptionsMapper mapper = findMapper(videoOptions.getVideoFormat());
-
-		// Set audio codec selection
+		VideoOptionsMapper mapper = findMapper(videoOptions);
+		mapper.setDefaultEncodingOptions(videoOptions);
+		
+		// Set video codec selection
 		VideoOptionsMapper mapperSelected = getVideoOptionsMapperSelection();
 		if (mapperSelected == null || !mapperSelected.equals(mapper)) {
 			codecViewer.setSelection(new StructuredSelection(mapper));
@@ -270,7 +278,7 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 				SWT.NONE);
 		optionsInterface.init(getViewSite());
 		comp.layout();
-		
+
 		lastMapper = mapper;
 
 	}
@@ -282,9 +290,7 @@ public class VideoCodecOptionsComposite extends Composite implements IViewPart {
 	 *            the mapper.
 	 */
 	private void registerMapper(VideoOptionsMapper mapper) {
-
 		mappers.add(mapper);
-
 	}
 
 }

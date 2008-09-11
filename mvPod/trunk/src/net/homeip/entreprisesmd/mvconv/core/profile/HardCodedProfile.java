@@ -15,8 +15,7 @@ public interface HardCodedProfile extends Profile {
 	/**
 	 * Return the current video bitrate.
 	 * 
-	 * @param return
-	 *            the video bitrate.
+	 * @param return the video bitrate.
 	 */
 	int getAudioBitrate();
 
@@ -62,6 +61,19 @@ public interface HardCodedProfile extends Profile {
 	 *            the audio bitrate.
 	 */
 	void setAudioBitrate(int bitrate);
+
+	/**
+	 * Return true if the two pass mode are enabled.
+	 */
+	public boolean twoPassEnabled();
+
+	/**
+	 * Use to enable the two pass mode.
+	 * 
+	 * @param enable
+	 *            True to enable the two pass mode.
+	 */
+	public void enableTwoPass(boolean enable);
 
 	/**
 	 * Sets the audio bitrate of this profile.

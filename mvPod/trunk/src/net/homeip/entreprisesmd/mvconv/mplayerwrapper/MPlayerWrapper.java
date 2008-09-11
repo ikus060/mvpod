@@ -15,20 +15,26 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.DefaultEncodingJob;
  */
 public class MPlayerWrapper {
 	/**
-	 * Key value for user home directory.
+	 * Define the User home directory.
 	 */
-	public static final String USER_HOME = "user.home"; //$NON-NLS-1$
+	public static final String USER_HOME = System.getProperty("user.home"); //$NON-NLS-1$
+
+	/**
+	 * Define the OS Name.
+	 */
+	public static final String OS_NAME = System.getProperty("os.name");
 
 	/**
 	 * mencoder filename.
 	 */
-	public static final String MENCODER_BIN = System.getProperty("os.name") //$NON-NLS-1$
-			.indexOf("Windows") >= 0 ? "mencoder.exe" : "mencoder"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+	public static final String MENCODER_BIN = OS_NAME.indexOf("Windows") >= 0 ? "mencoder.exe" //$NON-NLS-1$ //$NON-NLS-2$
+			: "mencoder";  //$NON-NLS-1$
 	/**
 	 * mplayer filename.
 	 */
-	public static final String MPLAYER_BIN = System.getProperty("os.name") //$NON-NLS-1$
-			.indexOf("Windows") >= 0 ? "mplayer.exe" : "mplayer"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public static final String MPLAYER_BIN = OS_NAME.indexOf("Windows") >= 0 ? "mplayer.exe" //$NON-NLS-1$ //$NON-NLS-2$
+			: "mplayer"; //$NON-NLS-1$
 
 	/**
 	 * Fullpath to mendoder.
@@ -107,9 +113,7 @@ public class MPlayerWrapper {
 	 */
 	public Configuration getUserConfiguration() {
 
-		String home = System.getProperty(USER_HOME);
-		File configFile = new File(home, ".mplayer/config"); //$NON-NLS-1$
-
+		File configFile = new File(USER_HOME, ".mplayer/config"); //$NON-NLS-1$
 		return new Configuration(configFile, this);
 
 	}

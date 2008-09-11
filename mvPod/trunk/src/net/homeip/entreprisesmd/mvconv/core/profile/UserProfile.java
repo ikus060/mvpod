@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
 
 /**
- * This class represent a user profile customized for it's needs. This profile
+ * This class represent a user profile customised for it's needs. This profile
  * are loaded and save to file.
  * 
  * @author patapouf
