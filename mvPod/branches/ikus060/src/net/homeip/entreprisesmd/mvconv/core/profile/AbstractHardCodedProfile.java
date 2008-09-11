@@ -10,6 +10,10 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoScalingOptions;
  */
 public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 	/**
+	 * Audio bitrate.
+	 */
+	private int audioBitrate;
+	/**
 	 * Maximum audio bitrate.
 	 */
 	private int maxAudioBitrate;
@@ -22,13 +26,14 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 	 */
 	private VideoScalingOptions[] supportedVideoScalings;
 	/**
-	 * Audio bitrate.
+	 * Current pass count;
 	 */
-	private int audioBitrate;
+	private boolean twoPass = false;
 	/**
 	 * Video bitrate.
 	 */
 	private int videoBitrate;
+
 	/**
 	 * Video scaling options.
 	 */
@@ -51,8 +56,9 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 	 *            the initial dimension.
 	 */
 	public AbstractHardCodedProfile(int maxAudioBitrate, int maxVideoBitrate,
-			VideoScalingOptions[] supportedVideoScalings, int defaultAudioBitrate,
-			int defaultVideoBitrate, VideoScalingOptions defaultScaling) {
+			VideoScalingOptions[] supportedVideoScalings,
+			int defaultAudioBitrate, int defaultVideoBitrate,
+			VideoScalingOptions defaultScaling) {
 
 		if (maxAudioBitrate < 0) {
 			throw new IllegalArgumentException(
@@ -86,6 +92,13 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 		this.audioBitrate = defaultAudioBitrate;
 		this.videoBitrate = defaultVideoBitrate;
 		this.videoScaling = defaultScaling;
+	}
+
+	/**
+	 * This implementation change the two pass mode.
+	 */
+	public void enableTwoPass(boolean enable) {
+		this.twoPass = enable;
 	}
 
 	/**
@@ -172,6 +185,13 @@ public abstract class AbstractHardCodedProfile implements HardCodedProfile {
 
 		this.videoScaling = dimension;
 
+	}
+
+	/**
+	 * This implementation return true if two pass mode are enabled.
+	 */
+	public boolean twoPassEnabled() {
+		return twoPass;
 	}
 
 }
