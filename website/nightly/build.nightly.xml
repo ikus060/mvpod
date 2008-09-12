@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This build script are the main entry point to compile the SP. The target 
+	'ditribute' are call by BuildForge with extra properties value reused in 
+	the	script.
+	
+	Here are the properties:
+	  * cruise.run.project.properties=rpm/rpm-db-db2-8.2-windows-32bits/7.1.1.2/build (never used)
+	  * server.webshare.input.dir=\\rpmfs01\builds\Integration (never used)
+	  * label=build.%build_number%
+
+	Create by : Patrik Dufresne
+	File : build.xml
+	-->
+<project default="distribute" name="RPM Database Build" basedir=".">
+
+	<property name="sf.username" value=""/>
+	<property name="svn.username" value=""/>
+	<property name="svn.password" value=""/>
+	
+	<property name="sf.ssh.server" value="shell.sourceforge.net"/>
+	<property name="sf.nightly.build.dir" value="/home/groups/m/mv/mvpod/htdocs/nightly"/>
+	<property name="svn.checkout.url" value="https://svn.entreprisesmd.homeip.net:8443/svn/mvpod/mvPod/trunk/"/>
+	<property name="source.checkout.dir" value="./sources"/>
+	<property name="source.build.xml.filename" value="build.xml" />
+	<property name="source.build.xml.clear.target" value="clean" />
+	<property name="source.build.xml.distribution.target" value="dist" />
+	<property name="source.distribution.dir" value="./sources/dist"/>
+	<!--
+		target : distribute
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="distribute" depends="step-assert-property-values">
+		
+		<antcall target="step-checkout"/>
+		<antcall target="step-create-distribution-package"/>
+		<antcall target="step-send-file"/>
+
+	</target>
+	
+	<!--
+		target : step-assert-property-values
+		Validate any property value 
+		-->
+	<target name="step-assert-property-values">
+		
+		<!-- Validate Username -->
+		<fail message="Username are not set : ${svn.username}">
+			<condition>
+				<or>
+					<not>
+						<isset property="svn.username"/>
+					</not>
+					<equals arg1="${svn.username}" arg2=""/>
+				</or>
+			</condition>
+		</fail>
+
+		<!-- Validate password -->
+		<fail message="Password are not set : ${svn.username}">
+			<condition>
+				<or>
+					<not>
+						<isset property="svn.password"/>
+					</not>
+					<equals arg1="${svn.password}" arg2=""/>
+				</or>
+			</condition>
+		</fail>
+		
+			<!-- Validate SF.net Username -->
+		<fail message="Username are not set : ${sf.username}">
+			<condition>
+				<or>
+					<not>
+						<isset property="sf.username"/>
+					</not>
+					<equals arg1="${sf.username}" arg2=""/>
+				</or>
+			</condition>
+		</fail>
+		
+	</target>
+
+	<!--
+		target : step-checkout
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="step-checkout">
+		
+		<exec executable="svn">
+			<arg line="co --username ${svn.username} --password ${svn.password} ${svn.checkout.url} ${source.checkout.dir}"/>
+		</exec>
+
+	</target>
+	
+	<!--
+		target : step-create-distribution-package
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="step-create-distribution-package">
+		
+		<ant antfile="${source.build.xml.filename}" dir="${source.checkout.dir}"
+			target="${source.build.xml.clear.target}"/>
+		<ant antfile="${source.build.xml.filename}" dir="${source.checkout.dir}"
+			target="${source.build.xml.distribution.target}"/>
+
+	</target>
+	
+	<!--
+		target : step-send-file
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="step-send-file">
+		
+		<tstamp>
+			<format property="release.dirname" pattern="yyyy-MM-dd"/>
+		</tstamp>
+	
+		<exec executable="ssh">
+                        <arg line="${sf.username}@${sf.ssh.server} mkdir -p ${sf.nightly.build.dir}/${release.dirname}"/>
+                </exec>
+		<echo message="Send .tar.gx files" level="info"/>
+		<exec executable="bash" dir="${source.distribution.dir}">
+			<arg line="-c 'scp *.tar.gz ${sf.username}@${sf.ssh.server}:${sf.nightly.build.dir}/${release.dirname}'" />
+		</exec>
+		<echo message="Send .exe file" level="info"/>
+		<exec executable="bash" dir="${source.distribution.dir}">
+                        <arg line="-c 'scp *.exe ${sf.username}@${sf.ssh.server}:${sf.nightly.build.dir}/${release.dirname}'" />
+                </exec>
+		<echo message="remove latest link" level="info"/>
+		<exec executable="ssh">
+                        <arg line="${sf.username}@${sf.ssh.server} rm ${sf.nightly.build.dir}/latest" />
+                </exec>
+		<echo message="Recreate latest symbolic link" level="info"/>
+		<exec executable="ssh">
+                	<arg line="${sf.username}@${sf.ssh.server} ln -s ${sf.nightly.build.dir}/${release.dirname} ${sf.nightly.build.dir}/latest" />
+                </exec>
+		<echo message="Remove older file" level="info"/>
+		<exec executable="ssh">
+                        <arg line="${sf.username}@${sf.ssh.server} 'find ${sf.nightly.build.dir} -mtime +2 -exec rm -r {} \;'" />
+                </exec>
+
+	</target>
+
+</project>
