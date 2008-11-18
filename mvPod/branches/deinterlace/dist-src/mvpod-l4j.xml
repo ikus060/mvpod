@@ -1,0 +1,38 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <errTitle>mvPod</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>../</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>./bin/mvpod.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.4.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+  </jre>
+  <versionInfo>
+    <fileVersion>0.0.1.1</fileVersion>
+    <txtFileVersion>0.1 build 1</txtFileVersion>
+    <fileDescription>mvPod Application</fileDescription>
+    <copyright>Copyright 2008, Patrik Dufresne</copyright>
+    <productVersion>0.0.1.1</productVersion>
+    <txtProductVersion>0.1 build 1</txtProductVersion>
+    <productName>mvPod</productName>
+    <companyName>mvPod, inc.</companyName>
+    <internalName>mvPod</internalName>
+    <originalFilename>mvPod.exe</originalFilename>
+  </versionInfo>
+  <messages>
+    <startupErr>An error occurred while starting the application.</startupErr>
+    <bundledJreErr>This application was configured to use a bundled Java Runtime Environment but the runtime is missing or corrupted.</bundledJreErr>
+    <jreVersionErr>This application requires a Java Runtime Environment</jreVersionErr>
+    <launcherErr>The registry refers to a nonexistent Java Runtime Environment installation or the runtime is corrupted.</launcherErr>
+  </messages>
+</launch4jConfig>
