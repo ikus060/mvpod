@@ -9,6 +9,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.MPlayerWrapper;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoOutputDevice;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.config.Configuration;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4BoxMuxer;
+import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4CreatorMuxer;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -49,24 +50,34 @@ public class PreferencesDialog extends Dialog {
 	/**
 	 * MP4Box button.
 	 */
-	private Button mp4boxButton;
+	Button mp4boxButton;
+
+	/**
+	 * mp4converter button.
+	 */
+	Button mp4creatorButton;
+
 	/**
 	 * MP4Box directory text component.
 	 */
-	private Text mp4boxDirectoryText;
+	Text mp4boxDirectoryText;
+	/**
+	 * mp4creator directory text component.
+	 */
+	Text mp4creatorDirectoryText;
 	/**
 	 * MPlayer button.
 	 */
-	private Button mplayerButton;
+	Button mplayerButton;
 	/**
 	 * Mplayer directory text component.
 	 */
-	private Text mplayerDirectoryText;
+	Text mplayerDirectoryText;
 
 	/**
 	 * Property listener.
 	 */
-	private IPropertyChangeListener propertiesListener = new IPropertyChangeListener() {
+	IPropertyChangeListener propertiesListener = new IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
 			PreferencesDialog.this.propertyChange();
 		}
@@ -74,13 +85,13 @@ public class PreferencesDialog extends Dialog {
 	/**
 	 * Replace button.
 	 */
-	private Button replaceButton;
+	Button replaceButton;
 	/**
 	 * Selection change listener
 	 */
-	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
+	ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			if (event.getSource() == videoOutputDeviceComboViewer) {
+			if (event.getSource() == PreferencesDialog.this.videoOutputDeviceComboViewer) {
 				videoOutputDeviceSelectionAsChanged();
 			}
 		}
@@ -88,14 +99,16 @@ public class PreferencesDialog extends Dialog {
 	/**
 	 * Selection listener.
 	 */
-	private SelectionListener selectionListener = new SelectionAdapter() {
+	SelectionListener selectionListener = new SelectionAdapter() {
 
 		public void widgetSelected(SelectionEvent event) {
-			if (event.widget == replaceButton) {
+			if (event.widget == PreferencesDialog.this.replaceButton) {
 				replaceSelectionAsChanged();
-			} else if (event.widget == mp4boxButton) {
+			} else if (event.widget == PreferencesDialog.this.mp4boxButton) {
 				handleMP4BoxBrowse();
-			} else if (event.widget == mplayerButton) {
+			} else if (event.widget == PreferencesDialog.this.mp4creatorButton) {
+				handleMp4creatorBrowse();
+			} else if (event.widget == PreferencesDialog.this.mplayerButton) {
 				handleMPlayerBrowse();
 			}
 		}
@@ -104,18 +117,18 @@ public class PreferencesDialog extends Dialog {
 	/**
 	 * The view site.
 	 */
-	private IViewSite site;
+	IViewSite site;
 	/**
 	 * User configuration.
 	 */
-	private Configuration userConfiguration;
+	Configuration userConfiguration;
 
 	/**
 	 * Combo viewer
 	 */
-	private ComboViewer videoOutputDeviceComboViewer;
+	ComboViewer videoOutputDeviceComboViewer;
 
-	private LabelProvider videoOutputDeviceLabelProvider = new LabelProvider() {
+	LabelProvider videoOutputDeviceLabelProvider = new LabelProvider() {
 		public String getText(Object element) {
 			if (element instanceof VideoOutputDevice) {
 				return ((VideoOutputDevice) element).getName();
@@ -254,14 +267,14 @@ public class PreferencesDialog extends Dialog {
 		label = new Label(directoryGroup, SWT.NONE);
 		label.setText(mplayerText);
 
-		mplayerDirectoryText = new Text(directoryGroup, SWT.BORDER
+		this.mplayerDirectoryText = new Text(directoryGroup, SWT.BORDER
 				| SWT.READ_ONLY);
-		mplayerDirectoryText.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
-				true, false));
+		this.mplayerDirectoryText.setLayoutData(new GridData(SWT.FILL,
+				SWT.FILL, true, false));
 
-		mplayerButton = new Button(directoryGroup, SWT.PUSH);
-		mplayerButton.setText(browseText);
-		mplayerButton.addSelectionListener(selectionListener);
+		this.mplayerButton = new Button(directoryGroup, SWT.PUSH);
+		this.mplayerButton.setText(browseText);
+		this.mplayerButton.addSelectionListener(this.selectionListener);
 
 		// MP4Box emplacement
 		String mp4boxText = Localization
@@ -269,25 +282,42 @@ public class PreferencesDialog extends Dialog {
 		label = new Label(directoryGroup, SWT.NONE);
 		label.setText(mp4boxText);
 
-		mp4boxDirectoryText = new Text(directoryGroup, SWT.BORDER
+		this.mp4boxDirectoryText = new Text(directoryGroup, SWT.BORDER
 				| SWT.READ_ONLY);
-		mp4boxDirectoryText.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+		this.mp4boxDirectoryText.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, false));
 
-		mp4boxButton = new Button(directoryGroup, SWT.PUSH);
-		mp4boxButton.setText(browseText);
-		mp4boxButton.addSelectionListener(selectionListener);
+		this.mp4boxButton = new Button(directoryGroup, SWT.PUSH);
+		this.mp4boxButton.setText(browseText);
+		this.mp4boxButton.addSelectionListener(selectionListener);
 
+		// mp4converter emplacement
+		String mp4creatorText = Localization
+				.getString(Localization.PREFERENCE_MP4CONVERTER_EMPLACEMENT);
+		label = new Label(directoryGroup, SWT.NONE);
+		label.setText(mp4creatorText);
+
+		this.mp4creatorDirectoryText = new Text(directoryGroup, SWT.BORDER
+				| SWT.READ_ONLY);
+		this.mp4creatorDirectoryText.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+				true, false));
+
+		this.mp4creatorButton = new Button(directoryGroup, SWT.PUSH);
+		this.mp4creatorButton.setText(browseText);
+		this.mp4creatorButton.addSelectionListener(this.selectionListener);
+		
+		//Force update of fields
 		propertyChange();
 
 		Main.instance().getPreferenceStore().addPropertyChangeListener(
-				propertiesListener);
+				this.propertiesListener);
 
 		// Add disposal instruction
 		directoryGroup.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				Main.instance().getPreferenceStore()
-						.removePropertyChangeListener(propertiesListener);
+						.removePropertyChangeListener(
+								PreferencesDialog.this.propertiesListener);
 			}
 		});
 
@@ -301,7 +331,33 @@ public class PreferencesDialog extends Dialog {
 	 * @return the view site.
 	 */
 	public IViewSite getViewSite() {
-		return site;
+		return this.site;
+	}
+
+	/**
+	 * Notify this class that user want to browse a new directory emplacement
+	 * for mp4creator tool.
+	 */
+	void handleMp4creatorBrowse() {
+		IPreferenceStore store = Main.instance().getPreferenceStore();
+
+		String mplayerDirectory = store
+				.getString(Main.PREF_MP4CREATOR_DIRECTORY);
+
+		FileDialog dlg = new FileDialog(getShell(), SWT.OPEN);
+		dlg.setFilterPath(mplayerDirectory);
+		dlg.setFileName(MP4CreatorMuxer.MP4CREATOR_BIN);
+
+		dlg
+				.setFilterExtensions(new String[] { MP4CreatorMuxer.MP4CREATOR_BIN });
+		dlg.setFilterNames(new String[] { MP4CreatorMuxer.MP4CREATOR_BIN });
+
+		String filePath = dlg.open();
+
+		if (filePath != null) {
+			filePath = dlg.getFilterPath();
+			store.setValue(Main.PREF_MP4CREATOR_DIRECTORY, filePath);
+		}
 	}
 
 	/**
@@ -365,13 +421,13 @@ public class PreferencesDialog extends Dialog {
 	 * Initialize this view with the given view site. Sub-class that overload
 	 * this method must call super.init().
 	 * 
-	 * @param site
+	 * @param viewSite
 	 *            the view site.
 	 */
-	public void init(IViewSite site) {
-		this.site = site;
+	public void init(IViewSite viewSite) {
+		this.site = viewSite;
 
-		userConfiguration = site.getMplayer().getUserConfiguration();
+		this.userConfiguration = viewSite.getMplayer().getUserConfiguration();
 	}
 
 	/**
@@ -381,13 +437,18 @@ public class PreferencesDialog extends Dialog {
 
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 
-		replaceButton.setSelection(store.getBoolean(Main.PREF_REPLACE_FILE));
+		this.replaceButton.setSelection(store
+				.getBoolean(Main.PREF_REPLACE_FILE));
 
 		String mplayerDirectory = store.getString(Main.PREF_MPLAYER_DIRECTORY);
-		mplayerDirectoryText.setText(mplayerDirectory);
+		this.mplayerDirectoryText.setText(mplayerDirectory);
 
 		String mp4boxDirectory = store.getString(Main.PREF_MP4BOX_DIRECTORY);
-		mp4boxDirectoryText.setText(mp4boxDirectory);
+		this.mp4boxDirectoryText.setText(mp4boxDirectory);
+
+		String mp4converterDirectory = store
+				.getString(Main.PREF_MP4CREATOR_DIRECTORY);
+		this.mp4creatorDirectoryText.setText(mp4converterDirectory);
 
 	}
 
@@ -397,7 +458,7 @@ public class PreferencesDialog extends Dialog {
 	 */
 	void replaceSelectionAsChanged() {
 
-		boolean selection = replaceButton.getSelection();
+		boolean selection = this.replaceButton.getSelection();
 
 		IPreferenceStore store = Main.instance().getPreferenceStore();
 		store.setValue(Main.PREF_REPLACE_FILE, selection);
@@ -409,15 +470,15 @@ public class PreferencesDialog extends Dialog {
 	 */
 	void videoOutputDeviceSelectionAsChanged() {
 
-		IStructuredSelection selection = (IStructuredSelection) videoOutputDeviceComboViewer
+		IStructuredSelection selection = (IStructuredSelection) this.videoOutputDeviceComboViewer
 				.getSelection();
 		Object objectSelected = selection.getFirstElement();
 
 		if (objectSelected instanceof VideoOutputDevice) {
-			userConfiguration
+			this.userConfiguration
 					.setVideoOutputDevice((VideoOutputDevice) objectSelected);
 			try {
-				userConfiguration.save();
+				this.userConfiguration.save();
 			} catch (IOException e) {
 				// TODO handle this error !
 				e.printStackTrace();
