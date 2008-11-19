@@ -44,9 +44,14 @@ public abstract class InputVideo {
 	public static final double ASPECT_RATIO_KEEP = 0;
 
 	/**
+	 * Interlace mode.
+	 */
+	boolean interlace = false;
+
+	/**
 	 * Aspect ratio.
 	 */
-	private double overwriteAspectRatio = 0;
+	double overwriteAspectRatio = 0;
 
 	/**
 	 * Return True if the <code>obj</code> are equals to this object.
@@ -65,6 +70,15 @@ public abstract class InputVideo {
 	 */
 	public double getAspectRatio() {
 		return this.overwriteAspectRatio;
+	}
+
+	/**
+	 * Return True if the input video are interlace
+	 * 
+	 * @return true if interlace
+	 */
+	public boolean isInterlaced() {
+		return this.interlace;
 	}
 
 	/**
@@ -91,6 +105,16 @@ public abstract class InputVideo {
 			this.overwriteAspectRatio = 0;
 		}
 		this.overwriteAspectRatio = value;
+	}
+
+	/**
+	 * Sets the interlace mode of this input video.
+	 * 
+	 * @param value
+	 *            The new interlace mode.
+	 */
+	public void setInterlaced(boolean value) {
+		this.interlace = value;
 	}
 
 	/**

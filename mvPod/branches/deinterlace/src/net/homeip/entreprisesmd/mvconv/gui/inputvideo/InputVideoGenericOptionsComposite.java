@@ -13,6 +13,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.InputVideo;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -21,13 +22,19 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This dialog are use to modify advance options of one inputVideo.
+ * This dialog are use to modify advance options of on inputVideo. This
+ * interface are shown when user click on 'More Options..' button.
  * 
  * @author patapouf
  * 
@@ -44,12 +51,12 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 	/**
 	 * Frame rate viewer
 	 */
-	private ComboCustomViewer aspectRatioEditor;
+	ComboCustomViewer aspectRatioEditor;
 
 	/**
 	 * Aspect Ratio label provider.
 	 */
-	private LabelProvider aspectRatioLabelProvider = new LabelProvider() {
+	LabelProvider aspectRatioLabelProvider = new LabelProvider() {
 		public String getText(Object element) {
 			String key = null;
 			if (element.equals(InputVideo.ASPECT_RATIO_KEEP)) {
@@ -67,11 +74,18 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 			return element.toString();
 		}
 	};
+
+	ComboViewer deinterlaceMethodViewer;
+	ComboViewer deinterlaceFilterViewer;
+
+	Button interlacedVideoButton;
+	Button deinterlaceVideoButton;
+
 	/**
 	 * This observer are use to be notify of any change of the video so the
 	 * composite can be ubdate to reflect this modification.
 	 */
-	private VideoObserver videoObserver = new VideoObserver() {
+	VideoObserver videoObserver = new VideoObserver() {
 		public void videoHasChanged(Video video) {
 			InputVideoGenericOptionsComposite.this.videoHasChanged();
 		}
@@ -80,12 +94,26 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 	/**
 	 * Selection listener.
 	 */
-	private ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
+	ISelectionChangedListener selectionChangeListener = new ISelectionChangedListener() {
 		public void selectionChanged(SelectionChangedEvent event) {
-			if (event.getSource() == aspectRatioEditor) {
+			if (event.getSource() == InputVideoGenericOptionsComposite.this.aspectRatioEditor) {
 				frameRateSelectionAsChanged();
+			} else if (event.getSource() == InputVideoGenericOptionsComposite.this.deinterlaceMethodViewer) {
+				deinterlaceMethodSelectionAsChanged();
 			}
 		}
+	};
+
+	Listener listener = new Listener() {
+
+		public void handleEvent(Event event) {
+			if (event.widget == InputVideoGenericOptionsComposite.this.interlacedVideoButton) {
+				interlacedVideoSelectAsChanged();
+			} else if (event.widget == InputVideoGenericOptionsComposite.this.deinterlaceVideoButton) {
+				deinterlaceVideoSelectAsChanged();
+			}
+		}
+
 	};
 
 	/**
@@ -108,6 +136,32 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 	}
 
 	/**
+	 * Notify this class that user select a new deinterlace method.
+	 */
+	void deinterlaceMethodSelectionAsChanged() {
+
+	}
+
+	/**
+	 * Notify this class that user change the deinterlace option (enable or
+	 * disable).
+	 */
+	void deinterlaceVideoSelectAsChanged() {
+		
+		/*InputVideo inputVideo = getVideo().getInputVideo();
+
+		// Get Selection
+		boolean selection = this.interlacedVideoButton.getSelection();
+
+		if (selection != inputVideo.isInterlaced()) {
+			// Change inputvideo value
+			inputVideo.setInterlaced(selection);
+			getVideo().setInputVideo(inputVideo);
+		}*/
+		
+	}
+
+	/**
 	 * Notify this class that user select an new aspect ratio.
 	 */
 	void frameRateSelectionAsChanged() {
@@ -115,7 +169,7 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 		InputVideo inputVideo = getVideo().getInputVideo();
 
 		// Get Selection
-		Object selection = ((IStructuredSelection) aspectRatioEditor
+		Object selection = ((IStructuredSelection) this.aspectRatioEditor
 				.getSelection()).getFirstElement();
 		Double aspectRatio = null;
 		if (CUSTOM_ITEM.equals(selection)) {
@@ -139,12 +193,26 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 	 * @return the aspect ratio selection.
 	 */
 	private Double getAspectRatioSelection() {
-		Object selection = ((IStructuredSelection) aspectRatioEditor
+		Object selection = ((IStructuredSelection) this.aspectRatioEditor
 				.getSelection()).getFirstElement();
 		if (!(selection instanceof Double)) {
 			return null;
 		}
 		return (Double) selection;
+	}
+
+	void interlacedVideoSelectAsChanged() {
+
+		InputVideo inputVideo = getVideo().getInputVideo();
+
+		// Get Selection
+		boolean selection = this.interlacedVideoButton.getSelection();
+
+		if (selection != inputVideo.isInterlaced()) {
+			// Change inputvideo value
+			inputVideo.setInterlaced(selection);
+			getVideo().setInputVideo(inputVideo);
+		}
 	}
 
 	/**
@@ -158,27 +226,77 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 		// Load localized text
 		String aspectRatio = Localization
 				.getString(Localization.INPUTOUTPUT_ASPECT_RATIO);
+		String interlaced = Localization
+				.getString(Localization.INPUTOUTPUT_INTERLACED);
+		String interlaceOptions = Localization
+				.getString(Localization.INPUTOUTPUT_INTERLACE_OPTIONS);
+		String deinterlace = Localization
+				.getString(Localization.INPUTOUTPUT_DEINTERLACE);
+		String deinterlaceMethod = Localization
+				.getString(Localization.INPUTOUTPUT_DEINTERLACE_METHOD);
+		String deinterlaceFilter = Localization
+				.getString(Localization.INPUTOUTPUT_DEINTERLACE_FILTER);
+		/*
+		 * Components
+		 */
 
-		// Components
+		// Aspect Ratio
 		Label label = new Label(this, SWT.NONE);
 		label.setText(aspectRatio);
 
-		aspectRatioEditor = new ComboCustomViewer(this);
-		aspectRatioEditor.addSelectionChangedListener(selectionChangeListener);
-		aspectRatioEditor.setLabelProvider(aspectRatioLabelProvider);
-		aspectRatioEditor.add(CUSTOM_ITEM);
-		aspectRatioEditor.add(InputVideo.ASPECT_RATIO_KEEP);
-		aspectRatioEditor.add(InputVideo.ASPECT_RATIO_4_3);
-		aspectRatioEditor.add(InputVideo.ASPECT_RATIO_16_9);
+		this.aspectRatioEditor = new ComboCustomViewer(this);
+		this.aspectRatioEditor
+				.addSelectionChangedListener(this.selectionChangeListener);
+		this.aspectRatioEditor.setLabelProvider(this.aspectRatioLabelProvider);
+		this.aspectRatioEditor.add(CUSTOM_ITEM);
+		this.aspectRatioEditor.add(InputVideo.ASPECT_RATIO_KEEP);
+		this.aspectRatioEditor.add(InputVideo.ASPECT_RATIO_4_3);
+		this.aspectRatioEditor.add(InputVideo.ASPECT_RATIO_16_9);
+
+		// Interlace Options
+		Group interlaceGroup = new Group(this, SWT.NONE);
+		interlaceGroup.setText(interlaceOptions);
+		interlaceGroup.setLayout(new GridLayout(2, false));
+		interlaceGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
+				false, 2, 1));
+
+		this.interlacedVideoButton = new Button(interlaceGroup, SWT.CHECK);
+		this.interlacedVideoButton.setText(interlaced);
+		this.interlacedVideoButton.addListener(SWT.Selection, this.listener);
+		this.interlacedVideoButton.setLayoutData(new GridData(SWT.FILL,
+				SWT.FILL, true, false, 2, 1));
+
+		this.deinterlaceVideoButton = new Button(interlaceGroup, SWT.CHECK);
+		this.deinterlaceVideoButton.setText(deinterlace);
+		this.deinterlaceVideoButton.addListener(SWT.Selection, this.listener);
+		this.deinterlaceVideoButton.setLayoutData(new GridData(SWT.FILL,
+				SWT.FILL, true, false, 2, 1));
+
+		label = new Label(interlaceGroup, SWT.NONE);
+		label.setText(deinterlaceMethod);
+
+		this.deinterlaceMethodViewer = new ComboViewer(interlaceGroup,
+				SWT.READ_ONLY);
+		this.deinterlaceMethodViewer
+				.addSelectionChangedListener(this.selectionChangeListener);
+
+		label = new Label(interlaceGroup, SWT.NONE);
+		label.setText(deinterlaceFilter);
+
+		this.deinterlaceFilterViewer = new ComboViewer(interlaceGroup,
+				SWT.READ_ONLY);
+		this.deinterlaceFilterViewer
+				.addSelectionChangedListener(this.selectionChangeListener);
 
 		videoHasChanged();
 
-		getVideo().addVideoObserver(videoObserver);
+		getVideo().addVideoObserver(this.videoObserver);
 
 		// Disposal
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				getVideo().removeVideoObserver(videoObserver);
+				getVideo().removeVideoObserver(
+						InputVideoGenericOptionsComposite.this.videoObserver);
 			}
 		});
 
@@ -207,14 +325,13 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 				if (Pattern.compile(ASPECT_RATIO_PATTERN).matcher(newText)
 						.find()) {
 					return null;
-				} else {
-					try {
-						Double.parseDouble(newText);
-						return null;
-					} catch (NumberFormatException e) {
-						// Mplayer generate alot of garbage, so we expecte some
-						// parsing to fail.
-					}
+				}
+				try {
+					Double.parseDouble(newText);
+					return null;
+				} catch (NumberFormatException e) {
+					// Mplayer generate alot of garbage, so we expecte some
+					// parsing to fail.
 				}
 
 				return Localization
@@ -255,11 +372,32 @@ public class InputVideoGenericOptionsComposite extends InputVideoComposite {
 		InputVideo inputVideo = getVideo().getInputVideo();
 		Double aspectRatio = getAspectRatioSelection();
 
+		// Update aspect ratio
 		if (aspectRatio == null
 				|| !aspectRatio.equals(inputVideo.getAspectRatio())) {
-			aspectRatioEditor.setSelection(new StructuredSelection(inputVideo
-					.getAspectRatio()));
+			this.aspectRatioEditor.setSelection(new StructuredSelection(
+					inputVideo.getAspectRatio()));
 		}
 
+		// Update interlaced mode
+		boolean interlaced = this.interlacedVideoButton.getSelection();
+		if (interlaced != inputVideo.isInterlaced()) {
+			this.interlacedVideoButton.setSelection(inputVideo.isInterlaced());
+			interlaced = inputVideo.isInterlaced();
+		}
+		
+		// Update deinterlace mode
+		boolean deinterlace = this.deinterlaceVideoButton.getSelection();
+		/*if (deinterlace != inputVideo.getDeinterlaceMethod()) {
+			this.deinterlaceVideoButton.setSelection(inputVideo.isInterlaced());
+			deinterlace = inputVideo.isInterlaced();
+		}*/
+		
+		
+		// Update disable state
+		this.deinterlaceVideoButton.setEnabled(interlaced);
+		this.deinterlaceMethodViewer.getCombo().setEnabled(interlaced & deinterlace);
+		this.deinterlaceFilterViewer.getCombo().setEnabled(interlaced & deinterlace);
+		
 	}
 }

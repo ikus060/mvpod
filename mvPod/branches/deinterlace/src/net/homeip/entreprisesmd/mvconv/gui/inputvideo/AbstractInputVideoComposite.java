@@ -39,8 +39,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * This class contain the main part to present the input video selection to the
- * user. This class can be use to facilitate the the creation of a new
- * InputVideoComposite.
+ * user. This class can be use to easily create a new InputVideoComposite.
  * 
  * @author patapouf
  * 
@@ -208,7 +207,8 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
 		this.filename = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		this.filename.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		this.filename.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false));
 		this.filename.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				outputFilenameChanged();
@@ -345,7 +345,8 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		// Disposal
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				getVideo().removeVideoObserver(AbstractInputVideoComposite.this.videoObserver);
+				getVideo().removeVideoObserver(
+						AbstractInputVideoComposite.this.videoObserver);
 				AbstractInputVideoComposite.this.videoObserver = null;
 				AbstractInputVideoComposite.this.boldFont.dispose();
 				AbstractInputVideoComposite.this.boldFont = null;
@@ -409,13 +410,17 @@ public class AbstractInputVideoComposite extends InputVideoComposite {
 		if (defaultValue) {
 			viewer.add(this.defaultElement);
 			if (this.defaultElement.equals(selection)) {
-				viewer.setSelection(new StructuredSelection(this.defaultElement));
+				viewer
+						.setSelection(new StructuredSelection(
+								this.defaultElement));
 			}
 		}
 		if (disableValue) {
 			viewer.add(this.disableElement);
 			if (this.disableElement.equals(selection)) {
-				viewer.setSelection(new StructuredSelection(this.disableElement));
+				viewer
+						.setSelection(new StructuredSelection(
+								this.disableElement));
 			}
 		}
 
