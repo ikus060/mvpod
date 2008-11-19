@@ -24,7 +24,7 @@ public interface VideoFilter {
 	/**
 	 * Return the priority value of this filter. If the filter need to be
 	 * executed before every other, the value return by this method must be
-	 * under 0. Ifthe filter need to be executed at the very end, the value
+	 * under 0. If the filter need to be executed at the very end, the value
 	 * return by this function must be larger than 0.
 	 * 
 	 * <p>
