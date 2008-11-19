@@ -51,6 +51,8 @@ public class VideoDemuxer {
 			new String[] { ".mov", ".qt" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final VideoDemuxer MUXER_MPG4 = new VideoDemuxer(
 			"MUXER_MPG4", new String[] { ".mp4" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final VideoDemuxer MUXER_MPG4_MP4BOX = new VideoDemuxer(
+			"MUXER_MPG4_MP4BOX", new String[] { ".mp4" }); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final VideoDemuxer MUXER_MPC = new VideoDemuxer("MUXER_MPC", //$NON-NLS-1$
 			new String[] { ".mpc" }); //$NON-NLS-1$
 	public static final VideoDemuxer MUXER_MPEG4ES = new VideoDemuxer(

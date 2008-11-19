@@ -22,7 +22,7 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoInfo;
  * @author patapouf
  * 
  */
-public class MP4EncodingJob implements EncodingJob {
+public class MP4BoxEncodingJob implements EncodingJob {
 
 	/**
 	 * True if job are canceled.
@@ -65,7 +65,7 @@ public class MP4EncodingJob implements EncodingJob {
 	 * @throws FileNotFoundException
 	 *             if MP4Box utility are not found.
 	 */
-	public MP4EncodingJob(String mp4box, MPlayerWrapper mplayer,
+	public MP4BoxEncodingJob(String mp4box, MPlayerWrapper mplayer,
 			EncodingJob encodingJob, File outputFile)
 			throws FileNotFoundException {
 
