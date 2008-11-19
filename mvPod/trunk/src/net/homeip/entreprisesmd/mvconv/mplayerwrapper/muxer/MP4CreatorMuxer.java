@@ -16,33 +16,32 @@ import net.homeip.entreprisesmd.mvconv.mplayerwrapper.PlayingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoDemuxer;
 
 /**
- * This muxer are use to generate mp4 file using MP4Box utility.
+ * This muxer are use to generate mp4 file using mp4creator utility.
  * 
  * @author patapouf
  * 
  */
-public class MP4BoxMuxer implements Muxer {
-
-	private static final String OS_NAME = System.getProperty("os.name"); //$NON-NLS-1$
-	/**
-	 * MP4Box component name.
-	 */
-	private static final String MP4BOX_COMPONENT_NAME = "MP4Box"; //$NON-NLS-1$
+public class MP4CreatorMuxer implements Muxer {
 
 	/**
-	 * MP4Box file name for windows.
+	 * mp4creator component name.
 	 */
-	private static final String MP4BOX_BIN_WINDOWS = "MP4Box.exe"; //$NON-NLS-1$
-	/**
-	 * MP4Box file name for other OS.
-	 */
-	private static final String MP4BOX_BIN_OTHER = "MP4Box"; //$NON-NLS-1$
+	private static final String MP4CREATOR_COMPONENT_NAME = "mp4creator"; //$NON-NLS-1$
 
 	/**
-	 * Define the MP$Box application file name.
+	 * mp4creator component name.
 	 */
-	public static final String MP4BOX_BIN = OS_NAME.indexOf("Windows") >= 0 ? MP4BOX_BIN_WINDOWS //$NON-NLS-1$
-			: MP4BOX_BIN_OTHER;
+	private static final String AVI2RAW_COMPONENT_NAME = "avi2raw"; //$NON-NLS-1$
+	
+	/**
+	 * Define the mp4creator application file name.
+	 */
+	public static final String MP4CREATOR_BIN = "mp4creator"; //$NON-NLS-1$
+	
+	/**
+	 * Define the avi2raw application file name.
+	 */	
+	public static final String AVI3RAW_BIN = "avi2raw"; //$NON-NLS-1$
 
 	/**
 	 * List of path to search MP4Box.
@@ -55,7 +54,7 @@ public class MP4BoxMuxer implements Muxer {
 	 * @throws FileNotFoundException
 	 *             when MP4Box application are not found in default location.
 	 */
-	public MP4BoxMuxer() {
+	public MP4CreatorMuxer() {
 		this(new File[0]);
 	}
 
@@ -68,25 +67,43 @@ public class MP4BoxMuxer implements Muxer {
 	 *             when MP4Box application are not found in the given paths
 	 *             list.
 	 */
-	public MP4BoxMuxer(File[] paths) {
+	public MP4CreatorMuxer(File[] paths) {
 		this.paths = paths;
 	}
 
 	/**
-	 * Find the MP4Box utility.
+	 * Find the mp4creator utility.
 	 */
-	private String findMP4Box() throws ComponentMissingException {
+	private String findMP4Creator() throws ComponentMissingException {
 
-		File mp4boxFile = ApplicationFinder.getApplicationPath(MP4BOX_BIN,
+		File mp4creatorFile = ApplicationFinder.getApplicationPath(MP4CREATOR_BIN,
 				this.paths);
-		if (mp4boxFile == null) {
-			throw new ComponentMissingException(MP4BOX_COMPONENT_NAME);
+		if (mp4creatorFile == null) {
+			throw new ComponentMissingException(MP4CREATOR_COMPONENT_NAME);
 		}
 
 		try {
-			return mp4boxFile.getCanonicalPath() + File.separator + MP4BOX_BIN;
+			return mp4creatorFile.getCanonicalPath() + File.separator + MP4CREATOR_BIN;
 		} catch (IOException e) {
-			return mp4boxFile.getAbsolutePath() + File.separator + MP4BOX_BIN;
+			return mp4creatorFile.getAbsolutePath() + File.separator + MP4CREATOR_BIN;
+		}
+	}
+	
+	/**
+	 * Find the avi2raw utility.
+	 */
+	private String findAvi3Raw() throws ComponentMissingException {
+
+		File mp4creatorFile = ApplicationFinder.getApplicationPath(AVI3RAW_BIN,
+				this.paths);
+		if (mp4creatorFile == null) {
+			throw new ComponentMissingException(AVI2RAW_COMPONENT_NAME);
+		}
+
+		try {
+			return mp4creatorFile.getCanonicalPath() + File.separator + AVI3RAW_BIN;
+		} catch (IOException e) {
+			return mp4creatorFile.getAbsolutePath() + File.separator + AVI3RAW_BIN;
 		}
 	}
 
@@ -107,11 +124,12 @@ public class MP4BoxMuxer implements Muxer {
 				outputFile, options);
 
 		try {
-			String mp4box = findMP4Box();
+			String mp4creator = findMP4Creator();
+			String avi2raw = findAvi3Raw();
 
-			return new MP4BoxEncodingJob(mp4box, wrapper, encodingJob, outputFile);
+			return new MP4CreatorEncodingJob(mp4creator, avi2raw, wrapper, encodingJob, outputFile);
 		} catch (FileNotFoundException e) {
-			throw new ComponentMissingException(MP4BOX_COMPONENT_NAME);
+			throw new ComponentMissingException(MP4CREATOR_COMPONENT_NAME);
 		}
 
 	}
@@ -133,7 +151,7 @@ public class MP4BoxMuxer implements Muxer {
 	 * @see net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.Muxer#getVideoDemuxer()
 	 */
 	public VideoDemuxer getVideoDemuxer() {
-		return VideoDemuxer.MUXER_MPG4_MP4BOX;
+		return VideoDemuxer.MUXER_MPG4;
 	}
 
 }

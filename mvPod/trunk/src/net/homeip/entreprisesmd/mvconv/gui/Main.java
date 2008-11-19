@@ -47,7 +47,10 @@ public final class Main {
 	 * Key preference for mp4box directory.
 	 */
 	public static final String PREF_MP4BOX_DIRECTORY = "pref.mp4BoxDirectory"; //$NON-NLS-1$
-
+	/**
+	 * Key preference for mp4box directory.
+	 */
+	public static final String PREF_MP4CREATOR_DIRECTORY = "pref.mp4creatorDirectory"; //$NON-NLS-1$
 	/**
 	 * Preference file name.
 	 */
@@ -322,18 +325,20 @@ public final class Main {
 					.getProperty(USER_HOME));
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "/usr/bin"); //$NON-NLS-1$
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "/usr/bin"); //$NON-NLS-1$
+			preferenceStore.setDefault(PREF_MP4CREATOR_DIRECTORY, "/usr/bin"); //$NON-NLS-1$
 			
 			
 		} else if (OS_NAME.equals(OS_NAME_WINDOWS)) {
 			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System.getenv(USER_PROFILE));			
-			
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "."); //$NON-NLS-1$
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "."); //$NON-NLS-1$
+			preferenceStore.setDefault(PREF_MP4CREATOR_DIRECTORY, "."); //$NON-NLS-1$
 		} else {
 			preferenceStore.setDefault(PREF_LAST_DIRECTORY, System
 					.getProperty(USER_HOME));
 			preferenceStore.setDefault(PREF_MPLAYER_DIRECTORY, "."); //$NON-NLS-1$
 			preferenceStore.setDefault(PREF_MP4BOX_DIRECTORY, "."); //$NON-NLS-1$
+			preferenceStore.setDefault(PREF_MP4CREATOR_DIRECTORY, "."); //$NON-NLS-1$
 		}
 
 	}

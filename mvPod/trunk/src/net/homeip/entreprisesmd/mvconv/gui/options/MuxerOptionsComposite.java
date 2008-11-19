@@ -12,6 +12,7 @@ import net.homeip.entreprisesmd.mvconv.gui.IViewPart;
 import net.homeip.entreprisesmd.mvconv.gui.IViewSite;
 import net.homeip.entreprisesmd.mvconv.gui.ProfileContext;
 import net.homeip.entreprisesmd.mvconv.gui.options.muxer.AviOptionsComposite;
+import net.homeip.entreprisesmd.mvconv.gui.options.muxer.MP4ConverterOptionsComposite;
 import net.homeip.entreprisesmd.mvconv.gui.options.muxer.MP4OptionsComposite;
 import net.homeip.entreprisesmd.mvconv.gui.options.muxer.MuxerOptionsInterface;
 import net.homeip.entreprisesmd.mvconv.gui.options.muxer.MuxerOptionsMapper;
@@ -113,6 +114,7 @@ public class MuxerOptionsComposite extends Composite implements IViewPart {
 
 		registerMapper(AviOptionsComposite.getMapper());
 		registerMapper(MP4OptionsComposite.getMapper());
+		registerMapper(MP4ConverterOptionsComposite.getMapper());
 
 	}
 
