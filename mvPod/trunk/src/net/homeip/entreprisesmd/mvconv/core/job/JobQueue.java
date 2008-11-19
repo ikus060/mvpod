@@ -104,6 +104,7 @@ public class JobQueue {
 					}
 
 				} catch (Exception e) {
+					e.printStackTrace();
 					setJobStatus(inProgressJob, JobQueue.STATUS_FAILED);
 				}
 
