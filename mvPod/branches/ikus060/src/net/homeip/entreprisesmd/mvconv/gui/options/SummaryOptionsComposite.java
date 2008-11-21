@@ -154,6 +154,8 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 		rgb.green = (int) (rgb.green * DARKER_COLOR_FACTOR);
 		rgb.blue = (int) (rgb.blue * DARKER_COLOR_FACTOR);
 		darkerBackground = new Color(Display.getCurrent(), rgb);
+		
+		
 
 		GridLayout layout = new GridLayout(1, false);
 		this.setLayout(layout);
@@ -180,7 +182,8 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 		videoSummary = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.READ_ONLY);
 		videoSummary.setLayoutData(new GridData(SUMMARY_WIDTH, SUMMARY_HEIGHT));
 		videoSummary.setBackground(darkerBackground);
-
+		videoSummary.setForeground(this.getForeground());
+		
 		// Audio summary
 		Label audio = new Label(comp, SWT.NONE);
 		audio.setText(Localization.getString(Localization.OPTIONS_AUDIO));
@@ -189,6 +192,7 @@ public class SummaryOptionsComposite extends Composite implements IViewPart {
 		audioSummary = new Text(comp, SWT.BORDER | SWT.WRAP | SWT.READ_ONLY);
 		audioSummary.setLayoutData(new GridData(SUMMARY_WIDTH, SUMMARY_HEIGHT));
 		audioSummary.setBackground(darkerBackground);
+		audioSummary.setForeground(this.getForeground());
 
 		// Update the profile list
 		profileListAsChanged();
