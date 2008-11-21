@@ -164,7 +164,9 @@ public class QueueItem extends Composite {
 
 		setBackground(Display.getDefault().getSystemColor(
 				SWT.COLOR_LIST_BACKGROUND));
-
+		setForeground(Display.getDefault().getSystemColor(
+				SWT.COLOR_LIST_FOREGROUND));
+		
 		// Create item with parent
 		parent.createItem(this, index);
 
