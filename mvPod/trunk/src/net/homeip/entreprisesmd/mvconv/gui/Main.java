@@ -154,7 +154,6 @@ public final class Main {
 	 *            argument list.
 	 */
 	public static void main(String[] args) {
-
 		instance = new Main();
 		instance.run();
 	}
