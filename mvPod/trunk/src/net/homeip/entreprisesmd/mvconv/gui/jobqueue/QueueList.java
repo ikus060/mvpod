@@ -62,6 +62,8 @@ public class QueueList extends Composite {
 		comp.setLayout(layout);
 		comp.setBackground(Display.getDefault().getSystemColor(
 				SWT.COLOR_LIST_BACKGROUND));
+		comp.setForeground(Display.getDefault().getSystemColor(
+				SWT.COLOR_LIST_FOREGROUND));
 
 		// Draw some line between each item
 		comp.addListener(SWT.Paint, new Listener() {

@@ -174,7 +174,8 @@ public class InputVideoFileComposite extends AbstractInputVideoComposite {
 		videoDescription.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 3, 1));
 		videoDescription.setBackground(darkerBackground);
-
+		videoDescription.setForeground(this.getForeground());
+		
 		label = new Label(comp, SWT.NONE);
 		label.setText(Localization.getString(Localization.INPUTOUTPUT_AUDIO));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
@@ -183,7 +184,8 @@ public class InputVideoFileComposite extends AbstractInputVideoComposite {
 		audioDescription.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 3, 1));
 		audioDescription.setBackground(darkerBackground);
-
+		audioDescription.setForeground(this.getForeground());
+		
 		// Add disposal instruction
 		this.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
