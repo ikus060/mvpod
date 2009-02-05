@@ -1,18 +1,11 @@
 package net.homeip.entreprisesmd.mvconv.core.profile;
 
-import java.io.File;
-
 import net.homeip.entreprisesmd.mvconv.core.Localization;
-import net.homeip.entreprisesmd.mvconv.gui.Main;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.EncodingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.VideoScalingOptions;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.audiooption.FAACEncodingOptions;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4BoxMuxer;
-import net.homeip.entreprisesmd.mvconv.mplayerwrapper.muxer.MP4CreatorMuxer;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videofilter.HarddupFilter;
 import net.homeip.entreprisesmd.mvconv.mplayerwrapper.videooption.XVideoEncodingOptions;
-
-import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * This profile are intended to produce video file that are compatible with iPod
@@ -115,9 +108,7 @@ public class IPodXVidProfile extends AbstractHardCodedProfile {
 		// options.addVideoFilter(new PullupFilter());
 		options.addVideoFilter(new HarddupFilter());
 
-		IPreferenceStore store = Main.instance().getPreferenceStore();
-		File path = new File(store.getString(Main.PREF_MP4CREATOR_DIRECTORY));
-		options.setMuxer(new MP4CreatorMuxer(new File[] { path }));
+		options.setMuxer(new MP4Muxer());
 
 		return options;
 	}
