@@ -250,7 +250,6 @@
 
 	<target name="clean" description="Use to clean the project">
 		<delete dir="${dist.dir}" />
-		<delete dir="${bin.dir}" />
 		<delete file="${root.dir}/mvPod.jar" />
 	</target>
 
