@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project default="compile" name="mvPod" basedir=".">
+<project default="dist" name="mvPod" basedir=".">
 
 
 	<property name="root.dir" value="." />
 	<property name="libs.dir" value="${root.dir}/lib" />
-	<property name="dist.dir" value="${root.dir}/dist" />
+	<property name="target.dir" value="${root.dir}/ant-target" />
 	<property name="distsrc.dir" value="${root.dir}/dist-src" />
-	<property name="dist.linux.dir" value="${dist.dir}/linux" />
-	<property name="dist.linux64.dir" value="${dist.dir}/linux64" />
-	<property name="dist.win32.dir" value="${dist.dir}/win32" />
-	<property name="dist.macosx.dir" value="${dist.dir}/macosx" />
+	<property name="dist.linux.dir" value="${target.dir}/linux" />
+	<property name="dist.linux64.dir" value="${target.dir}/linux64" />
+	<property name="dist.win32.dir" value="${target.dir}/win32" />
+	<property name="dist.macosx.dir" value="${target.dir}/macosx" />
 	<property name="bin.dir" value="${root.dir}/bin" />
 	<property name="src.dir" value="${root.dir}/src" />
 	<property name="launch4j.dir" location="${distsrc.dir}/l4j" />
@@ -25,7 +25,10 @@
 		<echo message="SVN version is ${version.text}" level="info" />
 		<echo message="SVN version is ${version.build}" level="info" />
 
+		<property name="dist.dir" value="${target.dir}/distribution/mvpod-${version}" />
+		
 		<tstamp />
+		<mkdir dir="${target.dir}" />
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${bin.dir}" />
 	</target>
@@ -82,21 +85,21 @@
 
 	<target name="dist-src" depends="init">
 
-		<tar destfile="${dist.dir}/mvPod-${version}-src.tar">
+		<tar destfile="${target.dir}/mvPod-${version}-src.tar">
 			<tarfileset dir="${distsrc.dir}" prefix="dist-src" preserveLeadingSlashes="true" />
 			<tarfileset dir="${libs.dir}" prefix="/lib" preserveLeadingSlashes="true" />
 			<tarfileset dir="${src.dir}" prefix="/src" preserveLeadingSlashes="true" />
 			<tarfileset file="${root.dir}/build.xml" prefix="/" preserveLeadingSlashes="true" />
 		</tar>
 
-		<gzip zipfile="${dist.dir}/mvPod-${version}-src.tar.gz" src="${dist.dir}/mvPod-${version}-src.tar" />
-		<delete file="${dist.dir}/mvPod-${version}-src.tar" />
+		<gzip zipfile="${dist.dir}/mvPod-${version}-src.tar.gz" src="${target.dir}/mvPod-${version}-src.tar" />
+		<delete file="${target.dir}/mvPod-${version}-src.tar" />
 
 	</target>
 
 	<target name="dist-linux" depends="jar">
 
-		<copy file="${dist.dir}/mvPod.jar" tofile="${dist.linux.dir}/lib/mvPod.jar" />
+		<copy file="${target.dir}/mvPod.jar" tofile="${dist.linux.dir}/lib/mvPod.jar" />
 
 		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.linux.dir}/lib/org.eclipse.core.commands.jar" />
 		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.linux.dir}/lib/org.eclipse.equinox.common.jar" />
@@ -113,7 +116,7 @@
 		<chmod file="${dist.linux.dir}/bin/mvpod" perm="775" />
 
 
-		<tar destfile="${dist.dir}/mvPod-${version}.tar">
+		<tar destfile="${target.dir}/mvPod-${version}.tar">
 			<tarfileset dir="${dist.linux.dir}" mode="711" username="root" group="user">
 				<include name="**" />
 				<exclude name="bin/mvpod" />
@@ -123,15 +126,15 @@
 			</tarfileset>
 		</tar>
 
-		<tar tarfile="${dist.dir}/mvPod-${version}.tar" basedir="${dist.linux.dir}" />
-		<gzip zipfile="${dist.dir}/mvPod-${version}.tar.gz" src="${dist.dir}/mvPod-${version}.tar" />
-		<delete file="${dist.dir}/mvPod-${version}.tar" />
+		<tar tarfile="${target.dir}/mvPod-${version}.tar" basedir="${dist.linux.dir}" />
+		<gzip zipfile="${dist.dir}/mvPod-${version}.tar.gz" src="${target.dir}/mvPod-${version}.tar" />
+		<delete file="${target.dir}/mvPod-${version}.tar" />
 
 	</target>
 	
 	<target name="dist-linux64" depends="jar">
 
-		<copy file="${dist.dir}/mvPod.jar" tofile="${dist.linux64.dir}/lib/mvPod.jar" />
+		<copy file="${target.dir}/mvPod.jar" tofile="${dist.linux64.dir}/lib/mvPod.jar" />
 
 		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.core.commands.jar" />
 		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.equinox.common.jar" />
@@ -148,7 +151,7 @@
 		<chmod file="${dist.linux64.dir}/bin/mvpod" perm="775" />
 
 
-		<tar destfile="${dist.dir}/mvPod-${version}-x86_64.tar">
+		<tar destfile="${target.dir}/mvPod-${version}-x86_64.tar">
 			<tarfileset dir="${dist.linux64.dir}" mode="711" username="root" group="user">
 				<include name="**" />
 				<exclude name="bin/mvpod" />
@@ -158,15 +161,15 @@
 			</tarfileset>
 		</tar>
 
-		<tar tarfile="${dist.dir}/mvPod-${version}-x86_64.tar" basedir="${dist.linux64.dir}" />
-		<gzip zipfile="${dist.dir}/mvPod-${version}-x86_64.tar.gz" src="${dist.dir}/mvPod-${version}-x86_64.tar" />
-		<delete file="${dist.dir}/mvPod-${version}-x86_64.tar" />
+		<tar tarfile="${target.dir}/mvPod-${version}-x86_64.tar" basedir="${dist.linux64.dir}" />
+		<gzip zipfile="${dist.dir}/mvPod-${version}-x86_64.tar.gz" src="${target.dir}/mvPod-${version}-x86_64.tar" />
+		<delete file="${target.dir}/mvPod-${version}-x86_64.tar" />
 
 	</target>
 
 	<target name="dist-win32" depends="jar">
 
-		<copy file="${dist.dir}/mvPod.jar" tofile="${dist.win32.dir}/lib/mvPod.jar" />
+		<copy file="${target.dir}/mvPod.jar" tofile="${dist.win32.dir}/lib/mvPod.jar" />
 
 		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.win32.dir}/lib/org.eclipse.core.commands.jar" />
 		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.win32.dir}/lib/org.eclipse.equinox.common.jar" />
@@ -192,32 +195,32 @@
 		<delete file="${dist.win32.dir}/mvpod-l4j.xml" />
 
 		<!-- Create an installer with NSIS -->
-		<copy file="${distsrc.dir}/installer.nsi" tofile="${dist.dir}/installer.nsi" />
-		<copy file="${distsrc.dir}/jre.ini" tofile="${dist.dir}/jre.ini" />
-		<copy file="${distsrc.dir}/jre-1_5_0_15-windows-i586-p.exe" tofile="${dist.dir}/jre-1_5_0_15-windows-i586-p.exe" />
-		<copy file="${distsrc.dir}/GPL" tofile="${dist.dir}/GPL.txt" />
+		<copy file="${distsrc.dir}/installer.nsi" tofile="${target.dir}/installer.nsi" />
+		<copy file="${distsrc.dir}/jre.ini" tofile="${target.dir}/jre.ini" />
+		<copy file="${distsrc.dir}/jre-1_5_0_15-windows-i586-p.exe" tofile="${target.dir}/jre-1_5_0_15-windows-i586-p.exe" />
+		<copy file="${distsrc.dir}/GPL" tofile="${target.dir}/GPL.txt" />
 
 		<echo>Create Windows installer...</echo>
 		<exec executable="makensis" outputproperty="nsislog.out">
-			<arg line="${dist.dir}/installer.nsi" />
+			<arg line="${target.dir}/installer.nsi" />
 		</exec>
 		<echo>${nsislog.out}</echo>
 
 
-		<delete file="${dist.dir}/installer.nsi" />
-		<delete file="${dist.dir}/jre.ini" />
-		<delete file="${dist.dir}/jre-1_5_0_15-windows-i586-p.exe" />
-		<delete file="${dist.dir}/GPL.txt" />
+		<delete file="${target.dir}/installer.nsi" />
+		<delete file="${target.dir}/jre.ini" />
+		<delete file="${target.dir}/jre-1_5_0_15-windows-i586-p.exe" />
+		<delete file="${target.dir}/GPL.txt" />
 
 
-		<move file="${dist.dir}/setup.exe" tofile="${dist.dir}/mvPod-${version}-install.exe" />
+		<move file="${target.dir}/setup.exe" tofile="${dist.dir}/mvPod-${version}-install.exe" />
 
 	</target>
 
 
 	<target name="dist-macosx" depends="jar">
 
-		<copy file="${dist.dir}/mvPod.jar" tofile="${dist.macosx.dir}/lib/mvPod.jar" />
+		<copy file="${target.dir}/mvPod.jar" tofile="${dist.macosx.dir}/lib/mvPod.jar" />
 
 		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.macosx.dir}/lib/org.eclipse.core.commands.jar" />
 		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.macosx.dir}/lib/org.eclipse.equinox.common.jar" />
@@ -236,7 +239,7 @@
 
 	<target name="jar" depends="compile">
 
-		<jar destfile="${dist.dir}/mvPod.jar" basedir="${bin.dir}" excludes="${dist.jar.excludes}">
+		<jar destfile="${target.dir}/mvPod.jar" basedir="${bin.dir}" excludes="${dist.jar.excludes}">
 			<manifest>
 				<attribute name="Main-Class" value="net.homeip.entreprisesmd.mvconv.gui.Main" />
 				<attribute name="Class-Path" value="mvPod.jar swt.jar org.eclipse.core.commands.jar org.eclipse.equinox.common.jar org.eclipse.jface.jar" />
