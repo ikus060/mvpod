@@ -79,7 +79,7 @@
 		-->
 	<target name="step-checkout">
 		
-		<exec executable="svn">
+		<exec executable="svn" failonerror="true">
 			<arg line="co --username ${svn.username} --password ${svn.password} ${svn.checkout.url} ${source.checkout.dir}"/>
 		</exec>
 
