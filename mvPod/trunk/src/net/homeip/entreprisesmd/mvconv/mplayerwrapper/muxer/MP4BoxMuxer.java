@@ -27,7 +27,7 @@ public class MP4BoxMuxer implements Muxer {
 	/**
 	 * MP4Box component name.
 	 */
-	private static final String MP4BOX_COMPONENT_NAME = "MP4Box"; //$NON-NLS-1$
+	private static final String MP4BOX_COMPONENT_NAME = "gpac (MP4Box)"; //$NON-NLS-1$
 
 	/**
 	 * MP4Box file name for windows.

@@ -394,13 +394,11 @@ public final class Localization {
 			MPlayerException exception, String defaultID) {
 		String key = defaultID;
 		if (exception instanceof GrabXvPortException) {
-
 			key = Localization.MPLAYER_GRAP_XV_PORT;
 		} else if (exception instanceof DVDNotAvailableException) {
 			return getString(Localization.MPLAYER_DVDDEVICE_NOT_AVAILABLE,
 					((DVDNotAvailableException) exception).getDevice());
 		} else if (exception instanceof PaletteException) {
-
 			key = Localization.MPLAYER_PALETTE_ERROR;
 		} else if (exception instanceof ComponentMissingException) {
 			return getString(Localization.MPLAYER_COMPONENT_MISSING,
