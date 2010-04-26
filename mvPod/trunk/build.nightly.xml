@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Create by : Patrik Dufresne
+	File : build.xml
+	-->
+<project default="distribute" name="mvPod Build" basedir=".">
+
+	<property name="sf.username" value="ikus060,mvpod"/>
+	<property name="svn.username" value=""/>
+	<property name="svn.password" value=""/>
+	
+	<property name="sf.ssh.server" value="frs.sourceforge.net"/>
+	<property name="sf.nightly.build.dir" value="/home/groups/m/mv/mvpod/htdocs/nightly"/>
+	<property name="svn.checkout.url" value="https://svn.entreprisesmd.homeip.net:8443/svn/mvpod/mvPod/trunk/"/>
+	<property name="source.checkout.dir" value="./sources"/>
+	<property name="source.build.xml.filename" value="build.xml" />
+	<property name="source.build.xml.clear.target" value="clean" />
+	<property name="source.build.xml.distribution.target" value="dist" />
+	<property name="source.distribution.dir" value="./sources/ant-target/distribution"/>
+	<!--
+		target : distribute
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="distribute" depends="step-assert-property-values">
+		
+		<antcall target="step-checkout"/>
+		<antcall target="step-create-distribution-package"/>
+		<antcall target="step-send-file"/>
+
+	</target>
+	
+	<!--
+		target : step-assert-property-values
+		Validate any property value 
+		-->
+	<target name="step-assert-property-values">
+		
+		<!-- Validate Username -->
+		<fail message="Username are not set : ${svn.username}">
+			<condition>
+				<or>
+					<not>
+						<isset property="svn.username"/>
+					</not>
+					<equals arg1="${svn.username}" arg2=""/>
+				</or>
+			</condition>
+		</fail>
+
+		<!-- Validate password -->
+		<fail message="Password are not set : ${svn.username}">
+			<condition>
+				<or>
+					<not>
+						<isset property="svn.password"/>
+					</not>
+					<equals arg1="${svn.password}" arg2=""/>
+				</or>
+			</condition>
+		</fail>
+		
+			<!-- Validate SF.net Username -->
+		<fail message="Username are not set : ${sf.username}">
+			<condition>
+				<or>
+					<not>
+						<isset property="sf.username"/>
+					</not>
+					<equals arg1="${sf.username}" arg2=""/>
+				</or>
+			</condition>
+		</fail>
+		
+	</target>
+
+	<!--
+		target : step-checkout
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="step-checkout">
+		
+		<exec executable="svn">
+			<arg line="co --username ${svn.username} --password ${svn.password} ${svn.checkout.url} ${source.checkout.dir}"/>
+		</exec>
+
+	</target>
+	
+	<!--
+		target : step-create-distribution-package
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="step-create-distribution-package">
+		
+		<ant antfile="${source.build.xml.filename}" dir="${source.checkout.dir}"
+			target="${source.build.xml.clear.target}"/>
+		<ant antfile="${source.build.xml.filename}" dir="${source.checkout.dir}"
+			target="${source.build.xml.distribution.target}"/>
+		<ant antfile="${source.build.xml.filename}" dir="${source.checkout.dir}"
+			target="sonar"/>
+		
+	</target>
+	
+	<!--
+		target : step-send-file
+		Send the distribution package to SourceForge web site via ssh. 
+		-->
+	<target name="step-send-file">
+		
+		<echo message="Send content of ${source.distribution.dir} into ${sf.username}@${sf.ssh.server}:${sf.nightly.build.dir}/" />
+		<exec executable="sh" dir="${source.distribution.dir}" failonerror="true">
+			<arg line="-c 'scp -r * ${sf.username}@${sf.ssh.server}:${sf.nightly.build.dir}/'"/>
+		</exec>
+
+		<!--tempfile property="temp.ssh.batch"/>
+		<echo file="${temp.ssh.batch}">
+			-rm ${sf.nightly.build.dir}/${release.dirname}/*
+			-rmdir ${sf.nightly.build.dir}/${release.dirname}
+			mkdir ${sf.nightly.build.dir}/${release.dirname}
+			cd ${sf.nightly.build.dir}/${release.dirname}
+			put */*.tar.gz
+			put */*.exe
+			cd ..
+			rm ${sf.nightly.build.dir}/latest
+			ln ${sf.nightly.build.dir}/${release.dirname} ${sf.nightly.build.dir}/latest
+		</echo>	
+
+		<echo message="Puslich to SF.net"/>
+		<exec executable="sftp" dir="${source.distribution.dir}" failonerror="true">
+			<arg line="-b ${temp.ssh.batch} ${sf.username}@${sf.ssh.server}" />
+		</exec-->
+
+	</target>
+
+</project>
