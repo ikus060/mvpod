@@ -53,20 +53,19 @@
 			</classpath>
 		</taskdef>
 
-		<property name="revision" value="HEAD" />
-
 		<!-- find out revision number of HEAD, need svn.exe installed on local machine -->
 		<exec executable="svn" outputproperty="svnlog.out" failonerror="true">
 			<arg line="info --non-interactive" />
 		</exec>
 
-		<echo level="info">svn info -r HEAD --non-interactive</echo>
+		<echo level="info">svn info --non-interactive</echo>
 		<echo level="info">${svnlog.out}</echo>
 
 		<propertyregex property="svn.build" input="${svnlog.out}" regexp="Last Changed Rev: ([0-9]*)" select="\1" casesensitive="false" />
 
 		<!-- Update Source version -->
-		<replaceregexp file="${src.dir}/version.properties" match="@build@" replace="${svn.build}" byline="true" />
+		<copy file="${src.dir}/version.properties" tofile="${target.dir}/version.properties" overwrite="true" />
+		<replaceregexp file="${target.dir}/version.properties" match="@build@" replace="${svn.build}" byline="true" />
 
 		<!-- load version, version.text and version.build from property file -->
 		<property file="${src.dir}/version.properties" />
