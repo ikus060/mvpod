@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project default="dist" name="mvPod" basedir=".">
+<project default="dist" name="Build script" basedir=".">
 
+	<property name="app.name" value="mvPod" />
+	<property name="app.file.name" value="mvpod" />
+	<property name="app.description" value="mvPod Application" />
+	<property name="main.class" value="net.homeip.entreprisesmd.mvconv.gui.Main" />
 
 	<property name="root.dir" value="." />
 	<property name="libs.dir" value="${root.dir}/lib" />
@@ -13,20 +17,21 @@
 	<property name="dist.macosx.dir" value="${target.dir}/macosx" />
 	<property name="bin.dir" value="${root.dir}/bin" />
 	<property name="src.dir" value="${root.dir}/src" />
-	<property name="launch4j.dir" location="${distsrc.dir}/l4j" />
+	<property name="launch4j.dir" location="${distsrc.dir}/launch4j" />
 	<property name="antcontrib.dir" location="${distsrc.dir}/ant-contrib" />
+	<property name="mvn" location="${distsrc.dir}/apache-maven-2.2.1/bin/mvn" />
 
-	<property name="generic.excludes" value="**/*.jar **/*.txt **/*.jardesc **/.classpath **/.project **/aereg.lib **/aereg.dll" />
+	<property name="generic.excludes"
+	          value="**/*.jar **/*.txt **/*.jardesc **/.classpath **/.project **/aereg.lib **/aereg.dll" />
 	<property name="dist.jar.excludes" value="${generic.excludes} **/*.java " />
 
+	<property name="jar.filename" value="${app.file.name}.jar" />
+	
 
 	<target name="init" depends="findRevision">
-		<echo message="SVN version is ${version}" level="info" />
-		<echo message="SVN version is ${version.text}" level="info" />
-		<echo message="SVN version is ${version.build}" level="info" />
-
-		<property name="dist.dir" value="${target.dir}/distribution/mvpod-${version}" />
 		
+		<property name="dist.dir"
+		          value="${target.dir}/distribution/${app.file.name}-${version}" />
 		<tstamp />
 		<mkdir dir="${target.dir}" />
 		<mkdir dir="${dist.dir}" />
@@ -44,22 +49,39 @@
 		<property name="revision" value="HEAD" />
 
 		<!-- find out revision number of HEAD, need svn.exe installed on local machine -->
-		<exec executable="svn" outputproperty="svnlog.out">
-			<arg line="info -r HEAD --non-interactive" />
+		<exec executable="svn" outputproperty="svnlog.out" failonerror="true">
+			<arg line="info --non-interactive" />
 		</exec>
 
-		<echo>svn info -r HEAD --non-interactive
-			${svnlog.out}</echo>
+		<echo level="info">svn info -r HEAD --non-interactive</echo>
+		<echo level="info">${svnlog.out}</echo>
 
-		<propertyregex property="version.build" input="${svnlog.out}" regexp="Last Changed Rev: ([0-9]*)" select="\1" casesensitive="false" />
+		<propertyregex property="svn.build"
+		               input="${svnlog.out}"
+		               regexp="Last Changed Rev: ([0-9]*)"
+		               select="\1"
+		               casesensitive="false" />
 
+		<!-- Update Source version -->
+		<replaceregexp file="${src.dir}/version.properties" match="@build@" replace="${svn.build}" byline="true" />
+		
+		<!-- load version, version.text and version.build from property file -->
 		<property file="${src.dir}/version.properties" />
+		<fail message="version not define in version.properties"
+		      unless="version" />
+		<fail message="version.text not define in version.properties"
+		      unless="version.text" />
+		<fail message="version.build not define in version.properties"
+		      unless="version.build" />
 
-		<propertyregex property="version" input="${VERSION}" regexp="@build@" replace="${version.build}" casesensitive="false" />
 
-		<!--<propertyregex property="version.text" input="${VERSION_TEXT}" regexp="@build@" replace="${version.build}\\\\1" casesensitive="false" />-->
-		<property name="version.text" value="${VERSION_TEXT}" />
+		<!-- Display the values -->
+		<echo message="Version is ${version}" level="info" />
+		<echo message="Version text is ${version.text}" level="info" />
+		<echo message="Version build is ${version.build}" level="info" />
 
+
+		
 	</target>
 
 
@@ -70,135 +92,256 @@
 
 
 		<copy includeemptydirs="false" todir="${bin.dir}" filtering="true">
-			<fileset dir="${src.dir}" excludes="**/*.launch, **/*.testsuite, **/*.deploy, **/*.location, **/*.execution, **/*.datapool, **/*.artifact, **/*.html, **/*.svg, **/*.java" />
+			<fileset dir="${src.dir}"
+			         excludes="**/*.launch, **/*.testsuite, **/*.deploy, **/*.location, **/*.execution, **/*.datapool, **/*.artifact, **/*.html, **/*.svg, **/*.java" />
 		</copy>
 
-		<replaceregexp file="${bin.dir}/version.properties" match="@build@" replace="${version.build}" byline="true" />
+		<replaceregexp file="${bin.dir}/version.properties"
+		               match="@build@"
+		               replace="${version.build}"
+		               byline="true" />
 
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" nowarn="yes" source="5" target="5" includeAntRuntime="no" debug="true" debuglevel="lines,vars,source">
+		<javac srcdir="${src.dir}"
+		       destdir="${bin.dir}"
+		       nowarn="yes"
+		       source="5"
+		       target="5"
+		       includeAntRuntime="no"
+		       debug="true"
+		       debuglevel="lines,vars,source">
 			<classpath refid="libs.classpath" />
 		</javac>
 
 	</target>
 
-	<target name="dist" depends="dist-linux64,dist-linux,dist-win32,dist-macosx,dist-src" />
+	<!-- Main entry point to produce binaries for all supported platform -->
+	<target name="dist" depends="dist-win32,dist-linux64,dist-linux" />
 
 	<target name="dist-src" depends="init">
 
-		<tar destfile="${target.dir}/mvPod-${version}-src.tar">
-			<tarfileset dir="${distsrc.dir}" prefix="dist-src" preserveLeadingSlashes="true" />
-			<tarfileset dir="${libs.dir}" prefix="/lib" preserveLeadingSlashes="true" />
-			<tarfileset dir="${src.dir}" prefix="/src" preserveLeadingSlashes="true" />
-			<tarfileset file="${root.dir}/build.xml" prefix="/" preserveLeadingSlashes="true" />
+		<tar destfile="${target.dir}/${app.file.name}-${version}-src.tar">
+			<tarfileset dir="${distsrc.dir}"
+			            prefix="dist-src"
+			            preserveLeadingSlashes="true" />
+			<tarfileset dir="${libs.dir}"
+			            prefix="/lib"
+			            preserveLeadingSlashes="true" />
+			<tarfileset dir="${src.dir}"
+			            prefix="/src"
+			            preserveLeadingSlashes="true" />
+			<tarfileset file="${root.dir}/build.xml"
+			            prefix="/"
+			            preserveLeadingSlashes="true" />
 		</tar>
 
-		<gzip zipfile="${dist.dir}/mvPod-${version}-src.tar.gz" src="${target.dir}/mvPod-${version}-src.tar" />
-		<delete file="${target.dir}/mvPod-${version}-src.tar" />
+		<gzip zipfile="${dist.dir}/${app.file.name}-${version}-src.tar.gz"
+		      src="${target.dir}/${app.file.name}-${version}-src.tar" />
+		<delete file="${target.dir}/${app.file.name}-${version}-src.tar" />
 
 	</target>
 
 	<target name="dist-linux" depends="jar">
 
-		<copy file="${target.dir}/mvPod.jar" tofile="${dist.linux.dir}/lib/mvPod.jar" />
+		<!-- Copy jar files -->
+		<copy file="${target.dir}/${jar.filename}"
+		      tofile="${dist.linux.dir}/lib/${jar.filename}" />
+		<copy todir="${dist.linux.dir}/lib/">
+			<fileset dir="${libs.dir}">
+				<include name="org.eclipse.core.commands*.jar" />
+				<include name="org.eclipse.equinox.common*.jar" />
+				<include name="org.eclipse.jface*.jar" />
+				<exclude name="*source*.jar" />
+			</fileset>
+		</copy>
+		<copy file="${libs.dir}/org.eclipse.swt.gtk.linux.x86_3.5.2.v3557f.jar"
+		      tofile="${dist.linux.dir}/lib/swt.jar" />
 
-		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.linux.dir}/lib/org.eclipse.core.commands.jar" />
-		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.linux.dir}/lib/org.eclipse.equinox.common.jar" />
-		<copy file="${libs.dir}/org.eclipse.jface_3.3.1.M20070910-0800b.jar" tofile="${dist.linux.dir}/lib/org.eclipse.jface.jar" />
-		<copy file="${libs.dir}/swt-3.3.2-gtk-linux-x86/swt.jar" tofile="${dist.linux.dir}/lib/swt.jar" />
-
-		<copy file="${distsrc.dir}/GPL" tofile="${dist.linux.dir}/GPL" />
+		<!-- Copy text files -->
+		<copy file="${distsrc.dir}/LICENSE"
+		      tofile="${dist.linux.dir}/LICENSE" />
 		<copy file="${distsrc.dir}/NEWS" tofile="${dist.linux.dir}/NEWS" />
 		<copy file="${distsrc.dir}/README" tofile="${dist.linux.dir}/README" />
 
-		<copy file="${distsrc.dir}/mvpod.png" tofile="${dist.linux.dir}/bin/mvpod.png" />
-		<copy file="${distsrc.dir}/mvpod.properties" tofile="${dist.linux.dir}/bin/mvpod.properties" />
-		<copy file="${distsrc.dir}/mvpod" tofile="${dist.linux.dir}/bin/mvpod" />
-		<chmod file="${dist.linux.dir}/bin/mvpod" perm="775" />
+		<copy file="${distsrc.dir}/app-icon.png"
+		      tofile="${dist.linux.dir}/bin/${app.file.name}.png" />
+		<copy file="${distsrc.dir}/app"
+		      tofile="${dist.linux.dir}/bin/${app.file.name}" />
+		<chmod file="${dist.linux.dir}/bin/${app.file.name}" perm="775" />
 
+		<!-- Update .properties file with a good classpath -->
+		<property name="dist.linux.dir.absolute" location="${dist.linux.dir}" />
+		<pathconvert property="dist.linux.classpath" pathsep="\:">
+			<fileset dir="${dist.linux.dir}/lib" includes="*.jar" />
+			<map from="${dist.linux.dir.absolute}/" to="" />
+		</pathconvert>
+		<copy file="${distsrc.dir}/app.properties"
+		      tofile="${dist.linux.dir}/bin/${app.file.name}.properties">
+			<filterchain>
+				<replacetokens begintoken="@" endtoken="@">
+					<token key="CLASSPATH" value="${dist.linux.classpath}" />
+					<token key="BOOT_CLASSPATH" value="lib/${jar.filename}" />
+					<token key="MAIN_CLASS" value="${main.class}" />
+					<token key="APP_NAME" value="${app.name}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
 
-		<tar destfile="${target.dir}/mvPod-${version}.tar">
-			<tarfileset dir="${dist.linux.dir}" mode="711" username="root" group="user">
+		<!-- TarGz everything with permission -->
+		<tar destfile="${target.dir}/${app.file.name}-${version}.tar">
+			<tarfileset dir="${dist.linux.dir}"
+			            mode="711"
+			            username="root"
+			            group="user">
 				<include name="**" />
-				<exclude name="bin/mvpod" />
+				<exclude name="bin/${app.file.name}" />
 			</tarfileset>
-			<tarfileset dir="${dist.linux.dir}" mode="755" username="root" group="user">
-				<include name="bin/mvpod" />
+			<tarfileset dir="${dist.linux.dir}"
+			            mode="755"
+			            username="root"
+			            group="user">
+				<include name="bin/${app.file.name}" />
 			</tarfileset>
 		</tar>
 
-		<tar tarfile="${target.dir}/mvPod-${version}.tar" basedir="${dist.linux.dir}" />
-		<gzip zipfile="${dist.dir}/mvPod-${version}.tar.gz" src="${target.dir}/mvPod-${version}.tar" />
-		<delete file="${target.dir}/mvPod-${version}.tar" />
+		<tar tarfile="${target.dir}/${app.file.name}-${version}.tar"
+		     basedir="${dist.linux.dir}" />
+		<gzip zipfile="${dist.dir}/${app.file.name}-${version}.tar.gz"
+		      src="${target.dir}/${app.file.name}-${version}.tar" />
+		<delete file="${target.dir}/${app.file.name}-${version}.tar" />
 
 	</target>
-	
+
 	<target name="dist-linux64" depends="jar">
 
-		<copy file="${target.dir}/mvPod.jar" tofile="${dist.linux64.dir}/lib/mvPod.jar" />
+		<copy file="${target.dir}/${jar.filename}"
+		      tofile="${dist.linux64.dir}/lib/${jar.filename}" />
+		<copy todir="${dist.linux64.dir}/lib/">
+			<fileset dir="${libs.dir}">
+				<include name="org.eclipse.core.commands*.jar" />
+				<include name="org.eclipse.equinox.common*.jar" />
+				<include name="org.eclipse.jface*.jar" />
+				<exclude name="*source*.jar" />
+			</fileset>
+		</copy>
+		<copy file="${libs.dir}/org.eclipse.swt.gtk.linux.x86_64_3.5.2.v3557f.jar"
+		      tofile="${dist.linux64.dir}/lib/swt.jar" />
 
-		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.core.commands.jar" />
-		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.equinox.common.jar" />
-		<copy file="${libs.dir}/org.eclipse.jface_3.3.1.M20070910-0800b.jar" tofile="${dist.linux64.dir}/lib/org.eclipse.jface.jar" />
-		<copy file="${libs.dir}/swt-3.3.2-gtk-linux-x86_64/swt.jar" tofile="${dist.linux64.dir}/lib/swt.jar" />
-
-		<copy file="${distsrc.dir}/GPL" tofile="${dist.linux64.dir}/GPL" />
+		<copy file="${distsrc.dir}/LICENSE"
+		      tofile="${dist.linux64.dir}/LICENSE" />
 		<copy file="${distsrc.dir}/NEWS" tofile="${dist.linux64.dir}/NEWS" />
-		<copy file="${distsrc.dir}/README" tofile="${dist.linux64.dir}/README" />
+		<copy file="${distsrc.dir}/README"
+		      tofile="${dist.linux64.dir}/README" />
 
-		<copy file="${distsrc.dir}/mvpod.png" tofile="${dist.linux64.dir}/bin/mvpod.png" />
-		<copy file="${distsrc.dir}/mvpod.properties" tofile="${dist.linux64.dir}/bin/mvpod.properties" />
-		<copy file="${distsrc.dir}/mvpod" tofile="${dist.linux64.dir}/bin/mvpod" />
-		<chmod file="${dist.linux64.dir}/bin/mvpod" perm="775" />
+		<copy file="${distsrc.dir}/app-icon.png"
+		      tofile="${dist.linux64.dir}/bin/${app.file.name}.png" />
+		<copy file="${distsrc.dir}/app"
+		      tofile="${dist.linux64.dir}/bin/${app.file.name}" />
+		<chmod file="${dist.linux64.dir}/bin/${app.file.name}" perm="775" />
 
 
-		<tar destfile="${target.dir}/mvPod-${version}-x86_64.tar">
-			<tarfileset dir="${dist.linux64.dir}" mode="711" username="root" group="user">
+		<!-- Update .properties file with a good classpath -->
+		<property name="dist.linux64.dir.absolute"
+		          location="${dist.linux64.dir}" />
+		<pathconvert property="dist.linux64.classpath" pathsep="\:">
+			<fileset dir="${dist.linux64.dir}/lib" includes="*.jar" />
+			<map from="${dist.linux64.dir.absolute}/" to="" />
+		</pathconvert>
+		<copy file="${distsrc.dir}/app.properties"
+		      tofile="${dist.linux64.dir}/bin/${app.file.name}.properties">
+			<filterchain>
+				<replacetokens>
+					<token key="CLASSPATH" value="${dist.linux64.classpath}" />
+					<token key="BOOT_CLASSPATH" value="lib/${jar.filename}" />
+					<token key="MAIN_CLASS" value="${main.class}" />
+					<token key="APP_NAME" value="${app.name}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+		<!-- TarGz everything with permission -->
+		<tar destfile="${target.dir}/${app.file.name}-${version}-x86_64.tar">
+			<tarfileset dir="${dist.linux64.dir}"
+			            mode="711"
+			            username="root"
+			            group="user">
 				<include name="**" />
-				<exclude name="bin/mvpod" />
+				<exclude name="bin/${app.file.name}" />
 			</tarfileset>
-			<tarfileset dir="${dist.linux64.dir}" mode="755" username="root" group="user">
-				<include name="bin/mvpod" />
+			<tarfileset dir="${dist.linux64.dir}"
+			            mode="755"
+			            username="root"
+			            group="user">
+				<include name="bin/${app.file.name}" />
 			</tarfileset>
 		</tar>
 
-		<tar tarfile="${target.dir}/mvPod-${version}-x86_64.tar" basedir="${dist.linux64.dir}" />
-		<gzip zipfile="${dist.dir}/mvPod-${version}-x86_64.tar.gz" src="${target.dir}/mvPod-${version}-x86_64.tar" />
-		<delete file="${target.dir}/mvPod-${version}-x86_64.tar" />
+		<tar tarfile="${target.dir}/${app.file.name}-${version}-x86_64.tar"
+		     basedir="${dist.linux64.dir}" />
+		<gzip zipfile="${dist.dir}/${app.file.name}-${version}-x86_64.tar.gz"
+		      src="${target.dir}/${app.file.name}-${version}-x86_64.tar" />
+		<delete file="${target.dir}/${app.file.name}-${version}-x86_64.tar" />
 
 	</target>
 
+	<!-- Main entry point to produce binaries for Windows 32 bits -->
 	<target name="dist-win32" depends="jar">
 
-		<copy file="${target.dir}/mvPod.jar" tofile="${dist.win32.dir}/lib/mvPod.jar" />
+		<copy file="${target.dir}/${jar.filename}"
+		      tofile="${dist.win32.dir}/lib/${jar.filename}" />
+		<copy todir="${dist.win32.dir}/lib/">
+			<fileset dir="${libs.dir}">
+				<include name="org.eclipse.core.commands*.jar" />
+				<include name="org.eclipse.equinox.common*.jar" />
+				<include name="org.eclipse.jface*.jar" />
+				<exclude name="*source*.jar" />
+			</fileset>
+		</copy>
+		<copy file="${libs.dir}/org.eclipse.swt.win32.win32.x86_3.5.2.v3557f.jar"
+		      tofile="${dist.win32.dir}/lib/swt.jar" />
 
-		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.win32.dir}/lib/org.eclipse.core.commands.jar" />
-		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.win32.dir}/lib/org.eclipse.equinox.common.jar" />
-		<copy file="${libs.dir}/org.eclipse.jface_3.3.1.M20070910-0800b.jar" tofile="${dist.win32.dir}/lib/org.eclipse.jface.jar" />
-		<copy file="${libs.dir}/swt-3.3.2-win32-win32-x86/swt.jar" tofile="${dist.win32.dir}/lib/swt.jar" />
-
-		<copy file="${distsrc.dir}/GPL" tofile="${dist.win32.dir}/GPL.txt" />
+		<copy file="${distsrc.dir}/LICENSE"
+		      tofile="${dist.win32.dir}/LICENSE.txt" />
 		<copy file="${distsrc.dir}/NEWS" tofile="${dist.win32.dir}/NEWS.txt" />
-		<copy file="${distsrc.dir}/README" tofile="${dist.win32.dir}/README.txt" />
+		<copy file="${distsrc.dir}/README"
+		      tofile="${dist.win32.dir}/README.txt" />
+		<copy file="${distsrc.dir}/app-icon.ico"
+		      tofile="${dist.win32.dir}/bin/app-icon.ico" />
 
-		<copy file="${distsrc.dir}/mplayer.exe" tofile="${dist.win32.dir}/mplayer.exe" />
-		<copy file="${distsrc.dir}/mencoder.exe" tofile="${dist.win32.dir}/mencoder.exe" />
-		<copy file="${distsrc.dir}/MP4Box.exe" tofile="${dist.win32.dir}/MP4Box.exe" />
 
-		<copy file="${distsrc.dir}/mvpod.ico" tofile="${dist.win32.dir}/bin/mvpod.ico" />
-		<copy file="${distsrc.dir}/mvpod-l4j.xml" tofile="${dist.win32.dir}/mvpod-l4j.xml" />
+		<!-- Update launch4j configuration file by replacing properties-->
+		<property name="dist.win32.dir.absolute" location="${dist.win32.dir}" />
+		<pathconvert property="dist.win32.classpath"
+		             pathsep="&lt;/cp&gt;&lt;cp&gt;">
+			<fileset dir="${dist.win32.dir}/lib" includes="*.jar" />
+			<map from="${dist.win32.dir.absolute}/" to="./" />
+		</pathconvert>
+		<copy file="${distsrc.dir}/app-l4j.xml"
+		      tofile="${dist.win32.dir}/app-l4j.xml">
+			<filterchain>
+				<expandproperties />
+			</filterchain>
+		</copy>
 
-		<!-- Create a '.exe' wrapper over the '.jar' -->
-		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
-		    :${launch4j.dir}/lib/xstream.jar" />
-		<launch4j configFile="${dist.win32.dir}/mvpod-l4j.xml" outfile="${dist.win32.dir}/bin/mvPod.exe" fileVersion="${version}" txtFileVersion="${version.text}" productVersion="${version}" txtProductVersion="${version.text}" jarPath="../lib/mvPod.jar" />
-
-		<delete file="${dist.win32.dir}/mvpod-l4j.xml" />
+		<!-- Create a '.exe' wrapper over the '.jar' using launch4j -->
+		<taskdef name="launch4j"
+		         classname="net.sf.launch4j.ant.Launch4jTask"
+		         classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+		<chmod perm="777" dir="${launch4j.dir}/bin" includes="*" />
+		<launch4j configFile="${dist.win32.dir}/app-l4j.xml" />
+		<delete file="${dist.win32.dir}/app-l4j.xml" />
 
 		<!-- Create an installer with NSIS -->
-		<copy file="${distsrc.dir}/installer.nsi" tofile="${target.dir}/installer.nsi" />
-		<copy file="${distsrc.dir}/jre.ini" tofile="${target.dir}/jre.ini" />
-		<copy file="${distsrc.dir}/jre-1_5_0_15-windows-i586-p.exe" tofile="${target.dir}/jre-1_5_0_15-windows-i586-p.exe" />
-		<copy file="${distsrc.dir}/GPL" tofile="${target.dir}/GPL.txt" />
+		<copy file="${distsrc.dir}/installer.nsi"
+		      tofile="${target.dir}/installer.nsi">
+			<filterchain>
+				<replacetokens>
+					<token key="app.name" value="${app.name}" />
+					<token key="app.file.name" value="${app.file.name}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+		<copy file="${distsrc.dir}/LICENSE"
+		      tofile="${target.dir}/LICENSE.txt" />
 
 		<echo>Create Windows installer...</echo>
 		<exec executable="makensis" outputproperty="nsislog.out">
@@ -210,47 +353,40 @@
 		<delete file="${target.dir}/installer.nsi" />
 		<delete file="${target.dir}/jre.ini" />
 		<delete file="${target.dir}/jre-1_5_0_15-windows-i586-p.exe" />
-		<delete file="${target.dir}/GPL.txt" />
+		<delete file="${target.dir}/LICENSE.txt" />
 
 
-		<move file="${target.dir}/setup.exe" tofile="${dist.dir}/mvPod-${version}-install.exe" />
-
-	</target>
-
-
-	<target name="dist-macosx" depends="jar">
-
-		<copy file="${target.dir}/mvPod.jar" tofile="${dist.macosx.dir}/lib/mvPod.jar" />
-
-		<copy file="${libs.dir}/org.eclipse.core.commands_3.3.0.I20070605-0010.jar" tofile="${dist.macosx.dir}/lib/org.eclipse.core.commands.jar" />
-		<copy file="${libs.dir}/org.eclipse.equinox.common_3.3.0.v20070426.jar" tofile="${dist.macosx.dir}/lib/org.eclipse.equinox.common.jar" />
-		<copy file="${libs.dir}/org.eclipse.jface_3.3.1.M20070910-0800b.jar" tofile="${dist.macosx.dir}/lib/org.eclipse.jface.jar" />
-		<copy file="${libs.dir}/swt-3.3.2-carbon-macosx/swt.jar" tofile="${dist.macosx.dir}/lib/swt.jar" />
-
-		<copy file="${distsrc.dir}/GPL" tofile="${dist.macosx.dir}/GPL" />
-		<copy file="${distsrc.dir}/NEWS" tofile="${dist.macosx.dir}/NEWS" />
-		<copy file="${distsrc.dir}/README" tofile="${dist.macosx.dir}/README" />
-
-		<copy file="${distsrc.dir}/mvpod.png" tofile="${dist.macosx.dir}/bin/mvpod.png" />
-
-
+		<move file="${target.dir}/setup.exe"
+		      tofile="${dist.dir}/${app.file.name}-${version}-install.exe" />
 
 	</target>
 
 	<target name="jar" depends="compile">
 
-		<jar destfile="${target.dir}/mvPod.jar" basedir="${bin.dir}" excludes="${dist.jar.excludes}">
-			<manifest>
-				<attribute name="Main-Class" value="net.homeip.entreprisesmd.mvconv.gui.Main" />
-				<attribute name="Class-Path" value="mvPod.jar swt.jar org.eclipse.core.commands.jar org.eclipse.equinox.common.jar org.eclipse.jface.jar" />
-			</manifest>
+		<jar destfile="${target.dir}/${jar.filename}"
+		     basedir="${bin.dir}"
+		     excludes="${dist.jar.excludes}">
 		</jar>
 
 	</target>
 
 	<target name="clean" description="Use to clean the project">
-		<delete dir="${dist.dir}" />
-		<delete file="${root.dir}/mvPod.jar" />
+		<delete dir="${target.dir}" />
+		<delete dir="${bin.dir}" />
+	</target>
+
+	<target name="sonar" depends="compile">
+
+		<copy file="${distsrc.dir}/pom.xml" tofile="pom.xml">
+			<filterchain>
+				<expandproperties />
+			</filterchain>
+		</copy>
+
+		<exec command="mvn">
+			<arg value="sonar:sonar" />
+		</exec>
+
 	</target>
 
 </project>
