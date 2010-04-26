@@ -68,7 +68,7 @@
 		<replaceregexp file="${target.dir}/version.properties" match="@build@" replace="${svn.build}" byline="true" />
 
 		<!-- load version, version.text and version.build from property file -->
-		<property file="${src.dir}/version.properties" />
+		<property file="${target.dir}/version.properties" />
 		<fail message="version not define in version.properties" unless="version" />
 		<fail message="version.text not define in version.properties" unless="version.text" />
 		<fail message="version.build not define in version.properties" unless="version.build" />
@@ -94,8 +94,8 @@
 			<fileset dir="${src.dir}" excludes="**/*.launch, **/*.testsuite, **/*.deploy, **/*.location, **/*.execution, **/*.datapool, **/*.artifact, **/*.html, **/*.svg, **/*.java" />
 		</copy>
 
-		<replaceregexp file="${bin.dir}/version.properties" match="@build@" replace="${version.build}" byline="true" />
-
+		<replaceregexp file="${bin.dir}/version.properties" match="@build@" replace="${svn.build}" byline="true" />
+		
 		<javac srcdir="${src.dir}" destdir="${bin.dir}" nowarn="yes" source="5" target="5" includeAntRuntime="no" debug="true" debuglevel="lines,vars,source">
 			<classpath refid="libs.classpath" />
 		</javac>
