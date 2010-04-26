@@ -26,9 +26,9 @@ public final class Localization {
 	/*
 	 * Constants
 	 */
-	public static final String VERSION = "VERSION"; //$NON-NLS-1$
-	public static final String VERSION_TEXT = "VERSION_TEXT"; //$NON-NLS-1$
-	public static final String VERSION_BUILD = "VERSION_BUILD"; //$NON-NLS-1$
+	public static final String VERSION = "version"; //$NON-NLS-1$
+	public static final String VERSION_TEXT = "version.text"; //$NON-NLS-1$
+	public static final String VERSION_BUILD = "version.build"; //$NON-NLS-1$
 
 	public static final String APPLICATION_NAME = "APPLICATION_NAME"; //$NON-NLS-1$
 	public static final String APPLICATION_DESCRIPTION = "APPLICATION_DESCRIPTION"; //$NON-NLS-1$

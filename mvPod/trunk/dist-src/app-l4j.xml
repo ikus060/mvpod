@@ -1,7 +1,8 @@
 <launch4jConfig>
+  <outfile>bin/${app.file.name}.exe</outfile>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <errTitle>mvPod</errTitle>
+  <errTitle>${app.name}</errTitle>
   <cmdLine></cmdLine>
   <chdir>../</chdir>
   <priority>normal</priority>
@@ -10,24 +11,28 @@
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>./bin/mvpod.ico</icon>
+  <icon>./bin/app-icon.ico</icon>
+  <classPath>
+    <mainClass>${main.class}</mainClass>
+    <cp>${dist.win32.classpath}</cp>
+  </classPath>
   <jre>
     <path></path>
-    <minVersion>1.4.0</minVersion>
+    <minVersion>1.6.0</minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
   </jre>
   <versionInfo>
-    <fileVersion>0.0.1.1</fileVersion>
-    <txtFileVersion>0.1 build 1</txtFileVersion>
-    <fileDescription>mvPod Application</fileDescription>
+    <fileVersion>${version}</fileVersion>
+    <txtFileVersion>${version.text}</txtFileVersion>
+    <fileDescription>${app.description}</fileDescription>
     <copyright>Copyright 2008, Patrik Dufresne</copyright>
-    <productVersion>0.0.1.1</productVersion>
-    <txtProductVersion>0.1 build 1</txtProductVersion>
-    <productName>mvPod</productName>
-    <companyName>mvPod, inc.</companyName>
-    <internalName>mvPod</internalName>
-    <originalFilename>mvPod.exe</originalFilename>
+    <productVersion>${version}</productVersion>
+    <txtProductVersion>${version.text}</txtProductVersion>
+    <productName>${app.name}</productName>
+    <companyName>TODO, inc.</companyName>
+    <internalName>${app.name}</internalName>
+    <originalFilename>${app.file.name}.exe</originalFilename>
   </versionInfo>
   <messages>
     <startupErr>An error occurred while starting the application.</startupErr>
