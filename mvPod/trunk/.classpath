@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.3.0.I20070605-0010.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.3.0.v20070426.jar" sourcepath="lib/org.eclipse.equinox.common_src.zip"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.3.1.M20070910-0800b.jar" sourcepath="lib/org.eclipse.jface_src.zip"/>
-	<classpathentry kind="lib" path="lib/swt-3.3.2-gtk-linux-x86/swt-debug.jar" sourcepath="lib/swt-3.3.2-gtk-linux-x86/src.zip"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.5.0.I20090525-2000.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.5.2.M20100120-0800.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.swt.gtk.linux.x86_64_3.5.2.v3557f.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

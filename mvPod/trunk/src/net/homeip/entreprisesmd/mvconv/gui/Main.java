@@ -52,6 +52,11 @@ public final class Main {
 	 */
 	public static final String PREF_MP4CREATOR_DIRECTORY = "pref.mp4creatorDirectory"; //$NON-NLS-1$
 	/**
+	 * Key preference for default mp4 muxer.
+	 */
+	public static final String PREF_MP4MUXER_CLASS = "pref.mp4muxer.classnam"; //$NON-NLS-1$
+	
+	/**
 	 * Preference file name.
 	 */
 	private static final String PREFERENCE_FILENAME = ".mvpod"; //$NON-NLS-1$

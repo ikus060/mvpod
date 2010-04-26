@@ -1,6 +1,7 @@
 package net.homeip.entreprisesmd.mvconv.core.profile;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -35,22 +36,39 @@ public class MP4Muxer implements Muxer {
 	 */
 	private static final String OS_NAME_WINDOWS = "Windows"; //$NON-NLS-1$
 
+	private static Muxer createMuxerFromClassname(String className) {
+
+		IPreferenceStore store = Main.instance().getPreferenceStore();
+		if (className.equals(MP4CreatorMuxer.class.getCanonicalName())) {
+			File path = new File(store
+					.getString(Main.PREF_MP4CREATOR_DIRECTORY));
+			return new MP4CreatorMuxer(new File[] { path });
+		} else if (className.equals(MP4BoxMuxer.class.getCanonicalName())) {
+			File path = new File(store
+					.getString(Main.PREF_MP4CREATOR_DIRECTORY));
+			return new MP4BoxMuxer(new File[] { path });
+		}
+
+		return null;
+	}
+
 	/**
 	 * Constructor of the MP4Muxer. It's creating the right Muxer depending of
 	 * the platform and the user preferences.
 	 */
 	public MP4Muxer() {
 
-		if (OS_NAME.contains(OS_NAME_LINUX)) {
-			IPreferenceStore store = Main.instance().getPreferenceStore();
-			File path = new File(store
-					.getString(Main.PREF_MP4CREATOR_DIRECTORY));
-			this.muxer = new MP4CreatorMuxer(new File[] { path });
-		} else if (OS_NAME.contains(OS_NAME_WINDOWS)) {
-			IPreferenceStore store = Main.instance().getPreferenceStore();
-			File path = new File(store.getString(Main.PREF_MP4BOX_DIRECTORY));
-			this.muxer = new MP4BoxMuxer(new File[] { path });
-		} else {
+		// Open prefered mp4 muxer
+		IPreferenceStore store = Main.instance().getPreferenceStore();
+		String className = store.getString(Main.PREF_MP4MUXER_CLASS);
+		this.muxer = createMuxerFromClassname(className);
+
+		if (this.muxer == null) {
+			this.muxer = createMuxerFromClassname(MP4BoxMuxer.class
+					.getCanonicalName());
+		}
+
+		if (this.muxer == null) {
 			throw new UnsupportedOperationException();
 		}
 
