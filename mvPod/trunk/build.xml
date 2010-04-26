@@ -306,6 +306,10 @@
 		      tofile="${dist.win32.dir}/README.txt" />
 		<copy file="${distsrc.dir}/app-icon.ico"
 		      tofile="${dist.win32.dir}/bin/app-icon.ico" />
+		
+		<copy file="${distsrc.dir}/mplayer.exe" tofile="${dist.win32.dir}/mplayer.exe" />
+		<copy file="${distsrc.dir}/mencoder.exe" tofile="${dist.win32.dir}/mencoder.exe" />
+		<copy file="${distsrc.dir}/MP4Box.exe" tofile="${dist.win32.dir}/MP4Box.exe" />
 
 
 		<!-- Update launch4j configuration file by replacing properties-->
