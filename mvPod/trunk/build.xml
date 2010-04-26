@@ -17,11 +17,10 @@
 	<property name="dist.macosx.dir" value="${target.dir}/macosx" />
 	<property name="bin.dir" value="${root.dir}/bin" />
 	<property name="src.dir" value="${root.dir}/src" />
-	<property name="launch4j.dir" location="${distsrc.dir}/launch4j" />
 	<property name="antcontrib.dir" location="${distsrc.dir}/ant-contrib" />
 	<property name="mvn" location="${distsrc.dir}/apache-maven-2.2.1/bin/mvn" />
 
-	<property name="generic.excludes" value="**/*.jar **/*.txt **/*.jardesc **/.classpath **/.project **/aereg.lib **/aereg.dll" />
+	<property name="generic.excludes" value="**/.svn **/*.jar **/*.txt **/*.jardesc **/.classpath **/.project **/aereg.lib **/aereg.dll" />
 	<property name="dist.jar.excludes" value="${generic.excludes} **/*.java " />
 
 	<property name="jar.filename" value="${app.file.name}.jar" />
@@ -34,6 +33,16 @@
 		<mkdir dir="${target.dir}" />
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${bin.dir}" />
+	</target>
+
+	<target name="init-launch4j">
+
+		<untar compression="gzip" src="${distsrc.dir}/launch4j-3.0.1-linux.tgz" dest="${target.dir}" />
+		<property name="launch4j.dir" location="${target.dir}/launch4j" />
+
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+		<chmod perm="777" dir="${launch4j.dir}/bin" includes="*" />
+
 	</target>
 
 	<target name="findRevision">
@@ -225,7 +234,7 @@
 	</target>
 
 	<!-- Main entry point to produce binaries for Windows 32 bits -->
-	<target name="dist-win32" depends="jar">
+	<target name="dist-win32" depends="jar, init-launch4j">
 
 		<copy file="${target.dir}/${jar.filename}" tofile="${dist.win32.dir}/lib/${jar.filename}" />
 		<copy todir="${dist.win32.dir}/lib/">
@@ -261,8 +270,6 @@
 		</copy>
 
 		<!-- Create a '.exe' wrapper over the '.jar' using launch4j -->
-		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
-		<chmod perm="777" dir="${launch4j.dir}/bin" includes="*" />
 		<launch4j configFile="${dist.win32.dir}/app-l4j.xml" />
 		<delete file="${dist.win32.dir}/app-l4j.xml" />
 
